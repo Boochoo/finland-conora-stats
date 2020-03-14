@@ -1,6 +1,3 @@
-// import Layout from '../component/templates/Layout'
-import styled from './Index.style';
-
 const fetch = require('node-fetch');
 
 const displayDate = date => new Date(date).toGMTString().slice(0, -7);
@@ -34,8 +31,6 @@ const Index = ({ data }) => {
   const sortedConfirmedBySource = sortData(confirmedBySource);
   
   const confirmedByDate = getConfirmedByDate(confirmed);
-
-  console.log(data)
   
   return (
     <div style={{margin: '2rem'}}>
