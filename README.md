@@ -1,1 +1,1 @@
-# finland-conora-stats
+# Finland Conoravirus case updates and stats
