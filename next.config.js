@@ -1,4 +1,12 @@
-const webpack = require('webpack');
+module.exports = {
+  exportPathMap: function() {
+    return {
+      '/': { page: '/' }
+    };
+  }
+};
+
+/* const webpack = require('webpack');
 
 module.exports = {
   webpack: config => {
@@ -19,4 +27,4 @@ module.exports = {
 
     return config;
   }
-};
+}; */

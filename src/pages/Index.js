@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-unfetch';
+import fetch from 'isomorphic-fetch';
 import { useState, useEffect } from 'react';
 import styled, { css, createGlobalStyle } from 'styled-components';
 
@@ -10,17 +10,15 @@ import {
   sortData
 } from '../utils/utils';
 import Meta from '../partials/head';
-// import BarChart from '../component/templates/BarChart/BarChart';
+import LineChart from '../component/templates/LineChart/LineChart';
 
 const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css?family=Raleway:400,600&display=swap');
-
   html, body {
     box-sizing: border-box;
   }
   body {
     font-family: 'Raleway', Arial, Helvetica, sans-serif;
-    color: '#333333';
+    color: #333;
     padding: 0;
     margin: 0;
     background: #f4f7f6
@@ -40,18 +38,6 @@ const Container = styled.div`
 `;
 
 const Index = ({ data }) => {
-  /* const [fetchedData, setFetchedDate] = useState(data);
-
-  useEffect(() => {
-    const refreshData = async () => {
-      const refreshedProps = await fetchData();
-
-      setFetchedDate(refreshedProps.data);
-    };
-
-    refreshData();
-  }, []); */
-
   const { confirmed, deaths, recovered } = data;
 
   const confirmedByDistrict = getConfirmedByDistrict(confirmed);
@@ -92,7 +78,6 @@ const Index = ({ data }) => {
           Deaths:<strong> {deaths.length}</strong>
         </p>
       </Container>
-      {/* <BarChart data={state.data} /> */}
 
       <div>
         <h2>Recovered</h2>
@@ -139,7 +124,7 @@ const Index = ({ data }) => {
           ))
           .reverse()}
       </div>
-
+      <LineChart data={Object.entries(confirmedByDate)} />
       <div>
         <h2>Infection source by country</h2>
         {sortedConfirmedBySource.map((item, index) => (
@@ -159,7 +144,5 @@ export async function getServerSideProps() {
 
   return { props: { data } };
 }
-
-// Index.getServerSideProps = fetchData;
 
 export default Index;

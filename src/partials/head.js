@@ -5,6 +5,10 @@ const Meta = props => (
     <title>{props.title}</title>
     <meta name='description' content={props.desc} />
     <meta name='keywords' content={props.keywords} />
+    <link
+      rel='stylesheet'
+      href='https://fonts.googleapis.com/css?family=Raleway:400,600&display=swap'
+    />
   </Head>
 );
 

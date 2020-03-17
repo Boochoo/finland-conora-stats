@@ -16,6 +16,8 @@ package-lock.json
 
 # next.js build output
 .next
+out
+out/*
 
 # editor
 .DS_Store
