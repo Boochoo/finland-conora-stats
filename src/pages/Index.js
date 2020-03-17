@@ -77,10 +77,10 @@ const Index = ({ data }) => {
       <Meta
         title='Finland coronavirus stats'
         desc='Finland coronavirus stats update'
-        keywords='Finland, coronavirus, corona, corona updates'
+        keywords='Finland, coronavirus, coronavirus updates, coronavirus stats'
       />
 
-      <h1>Finland Corona stats</h1>
+      <h1>Finland Coronavirus(CoVID-19) stats</h1>
       <Container>
         <p>
           Confirmed cases:<strong> {confirmed.length}</strong>
