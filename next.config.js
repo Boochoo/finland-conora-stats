@@ -1,14 +1,11 @@
+const webpack = require('webpack');
+
 module.exports = {
   exportPathMap: function() {
     return {
-      '/': { page: '/' }
+      '/': { page: '/Index' }
     };
-  }
-};
-
-/* const webpack = require('webpack');
-
-module.exports = {
+  },
   webpack: config => {
     const origins = config.entry;
 
@@ -27,4 +24,4 @@ module.exports = {
 
     return config;
   }
-}; */
+};
