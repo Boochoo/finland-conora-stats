@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import styled from 'styled-components';
 import responsivefy from '../../../utils/responsiveSVG';
+import { getDailyData } from '../../../utils/utils';
 
 const SvgContainer = styled.div`
   path {
@@ -17,6 +18,15 @@ class LineChart extends Component {
   }
 
   drawChart(data) {
+    const dailyCasesData = getDailyData(data).reduce((acc, obj) => {
+      let key = obj.date.split('-').join(' ');
+      acc[key] = (acc[key] || 0) + obj.cases;
+      return acc;
+    }, {});
+
+    const tickLabels = Object.keys(dailyCasesData).map(el => el);
+    const dailyData = Object.entries(dailyCasesData).map(el => el);
+
     // set the dimensions and margins of the graph
     const margin = { top: 20, right: 20, bottom: 50, left: 50 },
       width = 960 - margin.left - margin.right,
@@ -25,15 +35,15 @@ class LineChart extends Component {
     // set the ranges
     const scaleX = d3
       .scaleLinear()
-      .domain([0, data.length])
+      .domain([0, dailyData.length])
       .range([0, width]);
 
     const scaleY = d3
       .scaleLinear()
-      .domain([0, d3.max(data, d => d[1])])
+      .domain([0, d3.max(dailyData, d => d[1])])
       .range([height, 0]);
     let xAxisIndexes;
-    const tuples = data
+    const tuples = dailyData
       .map((d, i) => [i, d[1]])
       .map(([x, y]) => [scaleX(x), scaleY(y)]);
 
@@ -55,6 +65,7 @@ class LineChart extends Component {
       .style('z-index', '10')
       .style('visibility', 'hidden')
       .text('a simple tooltip');
+
     // Add the valueline path.
     svg
       .append('path')
@@ -70,8 +81,6 @@ class LineChart extends Component {
       .text('Date');
 
     // Add the x Axis
-    const tickLabels = data.map(el => el[0].slice(5, -18));
-
     const xAxisGenerator = d3
       .axisBottom(scaleX)
       .tickFormat((d, i) => tickLabels[d]);

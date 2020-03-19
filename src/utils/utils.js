@@ -24,3 +24,14 @@ export const getConfirmedBySource = data =>
 
 export const sortData = data =>
   Object.entries(data).sort((a, b) => b[1] - a[1]);
+
+export const getDailyData = d =>
+  d.map((currData, index) => {
+    let key = currData[0].slice(5, -18);
+    let value = currData[1];
+
+    return {
+      date: key,
+      cases: value
+    };
+  });
