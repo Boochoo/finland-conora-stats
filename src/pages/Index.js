@@ -38,6 +38,7 @@ const Container = styled.div`
 `;
 
 const Index = ({ data }) => {
+  if (!data) return <div>loading...</div>;
   const { confirmed, deaths, recovered } = data;
 
   const confirmedByDistrict = getConfirmedByDistrict(confirmed);
@@ -136,13 +137,25 @@ const Index = ({ data }) => {
     </div>
   );
 };
+function ErrorHan() {
+  return <p>An error occurred on client darn it Something went wrong!!!</p>;
+}
 
 export async function getServerSideProps() {
-  const url = `https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData`;
-  const response = await fetch(url);
-  const data = await response.json();
+  try {
+    const url = `https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData`;
+    const response = await fetch(url);
+    const data = await response.json();
+    const hasError = response.status !== 200;
 
-  return { props: { data } };
+    if (hasError) throw Error(data.message);
+
+    return { props: { data } };
+  } catch (error) {
+    if (error) {
+      console.error(error);
+    }
+  }
 }
 
 export default Index;

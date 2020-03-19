@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import styled from 'styled-components';
+import responsivefy from '../../../utils/responsiveSVG';
 
 const SvgContainer = styled.div`
   path {
@@ -12,15 +13,14 @@ const SvgContainer = styled.div`
 
 class LineChart extends Component {
   componentDidMount() {
-    this.drawChart();
+    this.drawChart(this.props.data);
   }
 
-  drawChart() {
-    const data = this.props.data;
+  drawChart(data) {
     // set the dimensions and margins of the graph
-    const margin = { top: 20, right: 20, bottom: 50, left: 50 };
-    const width = 800 - margin.left - margin.right,
-      height = 500;
+    const margin = { top: 20, right: 20, bottom: 50, left: 50 },
+      width = 960 - margin.left - margin.right,
+      height = 450;
 
     // set the ranges
     const scaleX = d3
@@ -32,7 +32,7 @@ class LineChart extends Component {
       .scaleLinear()
       .domain([0, d3.max(data, d => d[1])])
       .range([height, 0]);
-
+    let xAxisIndexes;
     const tuples = data
       .map((d, i) => [i, d[1]])
       .map(([x, y]) => [scaleX(x), scaleY(y)]);
@@ -40,14 +40,16 @@ class LineChart extends Component {
     const generator = d3.line();
 
     const svg = d3
-      .select('.line-chart')
+      .select('#line-chart')
       .append('svg')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom + 35)
+      .call(responsivefy)
       .append('g')
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+      .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
     var tooltip = d3
-      .select('.line-chart')
+      .select('#line-chart')
       .append('div')
       .style('position', 'absolute')
       .style('z-index', '10')
@@ -62,27 +64,21 @@ class LineChart extends Component {
     // text label for the x axis
     svg
       .append('text')
-      .attr(
-        'transform',
-        'translate(' + width / 2 + ' ,' + (height + margin.top + 40) + ')'
-      )
+      .attr('transform', `translate(${width / 2} ,${height + margin.top + 40})`)
       .style('text-anchor', 'middle')
       .style('fill', '#333')
       .text('Date');
-
-    // Tooltips
 
     // Add the x Axis
     const tickLabels = data.map(el => el[0].slice(5, -18));
 
     const xAxisGenerator = d3
       .axisBottom(scaleX)
-      .tickFormat((d, i) => tickLabels[i])
-      .ticks(tickLabels.length);
+      .tickFormat((d, i) => tickLabels[d]);
 
     svg
       .append('g')
-      .attr('transform', 'translate(0,' + height + ')')
+      .attr('transform', `translate(0,${height})`)
       .call(xAxisGenerator)
       .selectAll('text')
       .attr('y', 0)
@@ -108,7 +104,7 @@ class LineChart extends Component {
   }
 
   render() {
-    return <SvgContainer className='line-chart'></SvgContainer>;
+    return <SvgContainer id='line-chart'></SvgContainer>;
   }
 }
 
