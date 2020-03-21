@@ -172,7 +172,7 @@ const Index = ({ data }) => {
         {Object.entries(confirmedByDate)
           .map((item, index) => (
             <p key={index}>
-              {item[0]}: <strong> {item[1]}</strong>
+              {item[0].slice(0, -7)} : <strong> {item[1]}</strong>
             </p>
           ))
           .reverse()}
