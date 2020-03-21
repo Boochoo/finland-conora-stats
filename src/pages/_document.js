@@ -1,17 +1,30 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { ServerStyleSheet } from 'styled-components';
 
 class CustomDocument extends Document {
-  static getInitialProps({ renderPage }) {
-    const page = renderPage();
+  static async getInitialProps(ctx) {
+    const sheet = new ServerStyleSheet();
+    const originalRenderPage = ctx.renderPage;
 
-    return { ...page };
-  }
+    try {
+      ctx.renderPage = () =>
+        originalRenderPage({
+          enhanceApp: App => props => sheet.collectStyles(<App {...props} />)
+        });
 
-  constructor(props) {
-    super(props);
-    const { __NEXT_DATA__, ids } = props;
-    if (ids) {
-      __NEXT_DATA__.ids = ids;
+      const initialProps = await Document.getInitialProps(ctx);
+
+      return {
+        ...initialProps,
+        styles: (
+          <>
+            {initialProps.styles}
+            {sheet.getStyleElement()}
+          </>
+        )
+      };
+    } finally {
+      sheet.seal();
     }
   }
 
@@ -20,7 +33,6 @@ class CustomDocument extends Document {
       <Html lang='en'>
         <Head />
         <body>
-          {/* Google Tag Manager */}
           <noscript>
             <iframe
               src='https://www.googletagmanager.com/ns.html?id=GTM-K49S7R2'
@@ -29,7 +41,6 @@ class CustomDocument extends Document {
               style={{ display: 'none', visibility: 'hidden' }}
             ></iframe>
           </noscript>
-          {/* Google Tag Manager */}
           <Main />
           <NextScript />
         </body>
