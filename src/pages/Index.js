@@ -87,6 +87,8 @@ const Index = ({ data }) => {
   const confirmedByDistrict = getConfirmedByDistrict(confirmed);
   const recoveredByDistrict = getConfirmedByDistrict(recovered);
 
+  const deathsByDistrict = getConfirmedByDistrict(deaths);
+
   const confirmedBySource = getConfirmedBySource(confirmed);
   const confirmedByDate = getConfirmedByDate(confirmed);
 
@@ -135,10 +137,7 @@ const Index = ({ data }) => {
         <h2>Recovered</h2>
 
         {recovered.map((rec, index) => {
-          const district =
-            rec.healthCareDistrict === 'HUS'
-              ? 'Helsinki'
-              : rec.healthCareDistrict;
+          const district = rec.healthCareDistrict;
 
           return (
             <div key={index}>
@@ -159,7 +158,32 @@ const Index = ({ data }) => {
       </div>
 
       <div>
-        <h2>Confirmed by cities</h2>
+        <h2>Deaths :(</h2>
+
+        {deaths.length > 0 &&
+          deaths.map((rec, index) => {
+            const district = rec.healthCareDistrict;
+
+            return (
+              <div key={index}>
+                {Object.entries(deathsByDistrict)[index] && (
+                  <div>
+                    <p>
+                      {district}:{' '}
+                      <strong>
+                        {Object.entries(deathsByDistrict)[index][1]}
+                      </strong>
+                    </p>
+                    <i>{displayDate(rec.date).slice(0, -7)}</i>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+      </div>
+
+      <div>
+        <h2>Confirmed cases by region</h2>
         {sortedConfirmedByDistrict.map((item, index) => (
           <p key={index}>
             {item[0] && item[0] !== 'null' ? item[0] : 'Unkown'} :{' '}
@@ -168,7 +192,7 @@ const Index = ({ data }) => {
         ))}
       </div>
       <div>
-        <h2>Confirmed by Date</h2>
+        <h2>Confirmed cases by date and time</h2>
         {Object.entries(confirmedByDate)
           .map((item, index) => (
             <p key={index}>
