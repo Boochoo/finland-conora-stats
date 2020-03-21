@@ -1,27 +1,34 @@
 const webpack = require('webpack');
+const withFonts = require('nextjs-fonts');
 
-module.exports = {
+module.exports = withFonts({
   exportPathMap: function() {
     return {
       '/': { page: '/Index' }
     };
   },
-  webpack: config => {
-    const origins = config.entry;
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      const antStyles = /antd\/.*?\/style\/css.*?/;
+      const origExternals = [...config.externals];
+      config.externals = [
+        (context, request, callback) => {
+          if (request.match(antStyles)) return callback();
+          if (typeof origExternals[0] === 'function') {
+            origExternals[0](context, request, callback);
+          } else {
+            callback();
+          }
+        },
+        ...(typeof origExternals[0] === 'function' ? [] : origExternals)
+      ];
 
-    config.entry = async () => {
-      const entries = await origins();
-
-      const keys = Object.keys(entries);
-      keys.forEach(key => {
-        if (key.includes('/__generated__/')) {
-          delete entries[key];
-        }
+      config.module.rules.unshift({
+        test: antStyles,
+        use: 'null-loader'
       });
-
-      return entries;
-    };
-
+    }
     return config;
-  }
-};
+  },
+  cssModules: true
+});
