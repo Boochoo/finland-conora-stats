@@ -59,12 +59,15 @@ const Container = styled.div`
     color: ${$gray};
     margin: 0.25rem 0;
     strong {
-      font-size: 2.4rem;
+      font-size: 3.5rem;
     }
 
     p {
       margin: 0;
       padding: 1rem;
+      display: flex;
+      justify-content: center;
+      flex-direction: column-reverse;
     }
   }
 
@@ -116,17 +119,18 @@ const Index = ({ data }) => {
       <Container>
         <div>
           <p>
-            Confirmed:<strong> {confirmed.length}</strong>
+            Confirmed <strong> {confirmed.length}</strong>
           </p>
         </div>
         <div>
           <p>
-            Recovered:<strong> {recovered.length}</strong>
+            Recovered <strong> {recovered.length}</strong>
           </p>
         </div>
         <div>
           <p>
-            Deaths:<strong> {deaths.length}</strong>
+            Death{deaths.length > 1 ? 's' : ''}{' '}
+            <strong> {deaths.length}</strong>
           </p>
         </div>
       </Container>
@@ -158,7 +162,7 @@ const Index = ({ data }) => {
       </div>
 
       <div>
-        <h2>Deaths :(</h2>
+        <h2>Death :(</h2>
 
         {deaths.length > 0 &&
           deaths.map((rec, index) => {
