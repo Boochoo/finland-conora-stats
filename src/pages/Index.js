@@ -150,7 +150,7 @@ const Index = ({ data }) => {
                       {Object.entries(recoveredByDistrict)[index][1]}
                     </strong>
                   </p>
-                  <i>{displayDate(rec.date)}</i>
+                  <i>{displayDate(rec.date).slice(0, -7)}</i>
                 </div>
               )}
             </div>
