@@ -12,6 +12,16 @@ class CustomDocument extends Document {
       <Html lang='en'>
         <Head />
         <body>
+          {/* Google Tag Manager */}
+          <noscript>
+            <iframe
+              src='https://www.googletagmanager.com/ns.html?id=GTM-K49S7R2'
+              height='0'
+              width='0'
+              style={{ display: 'none', visibility: 'hidden' }}
+            ></iframe>
+          </noscript>
+          {/* Google Tag Manager */}
           <Main />
           <NextScript />
         </body>
