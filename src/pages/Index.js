@@ -11,6 +11,21 @@ import {
 } from '../utils/utils';
 import Meta from '../partials/head';
 import LineChart from '../component/templates/LineChart/LineChart';
+// import SearchBox from '../component/templates/MapChart/MapChart';
+
+import dynamic from 'next/dynamic';
+
+const MapChartWithNoSSR = dynamic(
+  () => import('../component/templates/MapChart/MapChart'),
+  {
+    ssr: false
+  }
+);
+
+const $gray = '#f4f7f6';
+const $blue = '#0b1560';
+const $green = '#2B482B';
+const $red = '#762536';
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -21,7 +36,7 @@ const GlobalStyle = createGlobalStyle`
     color: #333;
     padding: 0;
     margin: 0;
-    background: #f4f7f6
+    background: ${$gray}
   }
 
   *,
@@ -33,8 +48,36 @@ const GlobalStyle = createGlobalStyle`
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 30px 1fr;
-  align-items: center;
+  text-align: center;
+  @media screen and (min-width: 670px) {
+    display: inline-grid;
+    grid-column-gap: 10px;
+    grid-template-columns: 200px 200px 200px;
+  }
+
+  div {
+    color: ${$gray};
+    margin: 0.25rem 0;
+    strong {
+      font-size: 2.4rem;
+    }
+
+    p {
+      margin: 0;
+      padding: 1rem;
+    }
+  }
+
+  div:nth-child(1) {
+    background-color: ${$blue};
+  }
+
+  div:nth-child(2) {
+    background-color: ${$green};
+  }
+  div:nth-child(3) {
+    background-color: ${$red};
+  }
 `;
 
 const Index = ({ data }) => {
@@ -69,16 +112,24 @@ const Index = ({ data }) => {
 
       <h1>Finland Coronavirus(CoVID-19) stats</h1>
       <Container>
-        <p>
-          Confirmed cases:<strong> {confirmed.length}</strong>
-        </p>
-        <p>
-          Recovered:<strong> {recovered.length}</strong>
-        </p>
-        <p>
-          Deaths:<strong> {deaths.length}</strong>
-        </p>
+        <div>
+          <p>
+            Confirmed:<strong> {confirmed.length}</strong>
+          </p>
+        </div>
+        <div>
+          <p>
+            Recovered:<strong> {recovered.length}</strong>
+          </p>
+        </div>
+        <div>
+          <p>
+            Deaths:<strong> {deaths.length}</strong>
+          </p>
+        </div>
       </Container>
+
+      <MapChartWithNoSSR data={sortedConfirmedByDistrict} />
 
       <div>
         <h2>Recovered</h2>
@@ -111,7 +162,8 @@ const Index = ({ data }) => {
         <h2>Confirmed by cities</h2>
         {sortedConfirmedByDistrict.map((item, index) => (
           <p key={index}>
-            {item[0]}: <strong> {item[1]}</strong>
+            {item[0] && item[0] !== 'null' ? item[0] : 'Unkown'} :{' '}
+            <strong> {item[1]}</strong>
           </p>
         ))}
       </div>
@@ -126,6 +178,7 @@ const Index = ({ data }) => {
           .reverse()}
       </div>
       <LineChart data={Object.entries(confirmedByDate)} />
+
       <div>
         <h2>Infection source by country</h2>
         {sortedConfirmedBySource.map((item, index) => (
