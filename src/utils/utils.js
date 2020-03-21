@@ -11,7 +11,7 @@ export const getConfirmedByDate = data =>
 export const getConfirmedByDistrict = data =>
   data.reduce((prev, curr) => {
     let district = curr.healthCareDistrict;
-    let location = district === 'HUS' ? 'Helsinki' : district;
+    let location = district === 'HUS' ? 'Uusimaa' : district;
     return (prev[location] = ++prev[location] || 1), prev;
   }, {});
 

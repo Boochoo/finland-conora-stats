@@ -11,6 +11,16 @@ import {
 } from '../utils/utils';
 import Meta from '../partials/head';
 import LineChart from '../component/templates/LineChart/LineChart';
+// import SearchBox from '../component/templates/MapChart/MapChart';
+
+import dynamic from 'next/dynamic';
+
+const MapChartWithNoSSR = dynamic(
+  () => import('../component/templates/MapChart/MapChart'),
+  {
+    ssr: false
+  }
+);
 
 const $gray = '#f4f7f6';
 const $blue = '#0b1560';
@@ -37,9 +47,10 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Container = styled.div`
-  display: inline-grid;
-
+  display: grid;
+  text-align: center;
   @media screen and (min-width: 670px) {
+    display: inline-grid;
     grid-column-gap: 10px;
     grid-template-columns: 200px 200px 200px;
   }
@@ -118,6 +129,8 @@ const Index = ({ data }) => {
         </div>
       </Container>
 
+      <MapChartWithNoSSR data={sortedConfirmedByDistrict} />
+
       <div>
         <h2>Recovered</h2>
 
@@ -149,7 +162,7 @@ const Index = ({ data }) => {
         <h2>Confirmed by cities</h2>
         {sortedConfirmedByDistrict.map((item, index) => (
           <p key={index}>
-            {item[0] !== 'null' ? item[0] : 'Unkown'}:{' '}
+            {item[0] && item[0] !== 'null' ? item[0] : 'Unkown'} :{' '}
             <strong> {item[1]}</strong>
           </p>
         ))}
@@ -165,6 +178,7 @@ const Index = ({ data }) => {
           .reverse()}
       </div>
       <LineChart data={Object.entries(confirmedByDate)} />
+
       <div>
         <h2>Infection source by country</h2>
         {sortedConfirmedBySource.map((item, index) => (
