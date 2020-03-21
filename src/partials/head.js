@@ -17,6 +17,8 @@ const Meta = props => (
       href='https://unpkg.com/leaflet-geosearch@latest/assets/css/leaflet.css'
       rel='stylesheet'
     />
+
+    <style dangerouslySetInnerHTML={{ __html: props.css }} />
     <script
       dangerouslySetInnerHTML={{
         __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
