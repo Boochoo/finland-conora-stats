@@ -51,23 +51,24 @@ export const dailyCasesTotal = data => {
   }, {});
 };
 
-export const getConfirmedByContries = data =>
-  data.reduce((acc, val) => {
-    let o = acc
+export const getConfirmedByCountry = data =>
+  data.reduce((acc, currVal) => {
+    let filteredObj = acc
       .filter(obj => {
-        return obj.countryRegion === val.countryRegion;
+        return obj.countryRegion === currVal.countryRegion;
       })
       .pop() || {
-      countryRegion: val.countryRegion,
+      countryRegion: currVal.countryRegion,
       confirmed: 0,
       recovered: 0,
       deaths: 0
     };
 
-    o.confirmed += val.confirmed;
-    o.recovered += val.recovered;
-    o.deaths += val.deaths;
-    acc.push(o);
+    filteredObj.confirmed += currVal.confirmed;
+    filteredObj.recovered += currVal.recovered;
+    filteredObj.deaths += currVal.deaths;
+
+    acc.push(filteredObj);
 
     return acc;
   }, []);

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import fetch from 'isomorphic-fetch';
 import { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { getConfirmedByContries } from '../utils/utils';
+import { getConfirmedByCountry } from '../utils/utils';
 
 const $gray = '#f4f7f6';
 const $blue = '#0b1560';
@@ -31,7 +31,7 @@ const GlobalStyle = createGlobalStyle`
 const Container = styled.div`
   display: grid;
   text-align: center;
-  @media screen and (min-width: 810px) {
+  @media screen and (min-width: 880px) {
     display: inline-grid;
     grid-column-gap: 10px;
     grid-template-columns: 250px 250px 250px;
@@ -88,10 +88,10 @@ const Section = styled.section`
   }
 
   ul li:nth-child(even) {
-    background: #ccc;
+    background: #79a7ac;
   }
   ul li:nth-child(odd) {
-    background: #fff;
+    background: ${$gray};
   }
 
   ol li div:nth-of-type(1),
@@ -130,7 +130,7 @@ const World = props => {
   const { data } = props;
   const [state, setstate] = useState({});
   const { confirmed, deaths, recovered } = data;
-  const confirmedData = getConfirmedByContries(props.confirmedData);
+  const confirmedData = getConfirmedByCountry(props.confirmedData);
   const uniqueConfirmed = [...new Set(confirmedData)];
 
   return (
