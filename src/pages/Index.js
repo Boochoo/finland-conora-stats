@@ -1,19 +1,16 @@
+import dynamic from 'next/dynamic';
 import fetch from 'isomorphic-fetch';
-import { useState, useEffect } from 'react';
 import styled, { css, createGlobalStyle } from 'styled-components';
-
 import {
   getConfirmedByDistrict,
   getConfirmedBySource,
   getConfirmedByDate,
   displayDate,
-  sortData
+  sortData,
+  dailyCasesTotal
 } from '../utils/utils';
 import Meta from '../partials/head';
 import LineChart from '../component/templates/LineChart/LineChart';
-// import SearchBox from '../component/templates/MapChart/MapChart';
-
-import dynamic from 'next/dynamic';
 
 const MapChartWithNoSSR = dynamic(
   () => import('../component/templates/MapChart/MapChart'),
@@ -46,6 +43,13 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const MainContainer = styled.div`
+  margin: 1.5rem;
+  @media screen and (min-width: 670px) {
+    margin: 4.5rem;
+    margin-top: 1.5rem;
+  }
+`;
 const Container = styled.div`
   display: grid;
   text-align: center;
@@ -84,7 +88,6 @@ const Container = styled.div`
 `;
 
 const Index = ({ data }) => {
-  if (!data) return <div>loading...</div>;
   const { confirmed, deaths, recovered } = data;
 
   const confirmedByDistrict = getConfirmedByDistrict(confirmed);
@@ -98,6 +101,12 @@ const Index = ({ data }) => {
   const sortedConfirmedByDistrict = sortData(confirmedByDistrict);
   const sortedConfirmedBySource = sortData(confirmedBySource);
 
+  const totalDailyCases = dailyCasesTotal(Object.entries(confirmedByDate));
+
+  const sortedConfirmed = Object.entries(confirmedByDate).sort(
+    (a, b) => new Date(a[0]) - new Date(b[0])
+  );
+
   const state = {
     data: Object.values(getConfirmedByDistrict(confirmed)),
     width: 700,
@@ -106,7 +115,7 @@ const Index = ({ data }) => {
   };
 
   return (
-    <div style={{ margin: '2rem' }}>
+    <MainContainer>
       <GlobalStyle />
 
       <Meta
@@ -115,7 +124,7 @@ const Index = ({ data }) => {
         keywords='Finland, coronavirus, coronavirus updates, coronavirus stats'
       />
 
-      <h1>Finland Coronavirus(CoVID-19) stats</h1>
+      <h1>Finland Coronavirus (CoVID-19) stats</h1>
       <Container>
         <div>
           <p>
@@ -196,8 +205,19 @@ const Index = ({ data }) => {
         ))}
       </div>
       <div>
-        <h2>Confirmed cases by date and time</h2>
-        {Object.entries(confirmedByDate)
+        <h2>Confirmed daily total</h2>
+        <LineChart data={Object.entries(confirmedByDate)} />
+        {Object.entries(totalDailyCases)
+          .map((item, index) => (
+            <p key={index}>
+              {item[0]} : <strong> {item[1]}</strong>
+            </p>
+          ))
+          .reverse()}
+      </div>
+      <div>
+        <h2>Confirmed cases by date and announcement time</h2>
+        {sortedConfirmed
           .map((item, index) => (
             <p key={index}>
               {item[0].slice(0, -7)} : <strong> {item[1]}</strong>
@@ -205,7 +225,6 @@ const Index = ({ data }) => {
           ))
           .reverse()}
       </div>
-      <LineChart data={Object.entries(confirmedByDate)} />
 
       <div>
         <h2>Infection source by country</h2>
@@ -215,7 +234,7 @@ const Index = ({ data }) => {
           </p>
         ))}
       </div>
-    </div>
+    </MainContainer>
   );
 };
 function ErrorHan() {

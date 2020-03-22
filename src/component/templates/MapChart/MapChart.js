@@ -73,9 +73,9 @@ export default class MyMap extends Component {
         ? '#edeac2'
         : districtCases(5)
         ? '#b5c8b8'
-        : districtCases(1)
+        : districtCases(0)
         ? '#79a7ac'
-        : '#2887a1';
+        : '#fff';
     }
 
     function featureWithStyle(feature) {

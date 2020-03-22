@@ -23,11 +23,13 @@ export const getConfirmedBySource = data =>
   }, {});
 
 export const sortData = data =>
-  Object.entries(data).sort((a, b) => b[1] - a[1]);
+  Object.entries(data)
+    .slice()
+    .sort((a, b) => b[1] - a[1]);
 
-export const getDailyData = d =>
-  d.map((currData, index) => {
-    let key = currData[0].slice(5, -18);
+const getDailyData = d => {
+  return d.map((currData, index) => {
+    let key = currData[0];
     let value = currData[1];
 
     return {
@@ -35,3 +37,16 @@ export const getDailyData = d =>
       cases: value
     };
   });
+};
+
+export const dailyCasesTotal = data => {
+  const sortedData = getDailyData(data).sort(function(a, b) {
+    return new Date(a.date) - new Date(b.date);
+  });
+
+  return sortedData.reduce((acc, obj) => {
+    let key = obj.date.slice(5, -18);
+    acc[key] = (acc[key] || 0) + obj.cases;
+    return acc;
+  }, {});
+};
