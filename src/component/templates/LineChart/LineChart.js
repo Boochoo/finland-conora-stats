@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import styled from 'styled-components';
 import responsivefy from '../../../utils/responsiveSVG';
-import { getDailyData } from '../../../utils/utils';
+import { dailyCasesTotal } from '../../../utils/utils';
 
 const SvgContainer = styled.div`
   path {
@@ -22,11 +22,7 @@ class LineChart extends Component {
   }
 
   drawChart(data) {
-    const dailyCasesData = getDailyData(data).reduce((acc, obj) => {
-      let key = obj.date.split('-').join(' ');
-      acc[key] = (acc[key] || 0) + obj.cases;
-      return acc;
-    }, {});
+    const dailyCasesData = dailyCasesTotal(data);
 
     const tickLabels = Object.keys(dailyCasesData).map(el => el);
     const dailyData = Object.entries(dailyCasesData).map(el => el);

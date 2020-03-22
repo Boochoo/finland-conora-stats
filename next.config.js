@@ -7,6 +7,9 @@ module.exports = withFonts({
       '/': { page: '/Index' }
     };
   },
+  devIndicators: {
+    autoPrerender: false
+  },
   webpack: (config, { isServer }) => {
     if (isServer) {
       const antStyles = /antd\/.*?\/style\/css.*?/;
