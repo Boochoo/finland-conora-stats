@@ -26,11 +26,11 @@ const Container = styled.div`
     }
 
     p {
-      margin: 0;
-      padding: 1rem;
       display: flex;
       justify-content: center;
       flex-direction: column-reverse;
+      margin: 0;
+      padding: 1rem;
     }
   }
 
