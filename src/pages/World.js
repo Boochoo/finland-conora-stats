@@ -1,13 +1,32 @@
 import Link from 'next/link';
 import fetch from 'isomorphic-fetch';
-import styled, { css } from 'styled-components';
-
-import Meta from '../partials/head';
+import { useState, useEffect } from 'react';
+import styled, { createGlobalStyle } from 'styled-components';
+import { getConfirmedByContries } from '../utils/utils';
 
 const $gray = '#f4f7f6';
 const $blue = '#0b1560';
 const $green = '#2B482B';
 const $red = '#762536';
+
+const GlobalStyle = createGlobalStyle`
+  html, body {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Raleway', Arial, Helvetica, sans-serif;
+    color: #333;
+    padding: 0;
+    margin: 0;
+    background: ${$gray}
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+`;
 
 const Container = styled.div`
   display: grid;
@@ -46,26 +65,77 @@ const Container = styled.div`
   }
 `;
 
-const World = async props => {
-  console.log(props);
-  // const { confirmed, deaths, recovered } = props.data;
-  /* const detail = data.confirmed.detail;
+const Section = styled.section`
+  ol li {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    padding: 1rem 0;
+    list-style-type: none;
+  }
+  ol li.header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    border-bottom: 1px solid #666;
+  }
+  ol li div {
+    text-align: center;
+  }
 
-  console.log(detail); */
-  // const fetchConfirmed = await fetch(detail);
-  /* const confirmedData = await fetch(detail).json();
+  ol,
+  ul {
+    padding: 0;
+  }
 
-  const confData = Object.entries(confirmedData).map(d => {
-    return {
-      countryRegion: d.countryRegion,
-      confirmed: d.confirmed,
-      recovered: d.recovered,
-      deaths: d.deaths
-    };
-  }); */
+  ul li:nth-child(even) {
+    background: #ccc;
+  }
+  ul li:nth-child(odd) {
+    background: #fff;
+  }
+
+  ol li div:nth-of-type(1),
+  ul li div:nth-of-type(1) {
+    font-size: 1.24rem;
+  }
+
+  @media (max-width: 672px) {
+    ol li {
+      grid-template-columns: 34% 33% 33%;
+      grid-template-rows: auto auto;
+    }
+
+    ol li div:nth-of-type(1),
+    ul li div:nth-of-type(1) {
+      margin-top: 0.5rem;
+    }
+
+    ol li div:nth-child(1) {
+      grid-column-start: 1;
+      grid-column-end: 4;
+      grid-row-start: 2;
+      grid-row-end: 2;
+    }
+  }
+`;
+
+const MainContainer = styled.div`
+  margin: 1.5rem;
+  @media screen and (min-width: 670px) {
+    margin: 4.5rem;
+    margin-top: 1.5rem;
+  }
+`;
+const World = props => {
+  const { data } = props;
+  const [state, setstate] = useState({});
+  const { confirmed, deaths, recovered } = data;
+  const confirmedData = getConfirmedByContries(props.confirmedData);
+  const uniqueConfirmed = [...new Set(confirmedData)];
 
   return (
-    <div style={{ margin: '2rem' }}>
+    <MainContainer>
+      <GlobalStyle />
       <Link href='/'>
         <a>Click to see Finland's stats</a>
       </Link>
@@ -84,41 +154,53 @@ const World = async props => {
         </div>
         <div>
           <p>
-            {/* Death{deaths.value > 1 ? 's' : ''} <strong> {deaths.value}</strong> */}
+            Death{deaths.value > 1 ? 's' : ''} <strong> {deaths.value}</strong>
           </p>
         </div>
       </Container>
 
-      {/* {confData.map(e => (
-        <div>
-          <h1>{e.countryRegion}</h1>
-          <p>{e.confirmed}</p>
-          <p>{e.recovered}</p>
-          <p>{e.deaths}</p>
-        </div>
-      ))} */}
-    </div>
+      <Section>
+        <ol>
+          <li className='header'>
+            <div>
+              <strong>Country</strong>
+            </div>
+            <div>
+              <strong>Confirmed</strong>
+            </div>
+            <div>
+              <strong>Recovered</strong>
+            </div>
+            <div>
+              <strong>Deaths</strong>
+            </div>
+          </li>
+          <ul>
+            {uniqueConfirmed.length > 0 &&
+              uniqueConfirmed.map((d, i) => (
+                <li key={i}>
+                  <div>
+                    <strong>{d.countryRegion}</strong>
+                  </div>
+                  <div>{d.confirmed}</div>
+                  <div>{d.recovered}</div>
+                  <div>{d.deaths}</div>
+                </li>
+              ))}
+          </ul>
+        </ol>
+      </Section>
+    </MainContainer>
   );
 };
-function ErrorHan() {
-  return <p>An error occurred on client darn it Something went wrong!!!</p>;
-}
 
-export async function getServerSideProps() {
-  try {
-    const url = `https://covid19.mathdro.id/api`;
-    const response = await fetch(url);
-    const data = await response.json();
-    const hasError = response.status !== 200;
+World.getInitialProps = async () => {
+  const response = await fetch('https://covid19.mathdro.id/api');
+  const data = await response.json();
+  const fetchDets = await fetch(data.confirmed.detail);
+  const confirmedData = await fetchDets.json();
 
-    if (hasError) throw Error(data.message);
-
-    return { props: { data } };
-  } catch (error) {
-    if (error) {
-      console.error(error);
-    }
-  }
-}
+  return { data, confirmedData };
+};
 
 export default World;

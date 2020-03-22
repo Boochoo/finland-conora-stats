@@ -1,7 +1,7 @@
 {
   "name": "finland-corona-stats",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "license": "MIT",
   "scripts": {
     "dev": "nodemon server.js",
@@ -12,7 +12,7 @@
     "deploy": "npm run build && npm run export",
     "test": "jest",
     "eject": "next eject",
-    "generate": "plop --plopfile generators/index.js",
+    "generate": "plop --plopfile generators/plopfile.js",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
