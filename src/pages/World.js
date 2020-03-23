@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import fetch from 'isomorphic-fetch';
-import { useState, useEffect } from 'react';
+import { Component } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { getConfirmedByCountry } from '../utils/utils';
 import Meta from '../partials/head';
@@ -128,82 +128,88 @@ const MainContainer = styled.div`
     margin-top: 1.5rem;
   }
 `;
-const World = props => {
-  const { data } = props;
-  const [state, setstate] = useState({});
-  const { confirmed, deaths, recovered } = data;
-  const confirmedData = getConfirmedByCountry(props.confirmedData);
-  const uniqueConfirmed = [...new Set(confirmedData)];
+export default class World extends Component {
+  static async getInitialProps() {
+    const response = await fetch('https://covid19.mathdro.id/api');
+    const data = await response.json();
+    const fetchDets = await fetch(data.confirmed.detail);
+    const confirmedData = await fetchDets.json();
 
-  return (
-    <MainContainer>
-      <Meta />
-      <GlobalStyle />
-      <Link href={paths.home}>
-        <a>Click to see Finland's stats</a>
-      </Link>
+    return { data, confirmedData };
+  }
 
-      <h1>World Coronavirus (CoVID-19) stats</h1>
-      <Container>
-        <div>
-          <p>
-            Confirmed <strong> {confirmed.value}</strong>
-          </p>
-        </div>
-        <div>
-          <p>
-            Recovered <strong> {recovered.value}</strong>
-          </p>
-        </div>
-        <div>
-          <p>
-            Death{deaths.value > 1 ? 's' : ''} <strong> {deaths.value}</strong>
-          </p>
-        </div>
-      </Container>
+  constructor(props) {
+    super(props);
 
-      <Section>
-        <ol>
-          <li className='header'>
-            <div>
-              <strong>Country</strong>
-            </div>
-            <div>
-              <strong>Confirmed</strong>
-            </div>
-            <div>
-              <strong>Recovered</strong>
-            </div>
-            <div>
-              <strong>Deaths</strong>
-            </div>
-          </li>
-          <ul>
-            {uniqueConfirmed.length > 0 &&
-              uniqueConfirmed.map((d, i) => (
-                <li key={i}>
-                  <div>
-                    <strong>{d.countryRegion}</strong>
-                  </div>
-                  <div>{d.confirmed}</div>
-                  <div>{d.recovered}</div>
-                  <div>{d.deaths}</div>
-                </li>
-              ))}
-          </ul>
-        </ol>
-      </Section>
-    </MainContainer>
-  );
-};
+    // console.log(uniqueConfirmed);
+  }
 
-World.getInitialProps = async () => {
-  const response = await fetch('https://covid19.mathdro.id/api');
-  const data = await response.json();
-  const fetchDets = await fetch(data.confirmed.detail);
-  const confirmedData = await fetchDets.json();
+  render() {
+    const { data } = this.props;
+    const { confirmed, deaths, recovered } = data;
+    const confirmedData = getConfirmedByCountry(this.props.confirmedData);
+    const uniqueConfirmed = [...new Set(confirmedData)];
 
-  return { data, confirmedData };
-};
+    return (
+      <MainContainer>
+        <Meta />
+        <GlobalStyle />
+        <Link href={paths.home}>
+          <a>Click to see Finland's stats</a>
+        </Link>
 
-export default World;
+        <h1>World Coronavirus (CoVID-19) stats</h1>
+        <Container>
+          <div>
+            <p>
+              Confirmed <strong> {confirmed.value}</strong>
+            </p>
+          </div>
+          <div>
+            <p>
+              Recovered <strong> {recovered.value}</strong>
+            </p>
+          </div>
+          <div>
+            <p>
+              Death{deaths.value > 1 ? 's' : ''}{' '}
+              <strong> {deaths.value}</strong>
+            </p>
+          </div>
+        </Container>
+
+        <Section>
+          <ol>
+            <li className='header'>
+              <div>
+                <strong>Country</strong>
+              </div>
+              <div>
+                <strong>Confirmed</strong>
+              </div>
+              <div>
+                <strong>Recovered</strong>
+              </div>
+              <div>
+                <strong>Deaths</strong>
+              </div>
+            </li>
+            <ul>
+              {uniqueConfirmed.length > 0 &&
+                uniqueConfirmed.map((d, i) => (
+                  <li key={i}>
+                    <div>
+                      <strong>{d.countryRegion}</strong>
+                    </div>
+                    <div>{d.confirmed}</div>
+                    <div>{d.recovered}</div>
+                    <div>{d.deaths}</div>
+                  </li>
+                ))}
+            </ul>
+          </ol>
+        </Section>
+      </MainContainer>
+    );
+  }
+}
