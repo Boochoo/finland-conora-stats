@@ -1,77 +1,18 @@
-import Link from 'next/link';
+import { Component, useState } from 'react';
+import styled from 'styled-components';
 import fetch from 'isomorphic-fetch';
-import { Component } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
 import { getConfirmedByCountry } from '../utils/utils';
-import Meta from '../partials/head';
+import Layout from '../component/organisms/Layout/Layout';
 import paths from '../utils/path';
+import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
 
 const $gray = '#f4f7f6';
-const $blue = '#0b1560';
-const $green = '#2B482B';
-const $red = '#762536';
-
-const GlobalStyle = createGlobalStyle`
-  html, body {
-    box-sizing: border-box;
-  }
-  body {
-    font-family: 'Raleway', Arial, Helvetica, sans-serif;
-    color: #333;
-    padding: 0;
-    margin: 0;
-    background: ${$gray}
-  }
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: inherit;
-  }
-`;
-
-const Container = styled.div`
-  display: grid;
-  text-align: center;
-  @media screen and (min-width: 880px) {
-    display: inline-grid;
-    grid-column-gap: 10px;
-    grid-template-columns: 250px 250px 250px;
-  }
-
-  div {
-    color: ${$gray};
-    margin: 0.25rem 0;
-    strong {
-      font-size: 3.5rem;
-    }
-
-    p {
-      margin: 0;
-      padding: 1rem;
-      display: flex;
-      justify-content: center;
-      flex-direction: column-reverse;
-    }
-  }
-
-  div:nth-child(1) {
-    background-color: ${$blue};
-  }
-
-  div:nth-child(2) {
-    background-color: ${$green};
-  }
-  div:nth-child(3) {
-    background-color: ${$red};
-  }
-`;
-
 const Section = styled.section`
+  margin-top: 2.5rem;
   ol li {
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
-    padding: 1rem 0;
+
     list-style-type: none;
   }
   ol li.header {
@@ -82,6 +23,7 @@ const Section = styled.section`
   }
   ol li div {
     text-align: center;
+    padding: 1rem 0;
   }
 
   ol,
@@ -90,7 +32,7 @@ const Section = styled.section`
   }
 
   ul li:nth-child(even) {
-    background: #79a7ac;
+    background: #b5c8b8;
   }
   ul li:nth-child(odd) {
     background: ${$gray};
@@ -119,95 +61,120 @@ const Section = styled.section`
       grid-row-end: 2;
     }
   }
-`;
 
-const MainContainer = styled.div`
-  margin: 1.5rem;
-  @media screen and (min-width: 670px) {
-    margin: 4.5rem;
-    margin-top: 1.5rem;
+  .header__title {
+    cursor: pointer;
+
+    &.active {
+      background: #b5c8b8;
+    }
   }
 `;
-export default class World extends Component {
-  static async getInitialProps() {
-    const response = await fetch('https://covid19.mathdro.id/api');
-    const data = await response.json();
-    const fetchDets = await fetch(data.confirmed.detail);
-    const confirmedData = await fetchDets.json();
 
-    return { data, confirmedData };
-  }
+const World = props => {
+  const { data, confirmedData } = props;
+  const { confirmed, deaths, recovered, lastUpdate } = data;
+  const confirmedResponses = getConfirmedByCountry(confirmedData);
+  const uniqueConfirmed = [...new Set(confirmedResponses)];
 
-  constructor(props) {
-    super(props);
-  }
+  const sortedConfrimed = uniqueConfirmed.sort(
+    (a, b) => b.confirmed - a.confirmed
+  );
+  const [sortedList, setSorted] = useState(sortedConfrimed);
+  const [active, setActive] = useState({ isByConfirmed: true });
 
-  render() {
-    const { data } = this.props;
-    const { confirmed, deaths, recovered } = data;
-    const confirmedData = getConfirmedByCountry(this.props.confirmedData);
-    const uniqueConfirmed = [...new Set(confirmedData)];
+  const source = `//github.com/mathdroid/covid-19-api`;
+  const lastUpdatedAt = new Date(lastUpdate).toGMTString();
 
-    return (
-      <MainContainer>
-        <Meta />
-        <GlobalStyle />
-        <Link href={paths.home}>
-          <a>Click to see Finland's stats</a>
-        </Link>
+  const sortByConfirmed = () => {
+    const sorted = [...sortedList].sort((a, b) => b.confirmed - a.confirmed);
+    setSorted(sorted);
+    setActive({ isByConfirmed: true });
+  };
 
-        <h1>World Coronavirus (CoVID-19) stats</h1>
-        <Container>
-          <div>
-            <p>
-              Confirmed <strong> {confirmed.value}</strong>
-            </p>
-          </div>
-          <div>
-            <p>
-              Recovered <strong> {recovered.value}</strong>
-            </p>
-          </div>
-          <div>
-            <p>
-              Death{deaths.value > 1 ? 's' : ''}{' '}
-              <strong> {deaths.value}</strong>
-            </p>
-          </div>
-        </Container>
+  const sortByRecovered = e => {
+    const sorted = [...sortedList].sort((a, b) => b.recovered - a.recovered);
+    setSorted(sorted);
+    setActive({ isByRecovered: true });
+  };
 
-        <Section>
-          <ol>
-            <li className='header'>
-              <div>
-                <strong>Country</strong>
-              </div>
-              <div>
-                <strong>Confirmed</strong>
-              </div>
-              <div>
-                <strong>Recovered</strong>
-              </div>
-              <div>
-                <strong>Deaths</strong>
-              </div>
-            </li>
-            <ul>
-              {uniqueConfirmed.length > 0 &&
-                uniqueConfirmed.map((d, i) => (
-                  <li key={i}>
-                    <div>
-                      <strong>{d.countryRegion}</strong>
-                    </div>
-                    <div>{d.confirmed}</div>
-                    <div>{d.recovered}</div>
-                    <div>{d.deaths}</div>
-                  </li>
-                ))}
-            </ul>
-          </ol>
-        </Section>
-      </MainContainer>
-    );
-  }
-}
+  const sortByDeaths = () => {
+    const sorted = [...sortedList].sort((a, b) => b.deaths - a.deaths);
+    setSorted(sorted);
+    setActive({ isByDeaths: true });
+  };
+
+  return (
+    <Layout
+      path={paths.home}
+      page='Finland'
+      source={source}
+      author='Mathdroid'
+      lastUpdate={lastUpdatedAt}
+    >
+      <HeroContainer
+        title='World'
+        confirmed={confirmed.value}
+        recovered={recovered.value}
+        deaths={deaths.value}
+      />
+
+      <Section>
+        <h3>You can sort the table by clicking on the table's sub headers </h3>
+        <ol>
+          <li className='header'>
+            <div>
+              <strong>Country</strong>
+            </div>
+            <div
+              className={`header__title ${
+                active.isByConfirmed ? 'active' : ''
+              }`}
+              onClick={sortByConfirmed}
+            >
+              <strong>Confirmed</strong>
+            </div>
+            <div
+              className={`header__title ${
+                active.isByRecovered ? 'active' : ''
+              }`}
+              onClick={sortByRecovered}
+            >
+              <strong>Recovered</strong>
+            </div>
+            <div
+              className={`header__title ${active.isByDeaths ? 'active' : ''}`}
+              onClick={sortByDeaths}
+            >
+              <strong>Deaths</strong>
+            </div>
+          </li>
+          <ul>
+            {sortedList.length > 0 &&
+              sortedList.map((d, i) => (
+                <li key={i}>
+                  <div>
+                    <strong>{d.countryRegion}</strong>
+                  </div>
+                  <div>{d.confirmed}</div>
+                  <div>{d.recovered}</div>
+                  <div>{d.deaths}</div>
+                </li>
+              ))}
+          </ul>
+        </ol>
+      </Section>
+    </Layout>
+  );
+};
+
+World.getInitialProps = async () => {
+  const response = await fetch('https://covid19.mathdro.id/api');
+  const data = await response.json();
+  const fetchDets = await fetch(data.confirmed.detail);
+  const confirmedData = await fetchDets.json();
+
+  return { data, confirmedData };
+};
+
+export default World;

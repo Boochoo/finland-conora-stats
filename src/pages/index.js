@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import fetch from 'isomorphic-fetch';
-import styled, { createGlobalStyle } from 'styled-components';
+import { Section } from '../component/organisms/Layout/Layout.style';
+import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
 import {
   getConfirmedByDistrict,
   getConfirmedBySource,
@@ -10,8 +10,8 @@ import {
   sortData,
   dailyCasesTotal
 } from '../utils/utils';
+import Layout from '../component/organisms/Layout/Layout';
 import LineChart from '../component/templates/LineChart/LineChart';
-import Meta from '../partials/head';
 import paths from '../utils/path';
 
 const MapChartWithNoSSR = dynamic(
@@ -20,74 +20,6 @@ const MapChartWithNoSSR = dynamic(
     ssr: false
   }
 );
-
-const $gray = '#f4f7f6';
-const $blue = '#0b1560';
-const $green = '#2B482B';
-const $red = '#762536';
-
-const GlobalStyle = createGlobalStyle`
-  html, body {
-    box-sizing: border-box;
-  }
-  body {
-    font-family: 'Raleway', Arial, Helvetica, sans-serif;
-    color: #333;
-    padding: 0;
-    margin: 0;
-    background: ${$gray}
-  }
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: inherit;
-  }
-`;
-
-const MainContainer = styled.div`
-  margin: 1.5rem;
-  @media screen and (min-width: 670px) {
-    margin: 4.5rem;
-    margin-top: 1.5rem;
-  }
-`;
-const Container = styled.div`
-  display: grid;
-  text-align: center;
-  @media screen and (min-width: 670px) {
-    display: inline-grid;
-    grid-column-gap: 10px;
-    grid-template-columns: 200px 200px 200px;
-  }
-
-  div {
-    color: ${$gray};
-    margin: 0.25rem 0;
-    strong {
-      font-size: 3.5rem;
-    }
-
-    p {
-      margin: 0;
-      padding: 1rem;
-      display: flex;
-      justify-content: center;
-      flex-direction: column-reverse;
-    }
-  }
-
-  div:nth-child(1) {
-    background-color: ${$blue};
-  }
-
-  div:nth-child(2) {
-    background-color: ${$green};
-  }
-  div:nth-child(3) {
-    background-color: ${$red};
-  }
-`;
 
 const Index = ({ data }) => {
   const { confirmed, deaths, recovered } = data;
@@ -109,40 +41,23 @@ const Index = ({ data }) => {
     (a, b) => new Date(a[0]) - new Date(b[0])
   );
 
-  const state = {
-    data: Object.values(getConfirmedByDistrict(confirmed)),
-    width: 700,
-    height: 500,
-    id: 'root'
-  };
+  const localDataSource = `//github.com/HS-Datadesk/koronavirus-avoindata`;
+  const lastUpdatedAt = sortedConfirmed[sortedConfirmed.length - 1][0];
 
   return (
-    <MainContainer>
-      <Meta />
-      <GlobalStyle />
-      <Link href={paths.world}>
-        <a>Click to see world's stats</a>
-      </Link>
-
-      <h1>Finland Coronavirus (CoVID-19) stats</h1>
-      <Container>
-        <div>
-          <p>
-            Confirmed <strong> {confirmed.length}</strong>
-          </p>
-        </div>
-        <div>
-          <p>
-            Recovered <strong> {recovered.length}</strong>
-          </p>
-        </div>
-        <div>
-          <p>
-            Death{deaths.length > 1 ? 's' : ''}{' '}
-            <strong> {deaths.length}</strong>
-          </p>
-        </div>
-      </Container>
+    <Layout
+      path={paths.world}
+      page='world'
+      author='HS-Datadesk'
+      source={localDataSource}
+      lastUpdate={lastUpdatedAt}
+    >
+      <HeroContainer
+        title='Finland'
+        recovered={recovered.length}
+        confirmed={confirmed.length}
+        deaths={deaths.length}
+      />
 
       <MapChartWithNoSSR data={sortedConfirmedByDistrict} />
 
@@ -234,14 +149,9 @@ const Index = ({ data }) => {
           </p>
         ))}
       </div>
-
-      <style jsx global>{``}</style>
-    </MainContainer>
+    </Layout>
   );
 };
-function ErrorHan() {
-  return <p>An error occurred on client darn it Something went wrong!!!</p>;
-}
 
 export async function getServerSideProps() {
   try {
