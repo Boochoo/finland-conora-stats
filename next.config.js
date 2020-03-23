@@ -4,8 +4,8 @@ const withFonts = require('nextjs-fonts');
 module.exports = withFonts({
   exportPathMap: function() {
     return {
-      '/': { page: '/Index' },
-      '/world': { page: '/World' }
+      '/': { page: '/' },
+      '/world': { page: '/world' }
     };
   },
   devIndicators: {
