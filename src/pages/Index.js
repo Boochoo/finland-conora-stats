@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import fetch from 'isomorphic-fetch';
-import styled, { css, createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import {
   getConfirmedByDistrict,
   getConfirmedBySource,
@@ -9,7 +10,6 @@ import {
   sortData,
   dailyCasesTotal
 } from '../utils/utils';
-import Meta from '../partials/head';
 import LineChart from '../component/templates/LineChart/LineChart';
 
 const MapChartWithNoSSR = dynamic(
@@ -117,12 +117,9 @@ const Index = ({ data }) => {
   return (
     <MainContainer>
       <GlobalStyle />
-
-      <Meta
-        title='Finland coronavirus stats'
-        desc='Finland coronavirus stats update'
-        keywords='Finland, coronavirus, coronavirus updates, coronavirus stats'
-      />
+      <Link href='/world'>
+        <a>Click to see world's stats</a>
+      </Link>
 
       <h1>Finland Coronavirus (CoVID-19) stats</h1>
       <Container>
@@ -234,6 +231,8 @@ const Index = ({ data }) => {
           </p>
         ))}
       </div>
+
+      <style jsx global>{``}</style>
     </MainContainer>
   );
 };

@@ -1,5 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
+import Meta from '../partials/head';
 
 class CustomDocument extends Document {
   static async getInitialProps(ctx) {
@@ -32,6 +33,7 @@ class CustomDocument extends Document {
     return (
       <Html lang='en'>
         <Head />
+        <Meta />
         <body>
           <noscript>
             <iframe
