@@ -34,5 +34,6 @@ module.exports = withFonts({
     }
     return config;
   },
-  cssModules: true
+  cssModules: true,
+  experimental: { css: true }
 });
