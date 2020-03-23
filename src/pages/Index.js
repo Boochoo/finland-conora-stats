@@ -12,6 +12,7 @@ import {
 } from '../utils/utils';
 import LineChart from '../component/templates/LineChart/LineChart';
 import Meta from '../partials/head';
+import paths from '../utils/path';
 
 const MapChartWithNoSSR = dynamic(
   () => import('../component/templates/MapChart/MapChart'),
@@ -119,7 +120,7 @@ const Index = ({ data }) => {
     <MainContainer>
       <Meta />
       <GlobalStyle />
-      <Link href='/world'>
+      <Link href={paths.world}>
         <a>Click to see world's stats</a>
       </Link>
 

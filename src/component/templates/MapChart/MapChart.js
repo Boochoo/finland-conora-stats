@@ -6,8 +6,13 @@ import {
   Popup,
   MapControl,
   GeoJSON,
-  withLeaflet
+  withLeaflet,
+  Circle,
+  Tooltip,
+  CircleMarker
 } from 'react-leaflet';
+import L from 'leaflet';
+
 import styled from 'styled-components';
 import MapJson from '../../../utils/finland-provinces.json';
 
@@ -17,6 +22,37 @@ const MapContainer = styled.div`
   @media screen and (min-width: 620px) {
     width: 620px;
   }
+
+  .leaflet-marker-icon,
+  .leaflet-marker-shadow {
+    display: none !important;
+  }
+
+  .leaflet-tooltip {
+    background-color: transparent;
+    color: #fff;
+  }
+  .custom-popup .leaflet-popup-tip,
+  .leaflet-tooltip {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .custom-popup .leaflet-popup-content-wrapper {
+    background: #f4f7f6;
+    color: #800026;
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 0px;
+  }
+  /* .custom-popup .leaflet-popup-content-wrapper a {
+    color: rgba(255, 255, 255, 0.1);
+  }
+  .custom-popup .leaflet-popup-tip-container {
+    width: 30px;
+    height: 15px;
+  } */
 `;
 
 export default class MyMap extends Component {
@@ -91,9 +127,10 @@ export default class MyMap extends Component {
     }
 
     return (
+      // const marker = L.marker([65.954873, 26.956424]).addTo(ma)
       <MapContainer>
         <Map
-          center={[65.954873, 26.956424]}
+          center={[65, 25.2]}
           zoom={5.45}
           style={{
             height: '700px'
@@ -105,23 +142,46 @@ export default class MyMap extends Component {
           />
           <GeoJSON data={MapJson} style={featureWithStyle} />
           {positions(dataMarkers).map((pos, index) => (
-            <Marker
-              key={index}
-              draggable={false}
-              position={[pos.lan, pos.lng]}
-              animate={true}
-              onMouseOver={e => {
-                e.target.openPopup();
-              }}
-              onMouseOut={e => {
-                e.target.closePopup();
-              }}
-            >
-              <Popup minWidth={50}>
-                <p>
-                  {pos.gn_name} <b /> {pos.cases}{' '}
-                </p>
-              </Popup>
+            <Marker key={index} draggable={false} position={[pos.lan, pos.lng]}>
+              <CircleMarker
+                center={[pos.lan, pos.lng]}
+                opacity={1}
+                fillOpacity={0.75}
+                fillColor='#800026'
+                radius={15}
+                animate={false}
+                // radius={parseInt(pos.cases) * 150}
+                onMouseOver={e => {
+                  e.target.openPopup();
+                }}
+                onMouseOut={e => {
+                  e.target.closePopup();
+                }}
+                stroke={false}
+              >
+                {
+                  <Popup
+                    minWidth={50}
+                    offset={[-1, -3]}
+                    className='custom-popup'
+                  >
+                    <div>
+                      <span
+                        style={{
+                          fontSize: '15px',
+                          marginBottom: '20px'
+                        }}
+                      >
+                        {pos.gn_name}
+                      </span>
+                    </div>
+                  </Popup>
+                }
+                <Tooltip direction='center' permanent>
+                  {console.log(pos.gn_name, pos.cases)}
+                  <span>{pos.cases}</span>
+                </Tooltip>
+              </CircleMarker>
             </Marker>
           ))}
         </Map>
