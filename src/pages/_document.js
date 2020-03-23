@@ -9,9 +9,9 @@ class CustomDocument extends Document {
 
     try {
       ctx.renderPage = () =>
-        originalRenderPage({
-          enhanceApp: App => props => sheet.collectStyles(<App {...props} />)
-        });
+        originalRenderPage(App => props =>
+          sheet.collectStyles(<App {...props} />)
+        );
 
       const initialProps = await Document.getInitialProps(ctx);
 
