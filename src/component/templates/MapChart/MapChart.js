@@ -134,7 +134,6 @@ export default class MyMap extends Component {
                   </Popup>
                 }
                 <Tooltip direction='center' permanent>
-                  {console.log(pos.gn_name, pos.cases)}
                   <span>{pos.cases}</span>
                 </Tooltip>
               </CircleMarker>
