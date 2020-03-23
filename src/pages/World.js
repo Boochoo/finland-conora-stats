@@ -3,6 +3,7 @@ import fetch from 'isomorphic-fetch';
 import { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { getConfirmedByCountry } from '../utils/utils';
+import Meta from '../partials/head';
 
 const $gray = '#f4f7f6';
 const $blue = '#0b1560';
@@ -135,6 +136,7 @@ const World = props => {
 
   return (
     <MainContainer>
+      {/* <Meta /> */}
       <GlobalStyle />
       <Link href='/'>
         <a>Click to see Finland's stats</a>

@@ -11,6 +11,7 @@ import {
   dailyCasesTotal
 } from '../utils/utils';
 import LineChart from '../component/templates/LineChart/LineChart';
+import Meta from '../partials/head';
 
 const MapChartWithNoSSR = dynamic(
   () => import('../component/templates/MapChart/MapChart'),
@@ -116,6 +117,7 @@ const Index = ({ data }) => {
 
   return (
     <MainContainer>
+      {/* <Meta /> */}
       <GlobalStyle />
       <Link href='/world'>
         <a>Click to see world's stats</a>
