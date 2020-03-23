@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const MapContainer = styled.div`
   width: 100%;
   height: '100%';
-  @media screen and (min-width: 620px) {
-    width: 620px;
+  @media screen and (min-width: 880px) {
+    width: 770px;
   }
 
   .leaflet-marker-icon,
@@ -16,6 +16,7 @@ export const MapContainer = styled.div`
     background-color: transparent;
     color: #fff;
   }
+
   .custom-popup .leaflet-popup-tip,
   .leaflet-tooltip {
     border: none;
@@ -30,11 +31,4 @@ export const MapContainer = styled.div`
     line-height: 24px;
     border-radius: 0px;
   }
-  /* .custom-popup .leaflet-popup-content-wrapper a {
-    color: rgba(255, 255, 255, 0.1);
-  }
-  .custom-popup .leaflet-popup-tip-container {
-    width: 30px;
-    height: 15px;
-  } */
 `;
