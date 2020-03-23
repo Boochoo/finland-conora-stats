@@ -117,7 +117,7 @@ const Index = ({ data }) => {
 
   return (
     <MainContainer>
-      {/* <Meta /> */}
+      <Meta />
       <GlobalStyle />
       <Link href='/world'>
         <a>Click to see world's stats</a>

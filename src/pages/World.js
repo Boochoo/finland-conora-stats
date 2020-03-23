@@ -136,7 +136,7 @@ const World = props => {
 
   return (
     <MainContainer>
-      {/* <Meta /> */}
+      <Meta />
       <GlobalStyle />
       <Link href='/'>
         <a>Click to see Finland's stats</a>
