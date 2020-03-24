@@ -6,7 +6,8 @@ import Layout from '../component/organisms/Layout/Layout';
 import paths from '../utils/path';
 import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
 
-const $gray = '#f4f7f6';
+const $creamWhite = '#f4f7f6';
+const $gray = '#E0E0E0';
 const Section = styled.section`
   margin-top: 2.5rem;
   ol li {
@@ -32,10 +33,10 @@ const Section = styled.section`
   }
 
   ul li:nth-child(even) {
-    background: #b5c8b8;
+    background: ${$gray};
   }
   ul li:nth-child(odd) {
-    background: ${$gray};
+    background: ${$creamWhite};
   }
 
   ol li div:nth-of-type(1),
@@ -57,7 +58,7 @@ const Section = styled.section`
     ol li div:nth-child(1) {
       grid-column-start: 1;
       grid-column-end: 4;
-      grid-row-start: 2;
+      grid-row-start: 1;
       grid-row-end: 2;
     }
   }
@@ -120,7 +121,17 @@ const World = props => {
       />
 
       <Section>
-        <h3>You can sort the table by clicking on the table's sub headers </h3>
+        <h3>You can sort the table by clicking on the table's sub headers</h3>
+        <p>
+          Currently sorted by:{' '}
+          <strong>{`${
+            active.isByConfirmed
+              ? 'confirmed'
+              : active.isByRecovered
+              ? 'recovered'
+              : 'death'
+          } cases`}</strong>
+        </p>
         <ol>
           <li className='header'>
             <div>

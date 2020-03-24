@@ -1,5 +1,12 @@
+const sitemap = require('nextjs-sitemap-generator');
 const webpack = require('webpack');
 const withFonts = require('nextjs-fonts');
+
+sitemap({
+  baseUrl: 'https://finlandcoronastats.com',
+  pagesDirectory: __dirname + '/pages',
+  targetDirectory: 'static/'
+});
 
 module.exports = withFonts({
   exportPathMap: function() {
