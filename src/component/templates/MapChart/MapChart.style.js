@@ -15,6 +15,7 @@ export const MapContainer = styled.div`
   .leaflet-tooltip {
     background-color: transparent;
     color: #fff;
+    font-weight: 800;
   }
 
   .custom-popup .leaflet-popup-tip,
@@ -26,7 +27,7 @@ export const MapContainer = styled.div`
 
   .custom-popup .leaflet-popup-content-wrapper {
     background: #f4f7f6;
-    color: #800026;
+    color: #0b1560;
     font-size: 16px;
     line-height: 24px;
     border-radius: 0px;

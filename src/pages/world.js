@@ -121,7 +121,10 @@ const World = props => {
       />
 
       <Section>
-        <h3>You can sort the table by clicking on the table's sub headers</h3>
+        <h3>
+          You can sort the table by clicking on the table's sub headers, except
+          the country sub header.
+        </h3>
         <p>
           Currently sorted by:{' '}
           <strong>{`${

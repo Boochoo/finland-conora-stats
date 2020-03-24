@@ -102,8 +102,9 @@ export default class MyMap extends Component {
               <CircleMarker
                 center={[pos.lan, pos.lng]}
                 opacity={1}
-                fillOpacity={0.75}
-                fillColor='#800026'
+                fillOpacity={1}
+                fillColor='#0b1560'
+                fontWeight='800'
                 radius={15}
                 animate={false}
                 // radius={parseInt(pos.cases) * 150}
