@@ -46,6 +46,7 @@ const Index = ({ data }) => {
 
   return (
     <Layout
+      title={`Finland's coronavirus stats`}
       path={paths.world}
       page='world'
       author='HS-Datadesk'

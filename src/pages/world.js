@@ -107,6 +107,7 @@ const World = props => {
 
   return (
     <Layout
+      title={`World's coronavirus stats`}
       path={paths.home}
       page='Finland'
       source={source}
@@ -121,10 +122,10 @@ const World = props => {
       />
 
       <Section>
-        <h3>
+        <h2>
           You can sort the table by clicking on the table's sub headers, except
           the country sub header.
-        </h3>
+        </h2>
         <p>
           Currently sorted by:{' '}
           <strong>{`${
