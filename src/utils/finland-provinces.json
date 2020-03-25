@@ -1782,8 +1782,8 @@
         "Maakuntakeskus": "Maarianhamina",
         "Asukasluku (2012)": "28 361",
         "Pinta-ala (km2)": "1 552,38",
-        "latitude": 21.0895789318686,
-        "longitude": 60.178525
+        "latitude": 60.178525,
+        "longitude": 21.0895789318686
       },
       "geometry": {
         "coordinates": [
