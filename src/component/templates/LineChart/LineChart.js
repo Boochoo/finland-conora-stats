@@ -8,7 +8,7 @@ const SvgContainer = styled.div`
   path {
     fill: none;
     stroke: steelblue;
-    stroke-width: 2px;
+    stroke-width: 1.5px;
   }
 
   svg text {
@@ -29,7 +29,7 @@ class LineChart extends Component {
 
     // set the dimensions and margins of the graph
     const margin = { top: 20, right: 20, bottom: 80, left: 70 },
-      width = 1200 - margin.left - margin.right,
+      width = 1500 - margin.left - margin.right,
       height = 400;
 
     // set the ranges

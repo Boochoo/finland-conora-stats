@@ -5,9 +5,10 @@ const $gray = '#E0E0E0';
 export const TableWrapper = styled.ol`
   padding: 0;
   margin-bottom: 3rem;
+  width: 770px;
   li {
     display: grid;
-    grid-template-columns: 34% 33% 33%;
+    grid-template-columns: 25% 25% 25%;
 
     list-style-type: none;
   }
@@ -19,7 +20,7 @@ export const TableWrapper = styled.ol`
   }
   li div {
     text-align: left;
-    padding: 1rem;
+    padding: 0.5rem;
   }
 
   ul {
@@ -35,10 +36,11 @@ export const TableWrapper = styled.ol`
 
   li div:nth-of-type(1),
   ul li div:nth-of-type(1) {
-    font-size: 1.24rem;
+    font-size: 1rem;
   }
 
-  @media (max-width: 672px) {
+  @media (max-width: 860px) {
+    width: 100%;
     li {
       grid-template-columns: 34% 33% 33%;
       grid-template-rows: auto auto;
