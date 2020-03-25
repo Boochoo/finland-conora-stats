@@ -6,7 +6,7 @@ import {
 
 export const ConfirmedByRegionTable = props => {
   return (
-    <TableWrapper>
+    <TableWrapper tableSize={props.headers.length}>
       <TableHeader headTitle={props.headers} />
       <ul>
         {props.data.map((item, index) => (
@@ -25,8 +25,9 @@ export const ConfirmedByRegionTable = props => {
 
 export const CommonBottomTable = props => {
   return (
-    <TableWrapper>
+    <TableWrapper tableSize={props.headers.length}>
       <TableHeader headTitle={props.headers} />
+
       <ul>
         {props.data
           .map((item, index) => {

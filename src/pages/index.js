@@ -129,7 +129,7 @@ const Index = ({ data }) => {
         <h2>Infection source by country</h2>
 
         <CommonBottomTable
-          headers={['Date and time', 'Cases']}
+          headers={['Source', 'Cases']}
           data={sortedConfirmedBySource.reverse()}
         />
       </div>

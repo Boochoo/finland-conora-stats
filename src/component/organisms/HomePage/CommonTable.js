@@ -6,7 +6,7 @@ import {
 
 export const CommonTable = props => {
   return (
-    <TableWrapper>
+    <TableWrapper tableSize={props.headers.length}>
       <TableHeader headTitle={props.headers} />
       <ul>
         {props.data.map((rec, index) => {

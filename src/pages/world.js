@@ -1,50 +1,31 @@
-import { Component, useState } from 'react';
+import { Component, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import fetch from 'isomorphic-fetch';
 import { getConfirmedByCountry } from '../utils/utils';
 import Layout from '../component/organisms/Layout/Layout';
 import paths from '../utils/path';
 import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
+import {
+  TableWrapper,
+  TableLayoutContainer
+} from '../component/organisms/TableLayout/TableLayout';
 
 const $creamWhite = '#f4f7f6';
 const $gray = '#E0E0E0';
+const $blue = '#0b1560';
 const Section = styled.section`
   margin-top: 2.5rem;
-  ol li {
-    display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
-
-    list-style-type: none;
-  }
-  ol li.header {
-    position: sticky;
-    top: 0;
-    background-color: #fff;
-    border-bottom: 1px solid #666;
-  }
-  ol li div {
-    text-align: center;
-    padding: 1rem 0;
-  }
-
-  ol,
-  ul {
-    padding: 0;
-  }
-
-  ul li:nth-child(even) {
-    background: ${$gray};
-  }
-  ul li:nth-child(odd) {
-    background: ${$creamWhite};
-  }
+  width: 770px;
 
   ol li div:nth-of-type(1),
   ul li div:nth-of-type(1) {
-    font-size: 1.24rem;
+    font-size: 1.2rem;
+    font-weight: 800;
   }
 
-  @media (max-width: 672px) {
+  @media (max-width: 860px) {
+    width: 100%;
+
     ol li {
       grid-template-columns: 34% 33% 33%;
       grid-template-rows: auto auto;
@@ -52,7 +33,7 @@ const Section = styled.section`
 
     ol li div:nth-of-type(1),
     ul li div:nth-of-type(1) {
-      margin-top: 0.5rem;
+      text-align: center;
     }
 
     ol li div:nth-child(1) {
@@ -62,12 +43,37 @@ const Section = styled.section`
       grid-row-end: 2;
     }
   }
+`;
 
-  .header__title {
+const InputWrapper = styled.div`
+  margin-bottom: 2rem;
+  label {
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  input,
+  label {
+    font-size: 1.35rem;
     cursor: pointer;
+  }
 
-    &.active {
-      background: #b5c8b8;
+  input {
+    padding: 0.5rem;
+    width: 60%;
+    border: solid 0.1rem ${$gray};
+    background-color: ${$creamWhite};
+    margin: 0.1rem;
+    &:focus {
+      border: solid 0.125rem ${$blue};
+      border-top: none;
+      outline: none;
+    }
+  }
+
+  @media (max-width: 860px) {
+    input {
+      width: 100%;
     }
   }
 `;
@@ -81,6 +87,7 @@ const World = props => {
   const sortedConfrimed = uniqueConfirmed.sort(
     (a, b) => b.confirmed - a.confirmed
   );
+  const [searchTerm, setSearchTerm] = useState('');
   const [sortedList, setSorted] = useState(sortedConfrimed);
   const [active, setActive] = useState({ isByConfirmed: true });
 
@@ -105,6 +112,16 @@ const World = props => {
     setActive({ isByDeaths: true });
   };
 
+  const handlesearch = event => {
+    setSearchTerm(event.target.value);
+  };
+
+  const searchResults = !searchTerm
+    ? sortedList
+    : sortedList.filter(cases =>
+        cases.countryRegion.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
   return (
     <Layout
       title={`World's coronavirus stats`}
@@ -122,10 +139,20 @@ const World = props => {
       />
 
       <Section>
-        <h2>
+        <InputWrapper>
+          <label htmlFor='search-input'>Search by country name</label>
+
+          <input
+            id='search-input'
+            type='text'
+            onChange={handlesearch}
+            value={searchTerm}
+          />
+        </InputWrapper>
+        <p>
           You can sort the table by clicking on the table's sub headers, except
           the country sub header.
-        </h2>
+        </p>
         <p>
           Currently sorted by:{' '}
           <strong>{`${
@@ -136,7 +163,7 @@ const World = props => {
               : 'death'
           } cases`}</strong>
         </p>
-        <ol>
+        <TableWrapper tableSize={4}>
           <li className='header'>
             <div>
               <strong>Country</strong>
@@ -165,19 +192,20 @@ const World = props => {
             </div>
           </li>
           <ul>
-            {sortedList.length > 0 &&
-              sortedList.map((d, i) => (
-                <li key={i}>
-                  <div>
-                    <strong>{d.countryRegion}</strong>
-                  </div>
-                  <div>{d.confirmed}</div>
-                  <div>{d.recovered}</div>
-                  <div>{d.deaths}</div>
-                </li>
+            {searchResults.length > 0 &&
+              searchResults.map((d, i) => (
+                <TableLayoutContainer
+                  key={i}
+                  tableRows={[
+                    d.countryRegion,
+                    d.confirmed,
+                    d.recovered,
+                    d.deaths
+                  ]}
+                />
               ))}
           </ul>
-        </ol>
+        </TableWrapper>
       </Section>
     </Layout>
   );
