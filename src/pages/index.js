@@ -13,6 +13,12 @@ import {
 import Layout from '../component/organisms/Layout/Layout';
 import LineChart from '../component/templates/LineChart/LineChart';
 import paths from '../utils/path';
+import { CommonTable } from '../component/organisms/HomePage/CommonTable';
+import {
+  ConfirmedByRegionTable,
+  CommonBottomTable
+} from '../component/organisms/HomePage/BottomTables';
+import styled from 'styled-components';
 
 const MapChartWithNoSSR = dynamic(
   () => import('../component/templates/MapChart/MapChart'),
@@ -20,6 +26,10 @@ const MapChartWithNoSSR = dynamic(
     ssr: false
   }
 );
+
+const HeroWrapper = styled.div``;
+const HeroTopWrapper = styled.div``;
+const HeroBottomWrapper = styled.div``;
 
 const Index = ({ data }) => {
   const { confirmed, deaths, recovered } = data;
@@ -46,108 +56,82 @@ const Index = ({ data }) => {
 
   return (
     <Layout
+      title={`Finland's coronavirus stats`}
       path={paths.world}
       page='world'
       author='HS-Datadesk'
       source={localDataSource}
       lastUpdate={lastUpdatedAt}
     >
-      <HeroContainer
-        title='Finland'
-        recovered={recovered.length}
-        confirmed={confirmed.length}
-        deaths={deaths.length}
-      />
+      <HeroWrapper>
+        <HeroTopWrapper>
+          <HeroContainer
+            title='Finland'
+            recovered={recovered.length}
+            confirmed={confirmed.length}
+            deaths={deaths.length}
+          />
 
-      <MapChartWithNoSSR data={sortedConfirmedByDistrict} />
+          <MapChartWithNoSSR data={sortedConfirmedByDistrict} />
+        </HeroTopWrapper>
 
-      <div>
-        <h2>Recovered</h2>
+        <HeroBottomWrapper>
+          <div>
+            <h2>Recovered</h2>
 
-        {recovered.map((rec, index) => {
-          const district = rec.healthCareDistrict;
+            <CommonTable
+              headers={['District', 'Cases', 'Time']}
+              data={recovered}
+              districts={Object.entries(recoveredByDistrict)}
+              parseDate={displayDate}
+            />
+          </div>
 
-          return (
-            <div key={index}>
-              {Object.entries(recoveredByDistrict)[index] && (
-                <div>
-                  <p>
-                    {district}:{' '}
-                    <strong>
-                      {Object.entries(recoveredByDistrict)[index][1]}
-                    </strong>
-                  </p>
-                  <i>{displayDate(rec.date).slice(0, -7)}</i>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+          <div>
+            <h2>Death :(</h2>
 
-      <div>
-        <h2>Death :(</h2>
-
-        {deaths.length > 0 &&
-          deaths.map((rec, index) => {
-            const district = rec.healthCareDistrict;
-
-            return (
-              <div key={index}>
-                {Object.entries(deathsByDistrict)[index] && (
-                  <div>
-                    <p>
-                      {district}:{' '}
-                      <strong>
-                        {Object.entries(deathsByDistrict)[index][1]}
-                      </strong>
-                    </p>
-                    <i>{displayDate(rec.date).slice(0, -7)}</i>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-      </div>
-
+            <CommonTable
+              headers={['District', 'Cases', 'Time']}
+              data={deaths}
+              districts={Object.entries(deathsByDistrict)}
+              parseDate={displayDate}
+            />
+          </div>
+        </HeroBottomWrapper>
+      </HeroWrapper>
       <div>
         <h2>Confirmed cases by region</h2>
-        {sortedConfirmedByDistrict.map((item, index) => (
-          <p key={index}>
-            {item[0] && item[0] !== 'null' ? item[0] : 'Unkown'} :{' '}
-            <strong> {item[1]}</strong>
-          </p>
-        ))}
+        <ConfirmedByRegionTable
+          headers={['Region', 'Cases']}
+          data={sortedConfirmedByDistrict}
+          districts={Object.entries(recoveredByDistrict)}
+        />
       </div>
       <div>
         <h2>Confirmed daily total</h2>
         <LineChart data={Object.entries(confirmedByDate)} />
-        {Object.entries(totalDailyCases)
-          .map((item, index) => (
-            <p key={index}>
-              {item[0]} : <strong> {item[1]}</strong>
-            </p>
-          ))
-          .reverse()}
+
+        <CommonBottomTable
+          headers={['Date', 'Cases']}
+          data={Object.entries(totalDailyCases)}
+        />
       </div>
+
       <div>
         <h2>Confirmed cases by date and announcement time</h2>
-        {sortedConfirmed
-          .map((item, index) => (
-            <p key={index}>
-              {item[0].slice(0, -7)} : <strong> {item[1]}</strong>
-            </p>
-          ))
-          .reverse()}
+        <CommonBottomTable
+          headers={['Date and time', 'Cases']}
+          data={sortedConfirmed}
+        />
       </div>
 
       <div>
         <h2>Infection source by country</h2>
-        {sortedConfirmedBySource.map((item, index) => (
-          <p key={index}>
-            {item[0]}: <strong> {item[1]}</strong>
-          </p>
-        ))}
+
+        <CommonBottomTable
+          headers={['Date and time', 'Cases']}
+          data={sortedConfirmedBySource.reverse()}
+        />
       </div>
     </Layout>
   );

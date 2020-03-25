@@ -5,7 +5,7 @@ import Meta from '../../../partials/head';
 const Layout = props => {
   return (
     <MainContainer>
-      <Meta />
+      <Meta title={props.title} />
       <GlobalStyle />
       <Link href={props.path}>
         <a>{`Click to see ${props.page}'s stats`}</a>

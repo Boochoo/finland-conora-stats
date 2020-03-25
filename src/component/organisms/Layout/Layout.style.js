@@ -31,8 +31,7 @@ export const GlobalStyle = createGlobalStyle`
 export const MainContainer = styled.div`
   margin: 1.5rem;
   @media screen and (min-width: 670px) {
-    margin: 4.5rem;
-    margin-top: 1.5rem;
+    margin: 1.5rem 4.5rem;
   }
 `;
 export const Container = styled.div`
