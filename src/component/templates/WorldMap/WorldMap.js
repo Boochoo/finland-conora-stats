@@ -35,11 +35,7 @@ class WorldMap extends Component {
       else return 5;
     };
     return (
-      <MapContainer
-        style={{
-          width: '100%'
-        }}
-      >
+      <MapContainer style={{ width: '100%' }}>
         <Map
           center={[20, 20]}
           zoom={2.5}

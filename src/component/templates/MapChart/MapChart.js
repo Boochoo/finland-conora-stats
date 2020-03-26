@@ -84,11 +84,7 @@ export default class MyMap extends Component {
     }
 
     return (
-      <MapContainer
-        style={{
-          width: '700px'
-        }}
-      >
+      <MapContainer>
         <Map
           center={[65, 25.2]}
           zoom={5.45}
