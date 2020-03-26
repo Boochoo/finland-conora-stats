@@ -27,7 +27,11 @@ const MapChartWithNoSSR = dynamic(
   }
 );
 
-const HeroWrapper = styled.div``;
+const MainWrapper = styled.div`
+  @media screen and (min-width: 670px) {
+    text-align: center;
+  }
+`;
 const HeroTopWrapper = styled.div``;
 const HeroBottomWrapper = styled.div``;
 
@@ -63,7 +67,7 @@ const Index = ({ data }) => {
       source={localDataSource}
       lastUpdate={lastUpdatedAt}
     >
-      <HeroWrapper>
+      <MainWrapper>
         <HeroTopWrapper>
           <HeroContainer
             title='Finland'
@@ -98,41 +102,42 @@ const Index = ({ data }) => {
             />
           </div>
         </HeroBottomWrapper>
-      </HeroWrapper>
-      <div>
-        <h2>Confirmed cases by region</h2>
-        <ConfirmedByRegionTable
-          headers={['Region', 'Cases']}
-          data={sortedConfirmedByDistrict}
-          districts={Object.entries(recoveredByDistrict)}
-        />
-      </div>
-      <div>
-        <h2>Confirmed daily total</h2>
-        <LineChart data={Object.entries(confirmedByDate)} />
 
-        <CommonBottomTable
-          headers={['Date', 'Cases']}
-          data={Object.entries(totalDailyCases)}
-        />
-      </div>
+        <div>
+          <h2>Confirmed cases by region</h2>
+          <ConfirmedByRegionTable
+            headers={['Region', 'Cases']}
+            data={sortedConfirmedByDistrict}
+            districts={Object.entries(recoveredByDistrict)}
+          />
+        </div>
+        <div>
+          <h2>Confirmed daily total</h2>
+          <LineChart data={Object.entries(confirmedByDate)} />
 
-      <div>
-        <h2>Confirmed cases by date and announcement time</h2>
-        <CommonBottomTable
-          headers={['Date and time', 'Cases']}
-          data={sortedConfirmed}
-        />
-      </div>
+          <CommonBottomTable
+            headers={['Date', 'Cases']}
+            data={Object.entries(totalDailyCases)}
+          />
+        </div>
 
-      <div>
-        <h2>Infection source by country</h2>
+        <div>
+          <h2>Confirmed cases by date and announcement time</h2>
+          <CommonBottomTable
+            headers={['Date and time', 'Cases']}
+            data={sortedConfirmed}
+          />
+        </div>
 
-        <CommonBottomTable
-          headers={['Source', 'Cases']}
-          data={sortedConfirmedBySource.reverse()}
-        />
-      </div>
+        <div>
+          <h2>Infection source by country</h2>
+
+          <CommonBottomTable
+            headers={['Source', 'Cases']}
+            data={sortedConfirmedBySource.reverse()}
+          />
+        </div>
+      </MainWrapper>
     </Layout>
   );
 };

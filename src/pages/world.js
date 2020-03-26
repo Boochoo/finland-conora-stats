@@ -87,6 +87,12 @@ const InputWrapper = styled.div`
   }
 `;
 
+const MainWrapper = styled.div`
+  @media screen and (min-width: 670px) {
+    text-align: center;
+  }
+`;
+
 const World = props => {
   const { data, confirmedData } = props;
   const { confirmed, deaths, recovered, lastUpdate } = data;
@@ -139,90 +145,92 @@ const World = props => {
       author='Mathdroid'
       lastUpdate={lastUpdatedAt}
     >
-      <HeroContainer
-        title='World'
-        confirmed={confirmed.value}
-        recovered={recovered.value}
-        deaths={deaths.value}
-      />
+      <MainWrapper>
+        <HeroContainer
+          title='World'
+          confirmed={confirmed.value}
+          recovered={recovered.value}
+          deaths={deaths.value}
+        />
 
-      <WorldMap data={uniqueConfirmed} />
+        <WorldMap data={uniqueConfirmed} />
 
-      <Section>
-        <InputWrapper>
-          <label htmlFor='search-input'>Search by country name</label>
+        <Section>
+          <InputWrapper>
+            <label htmlFor='search-input'>Search by country name</label>
 
-          <input
-            id='search-input'
-            type='text'
-            onChange={handlesearch}
-            value={searchTerm}
-          />
-        </InputWrapper>
-        <p>
-          You can sort the table by clicking on the table's sub headers, except
-          the country sub header.
-        </p>
-        <p>
-          Currently sorted by:{' '}
-          <strong>{`${
-            active.isByConfirmed
-              ? 'confirmed'
-              : active.isByRecovered
-              ? 'recovered'
-              : 'death'
-          } cases`}</strong>
-        </p>
-        <TableWrapper tableSize={4}>
-          <li className='header'>
-            <div>
-              <strong>Country</strong>
-            </div>
-            <div
-              role='button'
-              tabIndex='0'
-              className={`header__title ${
-                active.isByConfirmed ? 'active' : ''
-              }`}
-              onClick={sortByConfirmed}
-            >
-              <strong>Confirmed</strong>
-            </div>
-            <div
-              role='button'
-              tabIndex='0'
-              className={`header__title ${
-                active.isByRecovered ? 'active' : ''
-              }`}
-              onClick={sortByRecovered}
-            >
-              <strong>Recovered</strong>
-            </div>
-            <div
-              role='button'
-              tabIndex='0'
-              className={`header__title ${active.isByDeaths ? 'active' : ''}`}
-              onClick={sortByDeaths}
-            >
-              <strong>Deaths</strong>
-            </div>
-          </li>
-          <ul>
-            {searchResults.length > 0 &&
-              searchResults.map((d, i) => (
-                <TableLayoutContainer
-                  key={i}
-                  tableRows={[
-                    d.countryRegion,
-                    d.confirmed,
-                    d.recovered,
-                    d.deaths
-                  ]}
-                />
-              ))}
-          </ul>
-        </TableWrapper>
-      </Section>
+            <input
+              id='search-input'
+              type='text'
+              onChange={handlesearch}
+              value={searchTerm}
+            />
+          </InputWrapper>
+          <p>
+            You can sort the table by clicking on the table's sub headers,
+            except the country sub header.
+          </p>
+          <p>
+            Currently sorted by:{' '}
+            <strong>{`${
+              active.isByConfirmed
+                ? 'confirmed'
+                : active.isByRecovered
+                ? 'recovered'
+                : 'death'
+            } cases`}</strong>
+          </p>
+          <TableWrapper tableSize={4}>
+            <li className='header'>
+              <div>
+                <strong>Country</strong>
+              </div>
+              <div
+                role='button'
+                tabIndex='0'
+                className={`header__title ${
+                  active.isByConfirmed ? 'active' : ''
+                }`}
+                onClick={sortByConfirmed}
+              >
+                <strong>Confirmed</strong>
+              </div>
+              <div
+                role='button'
+                tabIndex='0'
+                className={`header__title ${
+                  active.isByRecovered ? 'active' : ''
+                }`}
+                onClick={sortByRecovered}
+              >
+                <strong>Recovered</strong>
+              </div>
+              <div
+                role='button'
+                tabIndex='0'
+                className={`header__title ${active.isByDeaths ? 'active' : ''}`}
+                onClick={sortByDeaths}
+              >
+                <strong>Deaths</strong>
+              </div>
+            </li>
+            <ul>
+              {searchResults.length > 0 &&
+                searchResults.map((d, i) => (
+                  <TableLayoutContainer
+                    key={i}
+                    tableRows={[
+                      d.countryRegion,
+                      d.confirmed,
+                      d.recovered,
+                      d.deaths
+                    ]}
+                  />
+                ))}
+            </ul>
+          </TableWrapper>
+        </Section>
+      </MainWrapper>
     </Layout>
   );
 };

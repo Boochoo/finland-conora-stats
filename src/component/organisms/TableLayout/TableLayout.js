@@ -20,8 +20,14 @@ const mapTableSize = size => {
 
 export const TableWrapper = styled.ol`
   padding: 0;
-  margin-bottom: 3rem;
+  /* margin-bottom: 3rem; */
   width: 770px;
+  margin: 0 auto;
+
+  text-align: center;
+  @media screen and (min-width: 880px) {
+  }
+
   li {
     display: grid;
     grid-template-columns: ${({ tableSize }) => mapTableSize(tableSize)};
