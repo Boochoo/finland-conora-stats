@@ -61,7 +61,9 @@ export const getConfirmedByCountry = data =>
       countryRegion: currVal.countryRegion,
       confirmed: 0,
       recovered: 0,
-      deaths: 0
+      deaths: 0,
+      lat: currVal.lat,
+      long: currVal.long
     };
 
     filteredObj.confirmed += currVal.confirmed;

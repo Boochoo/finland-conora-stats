@@ -10,12 +10,21 @@ import {
   TableLayoutContainer
 } from '../component/organisms/TableLayout/TableLayout';
 
+import dynamic from 'next/dynamic';
+
+const WorldMap = dynamic(
+  () => import('../component/templates/WorldMap/WorldMap'),
+  {
+    ssr: false
+  }
+);
+
 const $creamWhite = '#f4f7f6';
 const $gray = '#E0E0E0';
 const $blue = '#0b1560';
 const Section = styled.section`
   margin-top: 2.5rem;
-  width: 770px;
+  /* width: 770px; */
 
   ol li div:nth-of-type(1),
   ul li div:nth-of-type(1) {
@@ -60,7 +69,7 @@ const InputWrapper = styled.div`
 
   input {
     padding: 0.5rem;
-    width: 60%;
+    width: 300px;
     border: solid 0.1rem ${$gray};
     background-color: ${$creamWhite};
     margin: 0.1rem;
@@ -83,7 +92,6 @@ const World = props => {
   const { confirmed, deaths, recovered, lastUpdate } = data;
   const confirmedResponses = getConfirmedByCountry(confirmedData);
   const uniqueConfirmed = [...new Set(confirmedResponses)];
-
   const sortedConfrimed = uniqueConfirmed.sort(
     (a, b) => b.confirmed - a.confirmed
   );
@@ -138,6 +146,8 @@ const World = props => {
         deaths={deaths.value}
       />
 
+      <WorldMap data={uniqueConfirmed} />
+
       <Section>
         <InputWrapper>
           <label htmlFor='search-input'>Search by country name</label>
@@ -169,6 +179,8 @@ const World = props => {
               <strong>Country</strong>
             </div>
             <div
+              role='button'
+              tabIndex='0'
               className={`header__title ${
                 active.isByConfirmed ? 'active' : ''
               }`}
@@ -177,6 +189,8 @@ const World = props => {
               <strong>Confirmed</strong>
             </div>
             <div
+              role='button'
+              tabIndex='0'
               className={`header__title ${
                 active.isByRecovered ? 'active' : ''
               }`}
@@ -185,6 +199,8 @@ const World = props => {
               <strong>Recovered</strong>
             </div>
             <div
+              role='button'
+              tabIndex='0'
               className={`header__title ${active.isByDeaths ? 'active' : ''}`}
               onClick={sortByDeaths}
             >
