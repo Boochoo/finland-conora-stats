@@ -41,6 +41,7 @@ class WorldMap extends Component {
         <Map
           center={[20, 20]}
           zoom={2.5}
+          minZoom={2.5}
           style={{
             height: '700px'
           }}
@@ -60,6 +61,7 @@ class WorldMap extends Component {
                 opacity={1}
                 fillOpacity={0.5}
                 fillColor={$red}
+                weight={3}
                 radius={mapRadius(parseInt(pos.confirmed))}
                 animate={true}
                 onMouseOver={e => {

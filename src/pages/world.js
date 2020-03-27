@@ -23,7 +23,6 @@ const $gray = '#E0E0E0';
 const $blue = '#0b1560';
 const Section = styled.section`
   margin-top: 2.5rem;
-  /* width: 770px; */
 
   ol li div:nth-of-type(1),
   ul li div:nth-of-type(1) {

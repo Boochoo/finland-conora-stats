@@ -88,6 +88,7 @@ export default class MyMap extends Component {
         <Map
           center={[65, 25.2]}
           zoom={5.45}
+          minZoom={5}
           style={{
             height: '700px'
           }}
