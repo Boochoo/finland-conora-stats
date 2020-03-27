@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import fetch from 'isomorphic-fetch';
 import {
   Map,
   TileLayer,
@@ -10,8 +11,9 @@ import {
   CircleMarker
 } from 'react-leaflet';
 import { MapContainer } from '../MapChart/MapChart.style';
-import fetch from 'isomorphic-fetch';
+
 const $red = '#762536';
+
 class WorldMap extends Component {
   render() {
     const { data } = this.props;
@@ -44,8 +46,8 @@ class WorldMap extends Component {
           }}
         >
           <TileLayer
-            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+            url='https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png'
           />
           {data.map((pos, index) => (
             <Marker
@@ -68,50 +70,42 @@ class WorldMap extends Component {
                 }}
                 stroke={false}
               >
-                {
-                  <Popup
-                    minWidth={50}
-                    offset={[-1, -3]}
-                    className='custom-popup'
+                <Popup minWidth={50} offset={[-1, -3]} className='custom-popup'>
+                  <div
+                    style={{
+                      marginBottom: '0.25em'
+                    }}
                   >
-                    <div
+                    <span
                       style={{
-                        marginBottom: '0.25em'
+                        fontSize: '15px'
                       }}
                     >
-                      <span
-                        style={{
-                          fontSize: '15px'
-                        }}
-                      >
-                        <strong>{pos.countryRegion}</strong>
-                      </span>
-                      <p
-                        style={{
-                          margin: 0
-                        }}
-                      >
-                        <strong>{pos.confirmed}</strong> confirmed
-                      </p>
-                      <p
-                        style={{
-                          margin: 0
-                        }}
-                      >
-                        <strong>{pos.recovered}</strong> recovered
-                      </p>
-                      <p
-                        style={{
-                          margin: 0
-                        }}
-                      >
-                        <strong>{pos.deaths}</strong> deaths
-                      </p>
-                    </div>
-                  </Popup>
-                }
-                {/* <Tooltip direction='center' permanent>
-                </Tooltip> */}
+                      <strong>{pos.countryRegion}</strong>
+                    </span>
+                    <p
+                      style={{
+                        margin: 0
+                      }}
+                    >
+                      <strong>{pos.confirmed}</strong> confirmed
+                    </p>
+                    <p
+                      style={{
+                        margin: 0
+                      }}
+                    >
+                      <strong>{pos.recovered}</strong> recovered
+                    </p>
+                    <p
+                      style={{
+                        margin: 0
+                      }}
+                    >
+                      <strong>{pos.deaths}</strong> deaths
+                    </p>
+                  </div>
+                </Popup>
               </CircleMarker>
             </Marker>
           ))}

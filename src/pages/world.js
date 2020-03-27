@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import { Component, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import fetch from 'isomorphic-fetch';
@@ -9,8 +10,6 @@ import {
   TableWrapper,
   TableLayoutContainer
 } from '../component/organisms/TableLayout/TableLayout';
-
-import dynamic from 'next/dynamic';
 
 const WorldMap = dynamic(
   () => import('../component/templates/WorldMap/WorldMap'),
