@@ -32,7 +32,7 @@ const Section = styled.section`
   margin-top: 2.5rem;
 
   .header {
-    top: 12% !important;
+    top: 14% !important;
   }
 
   ol li div:nth-of-type(1),
