@@ -85,14 +85,7 @@ export default class MyMap extends Component {
 
     return (
       <MapContainer>
-        <Map
-          center={[65, 25.2]}
-          zoom={5.45}
-          minZoom={5}
-          style={{
-            height: '700px'
-          }}
-        >
+        <Map center={[66, 20]} zoom={5} minZoom={5}>
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -108,7 +101,6 @@ export default class MyMap extends Component {
                 fontWeight='800'
                 radius={15}
                 animate={false}
-                // radius={parseInt(pos.cases) * 150}
                 onMouseOver={e => {
                   e.target.openPopup();
                 }}

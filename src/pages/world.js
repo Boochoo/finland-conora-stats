@@ -7,9 +7,16 @@ import Layout from '../component/organisms/Layout/Layout';
 import paths from '../utils/path';
 import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
 import {
+  ContentContainer,
+  ContentWrapper,
+  MenuBar
+} from '../component/organisms/HeroContainer/HeroContainer.style';
+import {
   TableWrapper,
   TableLayoutContainer
 } from '../component/organisms/TableLayout/TableLayout';
+import Header from '../component/organisms/Header/Header';
+import Footer from '../component/organisms/Footer/Footer';
 
 const WorldMap = dynamic(
   () => import('../component/templates/WorldMap/WorldMap'),
@@ -23,6 +30,10 @@ const $gray = '#E0E0E0';
 const $blue = '#0b1560';
 const Section = styled.section`
   margin-top: 2.5rem;
+
+  .header {
+    top: 12% !important;
+  }
 
   ol li div:nth-of-type(1),
   ul li div:nth-of-type(1) {
@@ -53,7 +64,10 @@ const Section = styled.section`
 `;
 
 const InputWrapper = styled.div`
-  margin-bottom: 2rem;
+  position: sticky;
+  top: 0;
+  background-color: ${$creamWhite};
+  padding: 1rem 0;
   label {
     display: block;
     margin-bottom: 1rem;
@@ -67,29 +81,18 @@ const InputWrapper = styled.div`
 
   input {
     padding: 0.5rem;
-    width: 300px;
+    width: 100%;
     border: solid 0.1rem ${$gray};
     background-color: ${$creamWhite};
-    margin: 0.1rem;
     &:focus {
       border: solid 0.125rem ${$blue};
       border-top: none;
       outline: none;
     }
   }
-
-  @media (max-width: 860px) {
-    input {
-      width: 100%;
-    }
-  }
 `;
 
-const MainWrapper = styled.div`
-  @media screen and (min-width: 670px) {
-    text-align: center;
-  }
-`;
+const MainWrapper = styled.div``;
 
 const World = props => {
   const { data, confirmedData } = props;
@@ -134,100 +137,116 @@ const World = props => {
         cases.countryRegion.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
+  const screenRender = width => {};
+  const HeroBanner = () => (
+    <HeroContainer
+      title='World'
+      confirmed={confirmed.value.toLocaleString()}
+      recovered={recovered.value.toLocaleString()}
+      deaths={deaths.value.toLocaleString()}
+    />
+  );
+
   return (
-    <Layout
-      title={`World's coronavirus stats`}
-      path={paths.home}
-      page='Finland'
-      source={source}
-      author='Mathdroid'
-      lastUpdate={lastUpdatedAt}
-    >
+    <Layout title={`World's coronavirus stats`}>
       <MainWrapper>
-        <HeroContainer
-          title='World'
-          confirmed={confirmed.value}
-          recovered={recovered.value}
-          deaths={deaths.value}
-        />
-
+        <MenuBar>
+          <Header path={paths.home} page='Finland' />
+        </MenuBar>
+        <ContentWrapper>
+          <ContentContainer>
+            <div className='hero-mobile'>
+              <HeroBanner />
+            </div>
+          </ContentContainer>
+        </ContentWrapper>
         <WorldMap data={uniqueConfirmed} />
+        <ContentWrapper>
+          <ContentContainer>
+            <div className='hero-desktop'>
+              <HeroBanner />
+            </div>
+            <Section>
+              <InputWrapper>
+                <label htmlFor='search-input'>Search by country name</label>
 
-        <Section>
-          <InputWrapper>
-            <label htmlFor='search-input'>Search by country name</label>
+                <input
+                  id='search-input'
+                  type='text'
+                  onChange={handlesearch}
+                  value={searchTerm}
+                />
+              </InputWrapper>
 
-            <input
-              id='search-input'
-              type='text'
-              onChange={handlesearch}
-              value={searchTerm}
+              <p>
+                Currently sorted by:{' '}
+                <strong>{`${
+                  active.isByConfirmed
+                    ? 'confirmed'
+                    : active.isByRecovered
+                    ? 'recovered'
+                    : 'death'
+                } cases`}</strong>
+              </p>
+              <TableWrapper tableSize={4}>
+                <li className='header'>
+                  <div>
+                    <strong>Country</strong>
+                  </div>
+                  <div
+                    role='button'
+                    tabIndex='0'
+                    className={`header__title ${
+                      active.isByConfirmed ? 'active' : ''
+                    }`}
+                    onClick={sortByConfirmed}
+                  >
+                    <strong>Confirmed</strong>
+                  </div>
+                  <div
+                    role='button'
+                    tabIndex='0'
+                    className={`header__title ${
+                      active.isByRecovered ? 'active' : ''
+                    }`}
+                    onClick={sortByRecovered}
+                  >
+                    <strong>Recovered</strong>
+                  </div>
+                  <div
+                    role='button'
+                    tabIndex='0'
+                    className={`header__title ${
+                      active.isByDeaths ? 'active' : ''
+                    }`}
+                    onClick={sortByDeaths}
+                  >
+                    <strong>Deaths</strong>
+                  </div>
+                </li>
+                <ul>
+                  {searchResults.length > 0 &&
+                    searchResults.map((d, i) => (
+                      <TableLayoutContainer
+                        key={i}
+                        tableRows={[
+                          d.countryRegion,
+                          d.confirmed,
+                          d.recovered,
+                          d.deaths
+                        ]}
+                      />
+                    ))}
+                </ul>
+              </TableWrapper>
+            </Section>
+            <Footer
+              source={source}
+              author='Mathdroid'
+              lastUpdate={lastUpdatedAt}
             />
-          </InputWrapper>
-          <p>
-            You can sort the table by clicking on the table's sub headers,
-            except the country sub header.
-          </p>
-          <p>
-            Currently sorted by:{' '}
-            <strong>{`${
-              active.isByConfirmed
-                ? 'confirmed'
-                : active.isByRecovered
-                ? 'recovered'
-                : 'death'
-            } cases`}</strong>
-          </p>
-          <TableWrapper tableSize={4}>
-            <li className='header'>
-              <div>
-                <strong>Country</strong>
-              </div>
-              <div
-                role='button'
-                tabIndex='0'
-                className={`header__title ${
-                  active.isByConfirmed ? 'active' : ''
-                }`}
-                onClick={sortByConfirmed}
-              >
-                <strong>Confirmed</strong>
-              </div>
-              <div
-                role='button'
-                tabIndex='0'
-                className={`header__title ${
-                  active.isByRecovered ? 'active' : ''
-                }`}
-                onClick={sortByRecovered}
-              >
-                <strong>Recovered</strong>
-              </div>
-              <div
-                role='button'
-                tabIndex='0'
-                className={`header__title ${active.isByDeaths ? 'active' : ''}`}
-                onClick={sortByDeaths}
-              >
-                <strong>Deaths</strong>
-              </div>
-            </li>
-            <ul>
-              {searchResults.length > 0 &&
-                searchResults.map((d, i) => (
-                  <TableLayoutContainer
-                    key={i}
-                    tableRows={[
-                      d.countryRegion,
-                      d.confirmed,
-                      d.recovered,
-                      d.deaths
-                    ]}
-                  />
-                ))}
-            </ul>
-          </TableWrapper>
-        </Section>
+          </ContentContainer>
+        </ContentWrapper>
       </MainWrapper>
     </Layout>
   );
