@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 const $creamWhite = '#f4f7f6';
 const $gray = '#E0E0E0';
+const $white = '#fff';
+const $lightgreen = '#b5c8b8';
 
 const theme = {
   oneCol: '100%',
@@ -20,8 +22,6 @@ const mapTableSize = size => {
 
 export const TableWrapper = styled.ol`
   padding: 0;
-  /* margin-bottom: 3rem; */
-  width: 770px;
   margin: 0 auto;
 
   text-align: center;
@@ -36,12 +36,12 @@ export const TableWrapper = styled.ol`
   li.header {
     position: sticky;
     top: 0;
-    background-color: #fff;
     border-bottom: 1px solid #666;
+    background-color: ${$white};
   }
   li div {
-    text-align: left;
     padding: 1rem;
+    text-align: left;
   }
 
   ul {
@@ -71,7 +71,7 @@ export const TableWrapper = styled.ol`
     cursor: pointer;
 
     &.active {
-      background: #b5c8b8;
+      background: ${$lightgreen};
     }
   }
 `;

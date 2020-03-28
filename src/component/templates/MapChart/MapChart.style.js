@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
 export const MapContainer = styled.div`
-  height: '100%';
-  width: 100%;
-  @media screen and (min-width: 880px) {
-    /*  width: 770px; */
+  .leaflet-container {
+    width: 100%;
+    height: 625px;
+    @media screen and (min-width: 880px) {
+      height: 100vh;
+    }
   }
 
   .leaflet-marker-icon,

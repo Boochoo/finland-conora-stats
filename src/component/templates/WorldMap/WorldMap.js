@@ -10,6 +10,7 @@ import {
   Tooltip,
   CircleMarker
 } from 'react-leaflet';
+import L from 'leaflet';
 import { MapContainer } from '../MapChart/MapChart.style';
 
 const $red = '#762536';
@@ -37,14 +38,13 @@ class WorldMap extends Component {
       else return 5;
     };
     return (
-      <MapContainer style={{ width: '100%' }}>
+      <MapContainer>
         <Map
-          center={[20, 20]}
+          center={[20, -12]}
           zoom={2.5}
           minZoom={2.5}
-          style={{
-            height: '700px'
-          }}
+          dragging={!L.Browser.mobile}
+          tap={!L.Browser.mobile}
         >
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

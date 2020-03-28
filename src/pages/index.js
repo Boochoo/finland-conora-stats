@@ -3,6 +3,11 @@ import fetch from 'isomorphic-fetch';
 import { Section } from '../component/organisms/Layout/Layout.style';
 import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
 import {
+  ContentContainer,
+  ContentWrapper,
+  MenuBar
+} from '../component/organisms/HeroContainer/HeroContainer.style';
+import {
   getConfirmedByDistrict,
   getConfirmedBySource,
   getConfirmedByDate,
@@ -19,6 +24,8 @@ import {
   CommonBottomTable
 } from '../component/organisms/HomePage/BottomTables';
 import styled from 'styled-components';
+import Header from '../component/organisms/Header/Header';
+import Footer from '../component/organisms/Footer/Footer';
 
 const MapChartWithNoSSR = dynamic(
   () => import('../component/templates/MapChart/MapChart'),
@@ -27,11 +34,7 @@ const MapChartWithNoSSR = dynamic(
   }
 );
 
-const MainWrapper = styled.div`
-  @media screen and (min-width: 670px) {
-    text-align: center;
-  }
-`;
+const MainWrapper = styled.div``;
 const HeroTopWrapper = styled.div``;
 const HeroBottomWrapper = styled.div``;
 
@@ -58,85 +61,103 @@ const Index = ({ data }) => {
   const localDataSource = `//github.com/HS-Datadesk/koronavirus-avoindata`;
   const lastUpdatedAt = sortedConfirmed[sortedConfirmed.length - 1][0];
 
+  const HeroBanner = () => (
+    <HeroContainer
+      title='Finland'
+      recovered={recovered.length}
+      confirmed={confirmed.length}
+      deaths={deaths.length}
+    />
+  );
+
   return (
-    <Layout
-      title={`Finland's coronavirus stats`}
-      path={paths.world}
-      page='world'
-      author='HS-Datadesk'
-      source={localDataSource}
-      lastUpdate={lastUpdatedAt}
-    >
+    <Layout title={`Finland's coronavirus stats`}>
       <MainWrapper>
         <HeroTopWrapper>
-          <HeroContainer
-            title='Finland'
-            recovered={recovered.length}
-            confirmed={confirmed.length}
-            deaths={deaths.length}
-          />
-
-          <MapChartWithNoSSR data={sortedConfirmedByDistrict} />
+          <MenuBar>
+            <Header path={paths.world} page='world' />
+          </MenuBar>
+          <ContentWrapper>
+            <ContentContainer>
+              <div className='hero-mobile'>
+                <HeroBanner />
+              </div>
+            </ContentContainer>
+          </ContentWrapper>
         </HeroTopWrapper>
+        <MapChartWithNoSSR data={sortedConfirmedByDistrict} />
 
-        <HeroBottomWrapper>
-          <div>
-            <h2>Recovered</h2>
+        <ContentWrapper>
+          <ContentContainer>
+            <div className='hero-desktop'>
+              <HeroBanner />
+            </div>
 
-            <CommonTable
-              headers={['District', 'Cases', 'Time']}
-              data={recovered}
-              districts={Object.entries(recoveredByDistrict)}
-              parseDate={displayDate}
+            <HeroBottomWrapper>
+              <div>
+                <h2>Recovered</h2>
+
+                <CommonTable
+                  headers={['District', 'Cases', 'Time']}
+                  data={recovered}
+                  districts={Object.entries(recoveredByDistrict)}
+                  parseDate={displayDate}
+                />
+              </div>
+
+              <div>
+                <h2>Death :(</h2>
+
+                <CommonTable
+                  headers={['District', 'Cases', 'Time']}
+                  data={deaths}
+                  districts={Object.entries(deathsByDistrict)}
+                  parseDate={displayDate}
+                />
+              </div>
+            </HeroBottomWrapper>
+
+            <div>
+              <h2>Confirmed cases by region</h2>
+              <ConfirmedByRegionTable
+                headers={['Region', 'Cases']}
+                data={sortedConfirmedByDistrict}
+                districts={Object.entries(recoveredByDistrict)}
+              />
+            </div>
+            <div>
+              <h2>Confirmed daily total</h2>
+              <LineChart data={Object.entries(confirmedByDate)} />
+
+              <CommonBottomTable
+                headers={['Date', 'Cases']}
+                data={Object.entries(totalDailyCases)}
+              />
+            </div>
+
+            <div>
+              <h2>Confirmed cases by date and announcement time</h2>
+              <CommonBottomTable
+                headers={['Date and time', 'Cases']}
+                data={sortedConfirmed}
+              />
+            </div>
+
+            <div>
+              <h2>Infection source by country</h2>
+
+              <CommonBottomTable
+                headers={['Source', 'Cases']}
+                data={sortedConfirmedBySource.reverse()}
+              />
+            </div>
+            <Footer
+              author='HS-Datadesk'
+              source={localDataSource}
+              lastUpdate={lastUpdatedAt}
             />
-          </div>
-
-          <div>
-            <h2>Death :(</h2>
-
-            <CommonTable
-              headers={['District', 'Cases', 'Time']}
-              data={deaths}
-              districts={Object.entries(deathsByDistrict)}
-              parseDate={displayDate}
-            />
-          </div>
-        </HeroBottomWrapper>
-
-        <div>
-          <h2>Confirmed cases by region</h2>
-          <ConfirmedByRegionTable
-            headers={['Region', 'Cases']}
-            data={sortedConfirmedByDistrict}
-            districts={Object.entries(recoveredByDistrict)}
-          />
-        </div>
-        <div>
-          <h2>Confirmed daily total</h2>
-          <LineChart data={Object.entries(confirmedByDate)} />
-
-          <CommonBottomTable
-            headers={['Date', 'Cases']}
-            data={Object.entries(totalDailyCases)}
-          />
-        </div>
-
-        <div>
-          <h2>Confirmed cases by date and announcement time</h2>
-          <CommonBottomTable
-            headers={['Date and time', 'Cases']}
-            data={sortedConfirmed}
-          />
-        </div>
-
-        <div>
-          <h2>Infection source by country</h2>
-
-          <CommonBottomTable
-            headers={['Source', 'Cases']}
-            data={sortedConfirmedBySource.reverse()}
-          />
-        </div>
+          </ContentContainer>
+        </ContentWrapper>
       </MainWrapper>
     </Layout>
   );

@@ -28,20 +28,13 @@ export const GlobalStyle = createGlobalStyle`
   }
 `;
 
-export const MainContainer = styled.div`
-  margin: 1.5rem;
-  @media screen and (min-width: 670px) {
-    margin: 1.5rem 4.5rem;
-  }
-`;
+export const MainContainer = styled.div``;
 export const Container = styled.div`
   display: grid;
-  text-align: center;
-  @media screen and (min-width: 880px) {
-    display: inline-grid;
-    grid-column-gap: 10px;
-    grid-template-columns: 250px 250px 250px;
-  }
+  display: inline-grid;
+  grid-column-gap: 10px;
+  grid-template-columns: 100%;
+  grid-template-rows: 20%;
 
   div {
     color: ${$gray};
