@@ -4,12 +4,12 @@ const withFonts = require('nextjs-fonts');
 
 sitemap({
   baseUrl: 'https://finlandcoronastats.com',
-  pagesDirectory: __dirname + '/pages',
+  pagesDirectory: __dirname + '/src/pages',
   targetDirectory: 'static/'
 });
 
 module.exports = withFonts({
-  exportPathMap: function() {
+  exportPathMap: () => {
     return {
       '/': { page: '/' },
       '/world': { page: '/world' }
