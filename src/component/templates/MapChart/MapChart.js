@@ -45,10 +45,12 @@ export default class MyMap extends Component {
       };
     };
 
+    const isSmallerScreen = window && window.innerWidth < 880;
+
     return (
       <MapContainer>
         <Map
-          center={[65.25, 24]}
+          center={isSmallerScreen ? [65.25, 25] : [66.25, 14.5]}
           zoom={5}
           minZoom={5}
           dragging={!L.Browser.mobile}

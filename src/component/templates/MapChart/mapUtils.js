@@ -49,7 +49,7 @@ const getColors = (feature, data) => {
     ? '#b5c8b8'
     : districtCases(1)
     ? '#79a7ac'
-    : '#2887a1';
+    : '#fff';
 };
 
 const mapRadius = rad => {

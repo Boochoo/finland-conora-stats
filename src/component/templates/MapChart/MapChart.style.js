@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { themeColors } from '../../organisms/Layout/Layout.style';
 
 export const MapContainer = styled.div`
   .leaflet-container {
@@ -16,23 +17,23 @@ export const MapContainer = styled.div`
 
   .leaflet-tooltip {
     background-color: transparent;
-    color: #fff;
+    color: ${themeColors.white};
     font-weight: 800;
   }
 
   .custom-popup .leaflet-popup-tip,
   .leaflet-tooltip {
-    border: none;
     border-radius: 0;
+    border: none;
     box-shadow: none;
   }
 
   .custom-popup .leaflet-popup-content-wrapper {
-    background: #f4f7f6;
-    color: #0b1560;
-    font-size: 16px;
-    line-height: 24px;
-    border-radius: 0px;
+    background: ${themeColors.creamWhite};
+    color: ${themeColors.blue};
+    font-size: 1rem;
+    line-height: 2rem;
+    border-radius: 0;
   }
 
   .leaflet-tile {

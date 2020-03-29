@@ -13,17 +13,29 @@ import {
 import L from 'leaflet';
 import { MapContainer } from '../MapChart/MapChart.style';
 import { mapRadius } from '../MapChart/mapUtils';
+import { themeColors } from '../../organisms/Layout/Layout.style';
 
-const $red = '#762536';
+const PTag = props => (
+  <p
+    style={{
+      margin: 0,
+      color: props.isTitle ? 'gray' : props.color,
+      fontSize: props.isTitle ? '1.5rem' : ''
+    }}
+  >
+    <strong>{props.popUpText}</strong>
+  </p>
+);
 
 class WorldMap extends Component {
   render() {
     const { data } = this.props;
+    const isSmallerScreen = window && window.innerWidth < 880;
 
     return (
       <MapContainer>
         <Map
-          center={[20, -12]}
+          center={isSmallerScreen ? [36, 22] : [36, 12]}
           zoom={2.5}
           minZoom={2.5}
           dragging={!L.Browser.mobile}
@@ -43,8 +55,8 @@ class WorldMap extends Component {
                 center={[pos.lat, pos.long]}
                 opacity={1}
                 fillOpacity={0.5}
-                fillColor={$red}
-                color={$red}
+                fillColor={themeColors.red}
+                color={themeColors.red}
                 weight={2}
                 radius={mapRadius(parseInt(pos.confirmed))}
                 animate={true}
@@ -57,34 +69,16 @@ class WorldMap extends Component {
                       marginBottom: '0.25em'
                     }}
                   >
-                    <span
-                      style={{
-                        fontSize: '15px'
-                      }}
-                    >
-                      <strong>{pos.countryRegion}</strong>
-                    </span>
-                    <p
-                      style={{
-                        margin: 0
-                      }}
-                    >
-                      <strong>{pos.confirmed}</strong> confirmed
-                    </p>
-                    <p
-                      style={{
-                        margin: 0
-                      }}
-                    >
-                      <strong>{pos.recovered}</strong> recovered
-                    </p>
-                    <p
-                      style={{
-                        margin: 0
-                      }}
-                    >
-                      <strong>{pos.deaths}</strong> deaths
-                    </p>
+                    <PTag popUpText={pos.countryRegion} isTitle />
+                    <PTag popUpText={`${pos.confirmed} confirmed`} />
+                    <PTag
+                      popUpText={`${pos.recovered} recovered`}
+                      color={themeColors.green}
+                    />
+                    <PTag
+                      popUpText={`${pos.deaths} deaths`}
+                      color={themeColors.red}
+                    />
                   </div>
                 </Popup>
               </CircleMarker>

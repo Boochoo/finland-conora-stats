@@ -1,9 +1,12 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
-const $gray = '#f4f7f6';
-const $blue = '#0b1560';
-const $green = '#2B482B';
-const $red = '#762536';
+const themeColors = {
+  creamWhite: '#f4f7f6',
+  blue: '#0b1560',
+  green: '#2B482B',
+  red: '#762536',
+  white: '#fff'
+};
 
 export const GlobalStyle = createGlobalStyle`
   html, body {
@@ -14,7 +17,7 @@ export const GlobalStyle = createGlobalStyle`
     color: #333;
     padding: 0;
     margin: 0;
-    background: ${$gray}
+    background: ${themeColors.creamWhite}
   }
 
   *,
@@ -37,7 +40,7 @@ export const Container = styled.div`
   grid-template-rows: 20%;
 
   div {
-    color: ${$gray};
+    color: ${themeColors.creamWhite};
     margin: 0.25rem 0;
     strong {
       font-size: 3.5rem;
@@ -53,19 +56,20 @@ export const Container = styled.div`
   }
 
   div:nth-child(1) {
-    background-color: ${$blue};
+    background-color: ${themeColors.blue};
   }
 
   div:nth-child(2) {
-    background-color: ${$green};
+    background-color: ${themeColors.green};
   }
   div:nth-child(3) {
-    background-color: ${$red};
+    background-color: ${themeColors.red};
   }
 `;
 
 module.exports = {
   Container,
   MainContainer,
-  GlobalStyle
+  GlobalStyle,
+  themeColors
 };
