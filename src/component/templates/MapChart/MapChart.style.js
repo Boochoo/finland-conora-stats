@@ -34,4 +34,8 @@ export const MapContainer = styled.div`
     line-height: 24px;
     border-radius: 0px;
   }
+
+  .leaflet-tile {
+    filter: contrast(25%);
+  }
 `;

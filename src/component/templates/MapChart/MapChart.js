@@ -9,6 +9,7 @@ import {
   Tooltip,
   CircleMarker
 } from 'react-leaflet';
+import L from 'leaflet';
 import { MapContainer } from './MapChart.style';
 import MapJson from '../../../utils/finland-provinces.json';
 
@@ -85,7 +86,13 @@ export default class MyMap extends Component {
 
     return (
       <MapContainer>
-        <Map center={[66, 20]} zoom={5} minZoom={5}>
+        <Map
+          center={[65.25, 24]}
+          zoom={5}
+          minZoom={5}
+          dragging={!L.Browser.mobile}
+          tap={!L.Browser.mobile}
+        >
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'

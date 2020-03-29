@@ -41,7 +41,8 @@ export const TableWrapper = styled.ol`
   }
   li div {
     padding: 1rem;
-    text-align: left;
+    text-align: center;
+    border-bottom: 0.05rem solid ${$gray};
   }
 
   ul {
@@ -58,6 +59,7 @@ export const TableWrapper = styled.ol`
   li div:nth-of-type(1),
   ul li div:nth-of-type(1) {
     font-size: 1rem;
+    text-align: left;
   }
 
   @media (max-width: 860px) {
