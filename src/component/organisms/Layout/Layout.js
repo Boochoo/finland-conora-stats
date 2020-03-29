@@ -5,7 +5,7 @@ import Meta from '../../../partials/head';
 const Layout = props => {
   return (
     <MainContainer>
-      <Meta title={props.title} />
+      <Meta title={props.title} desc={props.desc} keywords={props.keywords} />
       <GlobalStyle />
       {props.children}
     </MainContainer>

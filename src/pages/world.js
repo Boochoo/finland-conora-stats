@@ -148,7 +148,11 @@ const World = props => {
   );
 
   return (
-    <Layout title={`World's coronavirus stats`}>
+    <Layout
+      title={`World's coronavirus stats`}
+      desc='Coronavirus stats confirmed updates by country, recovered, deaths'
+      keywords='world coronavirus, coronavirus update, coronavirus, coronavirus stats, coronavirus numbers, maailma koronavirus, koronavirus'
+    >
       <MainWrapper>
         <MenuBar>
           <Header path={paths.home} page='Finland' />

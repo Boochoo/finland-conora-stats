@@ -12,31 +12,14 @@ import {
 } from 'react-leaflet';
 import L from 'leaflet';
 import { MapContainer } from '../MapChart/MapChart.style';
+import { mapRadius } from '../MapChart/mapUtils';
 
 const $red = '#762536';
 
 class WorldMap extends Component {
   render() {
     const { data } = this.props;
-    const mapRadius = rad => {
-      if (rad > 80000) return 60;
-      else if (rad > 70000) return 55;
-      else if (rad > 60000) return 50;
-      else if (rad > 50000) return 40;
-      else if (rad > 40000) return 35;
-      else if (rad > 30000) return 32.5;
-      else if (rad > 20000) return 30;
-      else if (rad > 10000) return 27.5;
-      else if (rad > 9000) return 25;
-      else if (rad > 8000) return 22.5;
-      else if (rad > 5000) return 20;
-      else if (rad > 2500) return 17.5;
-      else if (rad > 1000) return 15;
-      else if (rad > 500) return 12.5;
-      else if (rad > 100) return 10;
-      else if (rad > 20) return 7.5;
-      else return 5;
-    };
+
     return (
       <MapContainer>
         <Map
@@ -61,16 +44,12 @@ class WorldMap extends Component {
                 opacity={1}
                 fillOpacity={0.5}
                 fillColor={$red}
-                weight={3}
+                color={$red}
+                weight={2}
                 radius={mapRadius(parseInt(pos.confirmed))}
                 animate={true}
-                onMouseOver={e => {
-                  e.target.openPopup();
-                }}
-                onMouseOut={e => {
-                  e.target.closePopup();
-                }}
-                stroke={false}
+                onMouseOver={e => e.target.openPopup()}
+                onMouseOut={e => e.target.closePopup()}
               >
                 <Popup minWidth={50} offset={[-1, -3]} className='custom-popup'>
                   <div

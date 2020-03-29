@@ -71,7 +71,11 @@ const Index = ({ data }) => {
   );
 
   return (
-    <Layout title={`Finland's coronavirus stats`}>
+    <Layout
+      title={`Finland's coronavirus stats`}
+      desc='Coronavirus stats confirmed updates by city, recovered, deaths'
+      keywords='finland coronavirus, coronavirus update, coronavirus, coronavirus stats, coronavirus numbers, suomi koronavirus, koronavirus'
+    >
       <MainWrapper>
         <HeroTopWrapper>
           <MenuBar>

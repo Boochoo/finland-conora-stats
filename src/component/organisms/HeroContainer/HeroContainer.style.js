@@ -104,4 +104,10 @@ export const MenuBar = styled.div`
   a:hover {
     text-decoration: underline;
   }
+
+  @media screen and (max-width: 880px) {
+    a {
+      font-size: 1.24rem;
+    }
+  }
 `;

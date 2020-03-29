@@ -1,10 +1,9 @@
-import React, { Component, createRef } from 'react';
+import { Component } from 'react';
 import {
   Map,
   TileLayer,
   Marker,
   Popup,
-  MapControl,
   GeoJSON,
   Tooltip,
   CircleMarker
@@ -12,13 +11,16 @@ import {
 import L from 'leaflet';
 import { MapContainer } from './MapChart.style';
 import MapJson from '../../../utils/finland-provinces.json';
+import {
+  parseMapDetails,
+  getConfirmedCases,
+  getColors
+} from '../MapChart/mapUtils';
 
 export default class MyMap extends Component {
   render() {
     const dataMarkers = Object.entries(MapJson.features);
-    const confirmedCases = this.props.data.map(d => {
-      return { district: d[0], cases: d[1] };
-    });
+    const confirmedCases = getConfirmedCases(this.props.data);
 
     const filterByName = districtName =>
       confirmedCases.filter(cases => {
@@ -27,62 +29,21 @@ export default class MyMap extends Component {
         return district && districtName.includes(district);
       });
 
-    const positions = jsonData =>
-      jsonData.map(data => {
-        const lan = data[1].properties.latitude;
-        const lng = data[1].properties.longitude;
-        const gn_name = data[1].properties.Maakunta;
-        const distName = filterByName(gn_name);
+    const getPositionsData = data => parseMapDetails(data, filterByName);
 
-        return {
-          lan,
-          lng,
-          gn_name,
-          cases: distName.length > 0 ? distName[0].cases : 0
-        };
-      });
+    const colors = feature => getColors(feature, getPositionsData(dataMarkers));
 
-    function getColor(feature) {
-      const allConfirmed = positions(dataMarkers).map(d => {
-        return {
-          cases: d.cases,
-          gn_name: d.gn_name
-        };
-      });
-
-      const districtCases = value =>
-        allConfirmed.filter(district => {
-          return district.gn_name === feature && district.cases > value;
-        })[0];
-
-      return districtCases(150)
-        ? '#800026'
-        : districtCases(100)
-        ? '#A16928'
-        : districtCases(50)
-        ? '#bd925a'
-        : districtCases(25)
-        ? '#d6bd8d'
-        : districtCases(10)
-        ? '#edeac2'
-        : districtCases(5)
-        ? '#b5c8b8'
-        : districtCases(0)
-        ? '#79a7ac'
-        : '#fff';
-    }
-
-    function featureWithStyle(feature) {
+    const featureWithStyle = feature => {
       const district = feature.properties.Maakunta;
 
       return {
-        fillColor: getColor(district),
+        fillColor: colors(district),
         weight: 2,
         opacity: 1,
         dashArray: '3',
         fillOpacity: 0.7
       };
-    }
+    };
 
     return (
       <MapContainer>
@@ -98,23 +59,18 @@ export default class MyMap extends Component {
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
           <GeoJSON data={MapJson} style={featureWithStyle} />
-          {positions(dataMarkers).map((pos, index) => (
+          {getPositionsData(dataMarkers).map((pos, index) => (
             <Marker key={index} draggable={false} position={[pos.lan, pos.lng]}>
               <CircleMarker
                 center={[pos.lan, pos.lng]}
-                opacity={1}
+                opacity={0.5}
                 fillOpacity={1}
                 fillColor='#0b1560'
-                fontWeight='800'
+                color='#d6bd8d'
+                weight={5}
                 radius={15}
-                animate={false}
-                onMouseOver={e => {
-                  e.target.openPopup();
-                }}
-                onMouseOut={e => {
-                  e.target.closePopup();
-                }}
-                stroke={false}
+                onMouseOver={e => e.target.openPopup()}
+                onMouseOut={e => e.target.closePopup()}
               >
                 {
                   <Popup
@@ -123,14 +79,7 @@ export default class MyMap extends Component {
                     className='custom-popup'
                   >
                     <div>
-                      <span
-                        style={{
-                          fontSize: '15px',
-                          marginBottom: '20px'
-                        }}
-                      >
-                        {pos.gn_name}
-                      </span>
+                      <span>{pos.gn_name}</span>
                     </div>
                   </Popup>
                 }

@@ -42,7 +42,7 @@ class LineChart extends Component {
       .scaleLinear()
       .domain([0, d3.max(dailyData, d => d[1])])
       .range([height, 0]);
-    let xAxisIndexes;
+
     const tuples = dailyData
       .map((d, i) => [i, d[1]])
       .map(([x, y]) => [scaleX(x), scaleY(y)]);
