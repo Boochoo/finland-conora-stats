@@ -14,7 +14,7 @@ import {
   Pie
 } from 'recharts';
 import { themeColors } from '../../organisms/Layout/Layout.style';
-import styles from './Linechart.style';
+import styles from './Charts.style';
 
 const CustomizedAxisTick = props => {
   const { x, y, stroke, payload } = props;

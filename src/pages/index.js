@@ -5,7 +5,7 @@ import {
   CommonBarChart,
   CommonLineChart,
   PieRecharted
-} from '../component/templates/LineChart/LineRechart';
+} from '../component/templates/Charts/Charts';
 import { Section } from '../component/organisms/Layout/Layout.style';
 import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
 import {
