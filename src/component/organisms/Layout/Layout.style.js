@@ -5,7 +5,8 @@ const themeColors = {
   blue: '#0b1560',
   green: '#2B482B',
   red: '#762536',
-  white: '#fff'
+  white: '#fff',
+  gray: '#666'
 };
 
 export const GlobalStyle = createGlobalStyle`

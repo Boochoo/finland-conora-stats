@@ -68,6 +68,20 @@ export const ContentWrapper = styled.div`
       display: none;
     }
   }
+
+  .chart-area {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .chart-container {
+    display: grid;
+    grid-auto-flow: column;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 export const ContentContainer = styled.div`

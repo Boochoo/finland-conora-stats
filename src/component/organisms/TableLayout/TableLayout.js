@@ -23,6 +23,7 @@ const mapTableSize = size => {
 export const TableWrapper = styled.ol`
   padding: 0;
   margin: 0 auto;
+  margin-bottom: 2rem;
 
   text-align: center;
   @media screen and (min-width: 880px) {
