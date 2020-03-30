@@ -24,8 +24,7 @@ export default class MyMap extends Component {
 
     const filterByName = districtName =>
       confirmedCases.filter(cases => {
-        const district =
-          cases.district === 'Helsinki' ? 'Uusimaa' : cases.district;
+        const district = cases.district;
         return district && districtName.includes(district);
       });
 

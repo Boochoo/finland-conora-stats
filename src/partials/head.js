@@ -5,6 +5,11 @@ const Meta = props => (
     <title>{props.title}</title>
     <meta name='description' content={props.desc} />
     <meta name='keywords' content={props.keywords} />
+    <meta name='og:title' property='og:title' content={props.title} />
+    <meta name='og:description' content={props.desc} />
+    <meta name='og:type' content='website' />
+    {/* <meta name='og:url' content={props.page} /> */}
+
     <link
       rel='stylesheet'
       href='https://fonts.googleapis.com/css?family=Raleway:400,600&display=swap'
