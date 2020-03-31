@@ -74,3 +74,27 @@ export const getConfirmedByCountry = data =>
 
     return acc;
   }, []);
+
+export const getChangesInTotalCases = (
+  confirmedData,
+  recoveredData,
+  deathsData
+) => {
+  const getValues = Object.values(confirmedData).map((item, index, array) => {
+    return (array[index] += array[index - 1] ? array[index - 1] : 0);
+  });
+
+  const keys = Object.keys(confirmedData);
+  const getRecoveredKey = Object.keys(recoveredData);
+  const getRecoveredValue = Object.values(recoveredData);
+  const getDeathsKey = Object.keys(deathsData);
+  const getDeathsValue = Object.entries(deathsData);
+
+  return keys.map((item, i) => {
+    return {
+      name: item,
+      cases: getValues[i],
+      daily: Object.values(confirmedData)[i]
+    };
+  });
+};

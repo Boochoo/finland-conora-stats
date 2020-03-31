@@ -4,7 +4,7 @@ import fetch from 'isomorphic-fetch';
 import {
   CommonBarChart,
   CommonLineChart,
-  PieRecharted
+  BarWithLine
 } from '../component/templates/Charts/Charts';
 import { Section } from '../component/organisms/Layout/Layout.style';
 import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
@@ -19,7 +19,8 @@ import {
   getConfirmedByDate,
   displayDate,
   sortData,
-  dailyCasesTotal
+  dailyCasesTotal,
+  getChangesInTotalCases
 } from '../utils/utils';
 import Layout from '../component/organisms/Layout/Layout';
 import paths from '../utils/path';
@@ -48,7 +49,6 @@ const Index = ({ data }) => {
 
   const confirmedByDistrict = getConfirmedByDistrict(confirmed);
   const recoveredByDistrict = getConfirmedByDistrict(recovered);
-
   const deathsByDistrict = getConfirmedByDistrict(deaths);
 
   const confirmedBySource = getConfirmedBySource(confirmed);
@@ -58,6 +58,12 @@ const Index = ({ data }) => {
   const sortedConfirmedBySource = sortData(confirmedBySource);
 
   const totalDailyCases = dailyCasesTotal(Object.entries(confirmedByDate));
+  const recoveredData = dailyCasesTotal(
+    Object.entries(getConfirmedByDate(recovered))
+  );
+  const deathsData = dailyCasesTotal(
+    Object.entries(getConfirmedByDate(deaths))
+  );
 
   const sortedConfirmed = Object.entries(confirmedByDate).sort(
     (a, b) => new Date(a[0]) - new Date(b[0])
@@ -65,20 +71,6 @@ const Index = ({ data }) => {
 
   const localDataSource = `//github.com/HS-Datadesk/koronavirus-avoindata`;
   const lastUpdatedAt = sortedConfirmed[sortedConfirmed.length - 1][0];
-
-  const HeroBanner = () => (
-    <Fragment>
-      <HeroContainer
-        title='Finland'
-        recovered={recovered.length}
-        confirmed={confirmed.length}
-        deaths={deaths.length}
-      />
-      <h2>Total confirmed cases daily</h2>
-      <CommonLineChart data={mapConfirmedDailys} />
-    </Fragment>
-  );
-
   const mapDataForCharts = data =>
     data.map(item => {
       return { name: item[0], cases: item[1] };
@@ -93,6 +85,25 @@ const Index = ({ data }) => {
   );
 
   const mapConfirmedDailys = mapDataForCharts(Object.entries(totalDailyCases));
+
+  const mappedIncremental = getChangesInTotalCases(
+    totalDailyCases,
+    recoveredData,
+    deathsData
+  );
+
+  const HeroBanner = () => (
+    <Fragment>
+      <HeroContainer
+        title='Finland'
+        recovered={recovered.length}
+        confirmed={confirmed.length}
+        deaths={deaths.length}
+      />
+      <h2>Total confirmed cases daily</h2>
+      <BarWithLine data={mappedIncremental} />
+    </Fragment>
+  );
 
   return (
     <Layout
@@ -120,24 +131,7 @@ const Index = ({ data }) => {
               <HeroBanner />
             </div>
 
-            <h2>Confirmed cases, recoveries and deaths</h2>
-
-            <CommonBarChart
-              data={[
-                {
-                  name: 'recovered',
-                  cases: recovered.length
-                },
-                {
-                  name: 'confirmed',
-                  cases: confirmed.length
-                },
-                {
-                  name: 'deaths',
-                  cases: deaths.length
-                }
-              ]}
-            />
+            {/* <PieRecharted data={mapSortedConfirmedByDistrict} /> */}
             <div>
               <h2>Confirmed cases by district</h2>
 

@@ -11,7 +11,8 @@ import {
   ResponsiveContainer,
   Cell,
   PieChart,
-  Pie
+  Pie,
+  ComposedChart
 } from 'recharts';
 import { themeColors } from '../../organisms/Layout/Layout.style';
 import styles from './Charts.style';
@@ -102,17 +103,51 @@ export const CommonLineChart = props => (
 );
 
 export const PieRecharted = props => (
-  <ResponsiveContainer width='100%' height={500}>
+  <ResponsiveContainer height={500} width='100%'>
     <PieChart>
       <Pie
         data={props.data}
-        dataKey='value'
-        nameKey='name'
-        cx='50%'
-        cy='50%'
-        outerRadius={50}
+        dataKey='cases'
+        cx={200}
+        cy={200}
+        outerRadius={150}
         fill='#8884d8'
-      />
+        paddingAngle={2}
+        label='cases'
+      >
+        {props.data.map((entry, index) => (
+          <Cell key={entry} fill={getColors(index)} />
+        ))}
+      </Pie>
+      <Tooltip />
     </PieChart>
+  </ResponsiveContainer>
+);
+
+export const BarWithLine = props => (
+  <ResponsiveContainer width='100%' height={500}>
+    <ComposedChart data={props.data}>
+      <XAxis dataKey='name' />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <CartesianGrid stroke='#f5f5f5' />
+      <Bar
+        type='monotone'
+        name='Day cases'
+        dataKey='daily'
+        barSize={30}
+        fill={themeColors.lightGreen}
+      />
+
+      <Line
+        type='monotone'
+        name='Total cases'
+        dataKey='cases'
+        dot={false}
+        stroke={themeColors.lightRed}
+        strokeWidth={3.5}
+      />
+    </ComposedChart>
   </ResponsiveContainer>
 );
