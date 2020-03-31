@@ -100,7 +100,7 @@ const Index = ({ data }) => {
         confirmed={confirmed.length}
         deaths={deaths.length}
       />
-      <h2>Total confirmed cases daily</h2>
+      <h2>Total confirmed and daily cases</h2>
       <BarWithLine data={mappedIncremental} />
     </Fragment>
   );
@@ -138,6 +138,7 @@ const Index = ({ data }) => {
               <CommonBarChart
                 data={mapSortedConfirmedByDistrict}
                 marginBottom={100}
+                smallerFont
               />
 
               <ConfirmedByRegionTable
@@ -161,7 +162,7 @@ const Index = ({ data }) => {
                 <h2>Recovered</h2>
 
                 <CommonTable
-                  headers={['Health district', 'Cases', 'Time']}
+                  headers={['Health district', 'Cases', 'Latest report time']}
                   data={recovered}
                   districts={Object.entries(recoveredByDistrict)}
                   parseDate={displayDate}

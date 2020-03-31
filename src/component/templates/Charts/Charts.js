@@ -17,24 +17,6 @@ import {
 import { themeColors } from '../../organisms/Layout/Layout.style';
 import styles from './Charts.style';
 
-const CustomizedAxisTick = props => {
-  const { x, y, stroke, payload } = props;
-  return (
-    <g transform={`translate(${x},${y})`}>
-      <text
-        x={0}
-        y={0}
-        dy={16}
-        textAnchor='end'
-        fill={themeColors.gray}
-        transform='rotate(-35)'
-      >
-        {payload.value}
-      </text>
-    </g>
-  );
-};
-
 const getColors = index => {
   const colors = [
     '#29c7ac',
@@ -65,9 +47,11 @@ export const CommonBarChart = props => (
     >
       <XAxis
         dataKey='name'
-        stroke='#8884d8'
+        stroke={themeColors.gray}
         interval={0}
-        tick={CustomizedAxisTick}
+        angle={-45}
+        textAnchor='end'
+        tick={{ fontSize: props.smallerFont ? 12 : 16 }}
       />
       <YAxis />
       <Tooltip />

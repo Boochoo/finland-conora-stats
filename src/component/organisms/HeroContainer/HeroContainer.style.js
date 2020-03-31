@@ -9,6 +9,7 @@ export const Container = styled.div`
   grid-column-gap: 10px;
   background: ${$creamWhite};
   text-align: center;
+  margin-bottom: 2rem;
 
   h1 {
     color: #333;
