@@ -151,7 +151,7 @@ const Index = ({ data }) => {
             <div>
               <h2>Infection origin by country</h2>
 
-              <CommonBarChart data={mapSortedConfirmed} />
+              <CommonBarChart data={mapSortedConfirmed} marginBottom={75} />
               <CommonBottomTable
                 headers={['Origin', 'Cases']}
                 data={sortedConfirmedBySource.reverse()}
@@ -170,7 +170,7 @@ const Index = ({ data }) => {
               </div>
 
               <div>
-                <h2>Death :(</h2>
+                <h2>Deaths :(</h2>
 
                 <CommonTable
                   headers={['Health district', 'Cases', 'Latest report time']}
