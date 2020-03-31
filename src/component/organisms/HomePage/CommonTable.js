@@ -10,14 +10,13 @@ export const CommonTable = props => {
       <TableHeader headTitle={props.headers} />
       <ul>
         {props.data.map((rec, index) => {
+          const district = rec.healthCareDistrict;
           return (
             props.districts[index] && (
               <TableLayoutContainer
                 key={index}
                 tableRows={[
-                  props.districts[index][0] === 'null'
-                    ? 'No details'
-                    : props.districts[index][0],
+                  district,
                   props.districts[index][1],
                   props.parseDate(rec.date).slice(0, -7)
                 ]}

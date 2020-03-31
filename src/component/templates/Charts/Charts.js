@@ -119,6 +119,13 @@ export const BarWithLine = props => (
       <Tooltip />
       <Legend />
       <CartesianGrid stroke='#f5f5f5' strokeDasharray='3' />
+      <Bar
+        type='monotone'
+        name='Daily cases'
+        dataKey='daily'
+        barSize={30}
+        fill={themeColors.lightGreen}
+      />
 
       <Line
         type='monotone'
@@ -127,29 +134,6 @@ export const BarWithLine = props => (
         dot={false}
         stroke={themeColors.lightRed}
         strokeWidth={3.5}
-      />
-      <Bar
-        type='monotone'
-        name='Daily cases'
-        dataKey='daily'
-        barSize={30}
-        fill={themeColors.lightGreen}
-      />
-      <Line
-        type='monotone'
-        name='Recoveries'
-        dataKey='recoveries'
-        dot={false}
-        stroke={themeColors.green}
-        strokeWidth={2}
-      />
-      <Line
-        type='monotone'
-        name='Deaths'
-        dataKey='deaths'
-        dot={false}
-        stroke={themeColors.red}
-        strokeWidth={2}
       />
     </ComposedChart>
   </ResponsiveContainer>

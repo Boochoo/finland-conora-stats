@@ -13,7 +13,7 @@ export const ConfirmedByRegionTable = props => {
           <TableLayoutContainer
             key={index}
             tableRows={[
-              item[0] && item[0] !== 'null' ? item[0] : 'No details',
+              item[0] && item[0] !== 'null' ? item[0] : 'Unkown',
               item[1]
             ]}
           />

@@ -4,7 +4,7 @@ const HeroContainer = props => {
     <>
       <Container>
         <div className='hero-wrapper'>
-          <h1>{props.title}'s Coronavirus (CoVID-19) updates</h1>
+          <h1>{props.title} Coronavirus (CoVID-19) stats</h1>
           <div>
             <p>
               Confirmed <strong> {props.confirmed}</strong>

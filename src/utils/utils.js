@@ -11,15 +11,14 @@ export const getConfirmedByDate = data =>
 export const getConfirmedByDistrict = data =>
   data.reduce((prev, curr) => {
     let district = curr.healthCareDistrict;
-    let location =
-      district === 'HUS' ? 'Uusimaa' : district ? district : 'No details';
+    let location = district === 'HUS' ? 'Uusimaa' : district;
     return (prev[location] = ++prev[location] || 1), prev;
   }, {});
 
 export const getConfirmedBySource = data =>
   data.reduce((prev, curr) => {
     let sources = curr.infectionSourceCountry;
-    let source = sources ? sources : 'No details';
+    let source = sources ? sources : 'Unknown';
     return (prev[source] = ++prev[source] || 1), prev;
   }, {});
 
@@ -76,18 +75,6 @@ export const getConfirmedByCountry = data =>
     return acc;
   }, []);
 
-const dataGetter = (d, name) => {
-  return d.map((currData, index) => {
-    let value = currData[1];
-
-    return {
-      [name]: value
-    };
-  });
-};
-
-// dataGetter()
-
 export const getChangesInTotalCases = (
   confirmedData,
   recoveredData,
@@ -99,24 +86,15 @@ export const getChangesInTotalCases = (
 
   const keys = Object.keys(confirmedData);
   const getRecoveredKey = Object.keys(recoveredData);
-  const getRecoveredValue = Object.entries(recoveredData);
+  const getRecoveredValue = Object.values(recoveredData);
   const getDeathsKey = Object.keys(deathsData);
   const getDeathsValue = Object.entries(deathsData);
 
   return keys.map((item, i) => {
-    const deaths = getDeathsKey.includes(item)
-      ? getDeathsValue.filter(el => el[0] === item).map(el => el[1])[0]
-      : 0;
-    const recoveries = getRecoveredKey.includes(item)
-      ? getRecoveredValue.filter(el => el[0] === item).map(el => el[1])[0]
-      : 0;
-
     return {
       name: item,
       cases: getValues[i],
-      daily: Object.values(confirmedData)[i],
-      deaths,
-      recoveries
+      daily: Object.values(confirmedData)[i]
     };
   });
 };
