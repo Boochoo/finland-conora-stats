@@ -110,15 +110,18 @@ export const PieRecharted = props => (
 
 export const BarWithLine = props => (
   <ResponsiveContainer width='100%' height={500}>
-    <ComposedChart data={props.data}>
+    <ComposedChart
+      data={props.data}
+      margin={{ top: 15, right: 5, left: -15, bottom: 20 }}
+    >
       <XAxis dataKey='name' />
       <YAxis />
       <Tooltip />
       <Legend />
-      <CartesianGrid stroke='#f5f5f5' />
+      <CartesianGrid stroke='#f5f5f5' strokeDasharray='3' />
       <Bar
         type='monotone'
-        name='Day cases'
+        name='Daily cases'
         dataKey='daily'
         barSize={30}
         fill={themeColors.lightGreen}
