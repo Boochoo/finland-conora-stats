@@ -32,6 +32,7 @@ import {
 import styled from 'styled-components';
 import Header from '../component/organisms/Header/Header';
 import Footer from '../component/organisms/Footer/Footer';
+import { themeColors } from '../component/organisms/Layout/Layout.style';
 
 const MapChartWithNoSSR = dynamic(
   () => import('../component/templates/MapChart/MapChart'),
@@ -141,6 +142,7 @@ const Index = ({ data }) => {
                 data={mapSortedConfirmedByDistrict}
                 marginBottom={100}
                 smallerFont
+                fillColor={themeColors.lightRed}
               />
 
               <ConfirmedByRegionTable
@@ -152,7 +154,11 @@ const Index = ({ data }) => {
             <div>
               <h2>Infection origin by country</h2>
 
-              <CommonBarChart data={mapSortedConfirmed} marginBottom={75} />
+              <CommonBarChart
+                data={mapSortedConfirmed}
+                marginBottom={75}
+                fillColor={themeColors.lightGreen}
+              />
               <CommonBottomTable
                 headers={['Origin', 'Cases']}
                 data={sortedConfirmedBySource.reverse()}

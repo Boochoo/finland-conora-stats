@@ -66,11 +66,7 @@ export const CommonBarChart = props => (
         }}
         itemStyle={{ color: themeColors.creamWhite }}
       />
-      <Bar type='monotone' dataKey='cases' barSize={30}>
-        {props.data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={getColors(index)} />
-        ))}
-      </Bar>
+      <Bar type='monotone' dataKey='cases' fill={props.fillColor} />
     </BarChart>
   </ResponsiveContainer>
 );
