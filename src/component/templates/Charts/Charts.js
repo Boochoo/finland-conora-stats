@@ -15,7 +15,6 @@ import {
   ComposedChart,
   Area
 } from 'recharts';
-import { scaleLog } from 'd3-scale';
 
 import { themeColors } from '../../organisms/Layout/Layout.style';
 import styles from './Charts.style';
