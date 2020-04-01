@@ -12,7 +12,8 @@ import {
   Cell,
   PieChart,
   Pie,
-  ComposedChart
+  ComposedChart,
+  Area
 } from 'recharts';
 import { scaleLog } from 'd3-scale';
 
@@ -156,26 +157,30 @@ export const BarWithLine = props => (
         stroke={themeColors.lightRed}
         strokeWidth={2.5}
       />
+
       <Bar
         type='monotone'
         name='Daily cases'
         dataKey='daily'
-        barSize={15}
+        barSize={30}
         fill={themeColors.blue}
+        stackId='a'
       />
       <Bar
         type='monotone'
         name='Recoveries'
         dataKey='recoveries'
         fill={themeColors.green}
-        barSize={15}
+        barSize={30}
+        stackId='a'
       />
       <Bar
         type='monotone'
         name='Deaths'
         dataKey='deaths'
         fill={themeColors.red}
-        barSize={15}
+        barSize={30}
+        stackId='a'
       />
     </ComposedChart>
   </ResponsiveContainer>
