@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import dynamic from 'next/dynamic';
 import fetch from 'isomorphic-fetch';
 import {
@@ -11,7 +11,9 @@ import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
 import {
   ContentContainer,
   ContentWrapper,
-  MenuBar
+  MenuBar,
+  ButtonsWrapper,
+  Button
 } from '../component/organisms/HeroContainer/HeroContainer.style';
 import {
   getConfirmedByDistrict,
@@ -93,6 +95,8 @@ const Index = ({ data }) => {
     deathsData
   );
 
+  const [isLinear, setLinear] = useState(false);
+
   const HeroBanner = () => (
     <Fragment>
       <HeroContainer
@@ -102,6 +106,25 @@ const Index = ({ data }) => {
         deaths={deaths.length}
       />
       <h2>Total confirmed and daily cases</h2>
+      <ButtonsWrapper>
+        <Button
+          onClick={() => {
+            setLinear(true);
+          }}
+          className={isLinear ? 'is-active' : ''}
+        >
+          Linear
+        </Button>
+        <Button
+          onClick={() => {
+            setLinear(false);
+          }}
+          className={!isLinear ? 'is-active' : ''}
+        >
+          Logarithmic
+        </Button>
+      </ButtonsWrapper>
+      <CommonLineChart data={mappedIncremental} isLinear={isLinear} />
       <BarWithLine data={mappedIncremental} />
     </Fragment>
   );
@@ -132,8 +155,6 @@ const Index = ({ data }) => {
               <HeroBanner />
             </div>
             {/* <PieRecharted data={mapSortedConfirmedByDistrict} /> */}
-
-            {/* <CommonLineChart data={mappedIncremental} /> */}
 
             <div>
               <h2>Confirmed cases by district</h2>

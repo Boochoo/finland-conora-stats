@@ -1,13 +1,9 @@
 import styled from 'styled-components';
-
-const $blue = '#0b1560';
-const $green = '#2B482B';
-const $red = '#762536';
-const $creamWhite = '#f4f7f6';
+import { themeColors } from '../Layout/Layout.style';
 
 export const Container = styled.div`
   grid-column-gap: 10px;
-  background: ${$creamWhite};
+  background: ${themeColors.creamWhite};
   text-align: center;
   margin-bottom: 2rem;
 
@@ -18,7 +14,7 @@ export const Container = styled.div`
 
   div {
     margin: 0.25rem 0;
-    color: ${$creamWhite};
+    color: ${themeColors.creamWhite};
     strong {
       font-size: 3.5rem;
     }
@@ -34,14 +30,14 @@ export const Container = styled.div`
 
   .hero-wrapper div {
     &:nth-of-type(1) {
-      background-color: ${$blue};
+      background-color: ${themeColors.blue};
     }
 
     &:nth-of-type(2) {
-      background-color: ${$green};
+      background-color: ${themeColors.green};
     }
     &:nth-of-type(3) {
-      background-color: ${$red};
+      background-color: ${themeColors.red};
     }
   }
 `;
@@ -52,10 +48,10 @@ export const ContentWrapper = styled.div`
     top: 0;
     left: 0;
     padding: 1rem;
-    width: 500px;
+    width: 600px;
     height: 100vh;
     max-width: 90%;
-    background: ${$creamWhite};
+    background: ${themeColors.creamWhite};
     overflow: hidden;
     z-index: 99999;
     .hero-mobile {
@@ -103,8 +99,8 @@ export const MenuBar = styled.div`
   background: #333;
   @media screen and (min-width: 880px) {
     position: fixed;
-    top: 0;
-    left: 501px;
+    top: 0.15rem;
+    left: 603px;
     width: 8rem;
     text-align: center;
     border-radius: 50%;
@@ -112,7 +108,7 @@ export const MenuBar = styled.div`
   }
 
   a {
-    color: ${$creamWhite};
+    color: ${themeColors.creamWhite};
     text-decoration: none;
   }
 
@@ -124,5 +120,33 @@ export const MenuBar = styled.div`
     a {
       font-size: 1.24rem;
     }
+  }
+`;
+
+export const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const Button = styled.button`
+  appearance: none;
+  width: 9rem;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: ${themeColors.black};
+  color: ${themeColors.creamWhite};
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    outline: 0;
+    text-decoration: underline;
+  }
+
+  &.is-active {
+    background-color: ${themeColors.blue};
   }
 `;

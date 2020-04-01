@@ -76,13 +76,15 @@ export const CommonLineChart = props => (
   <ResponsiveContainer width='100%' height={500} className='chart-area'>
     <LineChart
       data={props.data}
-      margin={{ top: 15, right: 5, left: -15, bottom: 20 }}
+      margin={{ top: 25, right: 5, left: -15, bottom: 20 }}
     >
       <XAxis dataKey='name' />
-      <YAxis
-        scale={scaleLog().domain([0, Math.max(props.data.cases)])}
-        domain={['dataMin', 'dataMax']}
-      />
+
+      {!props.isLinear ? (
+        <YAxis scale='log' domain={['dataMin', 'dataMax']} allowDataOverflow />
+      ) : (
+        <YAxis />
+      )}
       <Tooltip
         contentStyle={{ backgroundColor: themeColors.black }}
         labelStyle={{
@@ -98,6 +100,7 @@ export const CommonLineChart = props => (
       <Line
         type='monotone'
         dataKey='cases'
+        name='Total cases'
         dot={false}
         stroke={themeColors.blue}
         strokeWidth={3.5}
