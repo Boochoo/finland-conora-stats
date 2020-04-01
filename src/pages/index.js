@@ -77,11 +77,11 @@ const Index = ({ data }) => {
     });
 
   const mapSortedConfirmed = mapDataForCharts(
-    Object.entries(confirmedBySource)
+    sortedConfirmedBySource.reverse()
   );
 
   const mapSortedConfirmedByDistrict = mapDataForCharts(
-    Object.entries(confirmedByDistrict)
+    sortedConfirmedByDistrict.reverse()
   );
 
   const mapConfirmedDailys = mapDataForCharts(Object.entries(totalDailyCases));
@@ -130,8 +130,10 @@ const Index = ({ data }) => {
             <div className='hero-desktop'>
               <HeroBanner />
             </div>
-
             {/* <PieRecharted data={mapSortedConfirmedByDistrict} /> */}
+
+            {/* <CommonLineChart data={mappedIncremental} /> */}
+
             <div>
               <h2>Confirmed cases by district</h2>
 
@@ -147,7 +149,6 @@ const Index = ({ data }) => {
                 districts={Object.entries(recoveredByDistrict)}
               />
             </div>
-
             <div>
               <h2>Infection origin by country</h2>
 
@@ -180,7 +181,6 @@ const Index = ({ data }) => {
                 />
               </div>
             </HeroBottomWrapper>
-
             <div>
               <h2>Confirmed daily total</h2>
               <CommonBottomTable
@@ -188,7 +188,6 @@ const Index = ({ data }) => {
                 data={Object.entries(totalDailyCases)}
               />
             </div>
-
             <div>
               <h2>Confirmed cases by date and announcement time</h2>
               <CommonBottomTable

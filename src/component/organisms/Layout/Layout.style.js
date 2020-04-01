@@ -8,7 +8,8 @@ const themeColors = {
   white: '#fff',
   gray: '#666',
   lightRed: '#c02739',
-  lightGreen: '#29c7ac'
+  lightGreen: '#29c7ac',
+  black: '#333'
 };
 
 export const GlobalStyle = createGlobalStyle`

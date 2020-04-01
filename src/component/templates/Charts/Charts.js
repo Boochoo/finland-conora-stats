@@ -14,6 +14,8 @@ import {
   Pie,
   ComposedChart
 } from 'recharts';
+import { scaleLog } from 'd3-scale';
+
 import { themeColors } from '../../organisms/Layout/Layout.style';
 import styles from './Charts.style';
 
@@ -54,7 +56,16 @@ export const CommonBarChart = props => (
         tick={{ fontSize: props.smallerFont ? 12 : 16 }}
       />
       <YAxis />
-      <Tooltip />
+      <Tooltip
+        contentStyle={{ backgroundColor: themeColors.black }}
+        labelStyle={{
+          color: themeColors.creamWhite,
+          fontSize: '1.24rem',
+          marginBottom: '0.5rem',
+          fontWeight: '800'
+        }}
+        itemStyle={{ color: themeColors.creamWhite }}
+      />
       <Bar type='monotone' dataKey='cases' barSize={30}>
         {props.data.map((entry, index) => (
           <Cell key={`cell-${index}`} fill={getColors(index)} />
@@ -71,8 +82,20 @@ export const CommonLineChart = props => (
       margin={{ top: 15, right: 5, left: -15, bottom: 20 }}
     >
       <XAxis dataKey='name' />
-      <YAxis />
-      <Tooltip />
+      <YAxis
+        scale={scaleLog().domain([0, Math.max(props.data.cases)])}
+        domain={['dataMin', 'dataMax']}
+      />
+      <Tooltip
+        contentStyle={{ backgroundColor: themeColors.black }}
+        labelStyle={{
+          color: themeColors.creamWhite,
+          fontSize: '1.24rem',
+          marginBottom: '0.5rem',
+          fontWeight: '800'
+        }}
+        itemStyle={{ color: themeColors.creamWhite }}
+      />
 
       <CartesianGrid stroke='#eee' strokeDasharray='5 5' />
       <Line
@@ -116,7 +139,16 @@ export const BarWithLine = props => (
     >
       <XAxis dataKey='name' />
       <YAxis />
-      <Tooltip />
+      <Tooltip
+        contentStyle={{ backgroundColor: themeColors.black }}
+        labelStyle={{
+          color: themeColors.creamWhite,
+          fontSize: '1.24rem',
+          marginBottom: '0.5rem',
+          fontWeight: '800'
+        }}
+        itemStyle={{ color: themeColors.creamWhite }}
+      />
       <Legend />
       <CartesianGrid stroke='#f5f5f5' strokeDasharray='3' />
 
@@ -124,32 +156,30 @@ export const BarWithLine = props => (
         type='monotone'
         name='Total cases'
         dataKey='cases'
-        dot={false}
+        dot={true}
         stroke={themeColors.lightRed}
-        strokeWidth={3.5}
+        strokeWidth={2.5}
       />
       <Bar
         type='monotone'
         name='Daily cases'
         dataKey='daily'
-        barSize={30}
-        fill={themeColors.lightGreen}
+        barSize={15}
+        fill={themeColors.blue}
       />
-      <Line
+      <Bar
         type='monotone'
         name='Recoveries'
         dataKey='recoveries'
-        dot={false}
-        stroke={themeColors.green}
-        strokeWidth={2}
+        fill={themeColors.green}
+        barSize={15}
       />
-      <Line
+      <Bar
         type='monotone'
         name='Deaths'
         dataKey='deaths'
-        dot={false}
-        stroke={themeColors.red}
-        strokeWidth={2}
+        fill={themeColors.red}
+        barSize={15}
       />
     </ComposedChart>
   </ResponsiveContainer>
