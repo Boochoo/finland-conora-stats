@@ -3,6 +3,7 @@ import Link from 'next/link';
 const Footer = props => {
   return (
     <footer>
+      <p>{props.description}</p>
       <p>
         Last update: <i>{props.lastUpdate}</i>{' '}
       </p>

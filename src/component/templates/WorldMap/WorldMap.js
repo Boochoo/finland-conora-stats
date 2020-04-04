@@ -32,13 +32,17 @@ class WorldMap extends Component {
     const { data } = this.props;
     const isSmallerScreen = window && window.innerWidth < 880;
 
-    const ddd = data.map((pos, index) => console.log(!pos.lat && pos));
-
     return (
       <MapContainer>
         <Map
-          center={isSmallerScreen ? [36, 22] : [36, 12]}
-          zoom={2.5}
+          center={
+            this.props.countryCenter
+              ? this.props.countryCenter
+              : isSmallerScreen
+              ? [36, 22]
+              : [36, 12]
+          }
+          zoom={this.props.initialZoomLevel}
           minZoom={2.5}
           dragging={!L.Browser.mobile}
           tap={!L.Browser.mobile}
@@ -71,7 +75,14 @@ class WorldMap extends Component {
                       marginBottom: '0.25em'
                     }}
                   >
-                    <PTag popUpText={pos.countryRegion} isTitle />
+                    <PTag
+                      popUpText={
+                        pos.provinceState
+                          ? pos.provinceState
+                          : pos.countryRegion
+                      }
+                      isTitle
+                    />
                     <PTag popUpText={`${pos.confirmed} confirmed`} />
                     <PTag
                       popUpText={`${pos.recovered} recovered`}

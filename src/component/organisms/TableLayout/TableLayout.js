@@ -1,9 +1,5 @@
 import styled from 'styled-components';
-
-const $creamWhite = '#f4f7f6';
-const $gray = '#E0E0E0';
-const $white = '#fff';
-const $lightgreen = '#b5c8b8';
+import { themeColors } from '../Layout/Layout.style';
 
 const theme = {
   oneCol: '100%',
@@ -38,12 +34,12 @@ export const TableWrapper = styled.ol`
     position: sticky;
     top: 0;
     border-bottom: 1px solid #666;
-    background-color: ${$white};
+    background-color: ${themeColors.white};
   }
   li div {
     padding: 1rem;
     text-align: center;
-    border-bottom: 0.05rem solid ${$gray};
+    border-bottom: 0.05rem solid ${themeColors.lightGray};
   }
 
   ul {
@@ -51,10 +47,10 @@ export const TableWrapper = styled.ol`
   }
 
   ul li:nth-child(even) {
-    background: ${$gray};
+    background: ${themeColors.lightGray};
   }
   ul li:nth-child(odd) {
-    background: ${$creamWhite};
+    background: ${themeColors.creamWhite};
   }
 
   li div:nth-of-type(1),
@@ -74,7 +70,17 @@ export const TableWrapper = styled.ol`
     cursor: pointer;
 
     &.active {
-      background: ${$lightgreen};
+      background: ${themeColors.lightgreen};
+    }
+  }
+
+  ul a {
+    text-decoration: none;
+    color: ${themeColors.black};
+
+    &:hover {
+      text-decoration: underline;
+      color: ${themeColors.blue};
     }
   }
 `;

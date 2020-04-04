@@ -5,7 +5,7 @@ const withFonts = require('nextjs-fonts');
 sitemap({
   baseUrl: 'https://finlandcoronastats.com',
   pagesDirectory: __dirname + '/src/pages',
-  targetDirectory: 'static/'
+  targetDirectory: 'public/'
 });
 
 module.exports = withFonts({
@@ -13,6 +13,7 @@ module.exports = withFonts({
     return {
       '/': { page: '/' },
       '/world': { page: '/world' }
+      // '/country': { page: '/[country]' }
     };
   },
   devIndicators: {
@@ -40,7 +41,8 @@ module.exports = withFonts({
       });
     }
     return config;
-  }
+  },
+  prerenderPages: false
   // cssModules: true,
   // experimental: { css: true }
 });

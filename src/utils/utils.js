@@ -52,19 +52,21 @@ export const dailyCasesTotal = data => {
   }, {});
 };
 
-export const getConfirmedByCountry = data =>
+const getConfirmedObject = (data, prop) =>
   data.reduce((acc, currVal) => {
     let filteredObj = acc
       .filter(obj => {
-        return obj.countryRegion === currVal.countryRegion;
+        return obj[prop] === currVal[prop];
       })
       .pop() || {
       countryRegion: currVal.countryRegion,
+      provinceState: currVal.provinceState,
       confirmed: 0,
       recovered: 0,
       deaths: 0,
       lat: currVal.lat,
-      long: currVal.long
+      long: currVal.long,
+      lastUpdate: currVal.lastUpdate
     };
 
     filteredObj.confirmed += currVal.confirmed;
@@ -76,17 +78,11 @@ export const getConfirmedByCountry = data =>
     return acc;
   }, []);
 
-const dataGetter = (d, name) => {
-  return d.map((currData, index) => {
-    let value = currData[1];
+export const getConfirmedByProvinceState = data =>
+  getConfirmedObject(data, 'provinceState');
 
-    return {
-      [name]: value
-    };
-  });
-};
-
-// dataGetter()
+export const getConfirmedByCountry = data =>
+  getConfirmedObject(data, 'countryRegion');
 
 export const getChangesInTotalCases = (
   confirmedData,
