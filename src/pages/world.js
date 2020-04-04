@@ -234,7 +234,7 @@ const World = props => {
                   {searchResults.length > 0 &&
                     searchResults.map((d, i) => (
                       <Link
-                        href={`/country`}
+                        href={`/[country]`}
                         as={`/${d.countryRegion.toLowerCase()}`}
                       >
                         <a>
