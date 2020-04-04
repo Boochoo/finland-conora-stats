@@ -10,7 +10,14 @@ app
   .then(() => {
     const server = express();
 
-    // server.get('/', (req, res) => app.render(req, res, '/'));
+    server.get('/', (req, res) => app.render(req, res, '/', req.query));
+    server.get('/world', (req, res) =>
+      app.render(req, res, '/world', req.query)
+    );
+    server.get('/country', (req, res) =>
+      app.render(req, res, '/country', req.query)
+    );
+
     server.get('*', (req, res) => handle(req, res));
 
     server.listen(PORT, err => {

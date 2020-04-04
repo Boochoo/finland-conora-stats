@@ -7,6 +7,7 @@ const themeColors = {
   red: '#762536',
   white: '#fff',
   gray: '#666',
+  lightGray: '#E0E0E0',
   lightRed: '#c02739',
   lightGreen: '#29c7ac',
   black: '#333'

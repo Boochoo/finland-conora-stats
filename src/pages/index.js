@@ -223,6 +223,7 @@ const Index = ({ data }) => {
               />
             </div>
             <Footer
+              description={`The data in this page is obtained from Helsinki Sanomat's API, which collects it from THL's published reports.`}
               author='HS-Datadesk'
               source={localDataSource}
               lastUpdate={lastUpdatedAt}
@@ -236,7 +237,7 @@ const Index = ({ data }) => {
 
 export async function getServerSideProps() {
   try {
-    const url = `https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData`;
+    const url = `https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData/v2`;
     const response = await fetch(url);
     const data = await response.json();
     const hasError = response.status !== 200;

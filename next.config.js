@@ -12,7 +12,8 @@ module.exports = withFonts({
   exportPathMap: () => {
     return {
       '/': { page: '/' },
-      '/world': { page: '/world' }
+      '/world': { page: '/world' },
+      '/country': { page: '/country' }
     };
   },
   devIndicators: {

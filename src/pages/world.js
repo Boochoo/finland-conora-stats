@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { Component, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import fetch from 'isomorphic-fetch';
@@ -102,6 +103,7 @@ const World = props => {
   const sortedConfrimed = uniqueConfirmed.sort(
     (a, b) => b.confirmed - a.confirmed
   );
+
   const [searchTerm, setSearchTerm] = useState('');
   const [sortedList, setSorted] = useState(sortedConfrimed);
   const [active, setActive] = useState({ isByConfirmed: true });
@@ -164,7 +166,7 @@ const World = props => {
             </div>
           </ContentContainer>
         </ContentWrapper>
-        <WorldMap data={uniqueConfirmed} />
+        <WorldMap data={uniqueConfirmed} initialZoomLevel={2.5} />
         <ContentWrapper>
           <ContentContainer>
             <div className='hero-desktop'>
@@ -231,20 +233,31 @@ const World = props => {
                 <ul>
                   {searchResults.length > 0 &&
                     searchResults.map((d, i) => (
-                      <TableLayoutContainer
-                        key={i}
-                        tableRows={[
-                          d.countryRegion,
-                          d.confirmed,
-                          d.recovered,
-                          d.deaths
-                        ]}
-                      />
+                      <Link
+                        href={`/country`}
+                        as={`/${d.countryRegion.toLowerCase()}`}
+                      >
+                        <a>
+                          <TableLayoutContainer
+                            key={i}
+                            tableRows={[
+                              d.countryRegion,
+                              d.confirmed,
+                              d.recovered,
+                              d.deaths
+                            ]}
+                          />
+                        </a>
+                      </Link>
                     ))}
                 </ul>
               </TableWrapper>
             </Section>
             <Footer
+              description={`The number of reported cases for some countries might be
+            different from the local reports. The API used in this page
+            obtains data from the Center for Systems Science and Engineering
+            (CSSE) at Johns Hopkins University (JHU).`}
               source={source}
               author='Mathdroid'
               lastUpdate={lastUpdatedAt}

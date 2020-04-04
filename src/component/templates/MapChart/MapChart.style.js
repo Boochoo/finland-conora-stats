@@ -37,6 +37,6 @@ export const MapContainer = styled.div`
   }
 
   .leaflet-tile {
-    filter: contrast(25%);
+    /* filter: contrast(25%); */
   }
 `;
