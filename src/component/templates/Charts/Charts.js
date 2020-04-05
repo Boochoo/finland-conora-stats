@@ -18,6 +18,7 @@ import {
 
 import { themeColors } from '../../organisms/Layout/Layout.style';
 import styles from './Charts.style';
+import { mapHospitalArea } from '../../../utils/utils';
 
 const getColors = index => {
   const colors = [
@@ -108,24 +109,38 @@ export const CommonLineChart = props => (
   </ResponsiveContainer>
 );
 
+const renderColorfulLegendText = (value, entry) => {
+  const { color } = entry;
+
+  return (
+    <span style={{ color }}>
+      {value} ({mapHospitalArea()[value].join(', ')})
+    </span>
+  );
+};
+
 export const PieRecharted = props => (
   <ResponsiveContainer height={500} width='100%'>
-    <PieChart>
+    <PieChart margin={{ bottom: 40 }}>
       <Pie
         data={props.data}
         dataKey='cases'
-        cx={200}
-        cy={200}
+        cx={250}
+        cy={150}
         outerRadius={150}
         fill='#8884d8'
         paddingAngle={2}
-        label='cases'
       >
         {props.data.map((entry, index) => (
           <Cell key={entry} fill={getColors(index)} />
         ))}
       </Pie>
       <Tooltip />
+      <Legend
+        formatter={renderColorfulLegendText}
+        verticalAlign='bottom'
+        align='left'
+      />
     </PieChart>
   </ResponsiveContainer>
 );

@@ -33,7 +33,7 @@ export const CommonBottomTable = props => {
           .map((item, index) => {
             const time =
               new Date(item[0]).getFullYear() === 2020
-                ? new Date(item[0]).toGMTString().slice(0, -7)
+                ? new Date(item[0]).toGMTString().slice(0, -13)
                 : item[0];
             return (
               <TableLayoutContainer key={index} tableRows={[time, item[1]]} />

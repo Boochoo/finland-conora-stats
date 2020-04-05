@@ -15,11 +15,8 @@ export const CommonTable = props => {
               <TableLayoutContainer
                 key={index}
                 tableRows={[
-                  props.districts[index][0] === 'null'
-                    ? 'No details'
-                    : props.districts[index][0],
-                  props.districts[index][1],
-                  props.parseDate(rec.date).slice(0, -7)
+                  props.districts[index][0],
+                  props.districts[index][1]
                 ]}
               />
             )

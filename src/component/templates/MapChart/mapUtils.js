@@ -10,7 +10,10 @@ const parseMapDetails = (jsonData, callback) => {
   return jsonData.map(data => {
     const lan = data[1].properties.latitude;
     const lng = data[1].properties.longitude;
-    const gn_name = data[1].properties.Maakunta;
+    const gn_name =
+      data[1].properties.Maakunta === 'Uusimaa'
+        ? 'HUS'
+        : data[1].properties.Maakunta;
     const distName = callback(gn_name);
 
     return {
@@ -32,7 +35,8 @@ const getColors = (feature, data) => {
 
   const districtCases = value =>
     allConfirmed.filter(district => {
-      return district.gn_name === feature && district.cases > value;
+      const name = district.gn_name === 'HUS' ? 'Uusimaa' : district.gn_name;
+      return name === feature && district.cases > value;
     })[0];
 
   return districtCases(150)

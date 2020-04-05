@@ -4,7 +4,8 @@ import fetch from 'isomorphic-fetch';
 import {
   CommonBarChart,
   CommonLineChart,
-  BarWithLine
+  BarWithLine,
+  PieRecharted
 } from '../component/templates/Charts/Charts';
 import { Section } from '../component/organisms/Layout/Layout.style';
 import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
@@ -22,7 +23,9 @@ import {
   displayDate,
   sortData,
   dailyCasesTotal,
-  getChangesInTotalCases
+  getChangesInTotalCases,
+  getHospitalArea,
+  mapHospitalArea
 } from '../utils/utils';
 import Layout from '../component/organisms/Layout/Layout';
 import paths from '../utils/path';
@@ -52,7 +55,7 @@ const Index = ({ data }) => {
 
   const confirmedByDistrict = getConfirmedByDistrict(confirmed);
   const recoveredByDistrict = getConfirmedByDistrict(recovered);
-  const deathsByDistrict = getConfirmedByDistrict(deaths);
+  const deathsByHospitalArea = getHospitalArea(deaths);
 
   const confirmedBySource = getConfirmedBySource(confirmed);
   const confirmedByDate = getConfirmedByDate(confirmed);
@@ -61,6 +64,7 @@ const Index = ({ data }) => {
   const sortedConfirmedBySource = sortData(confirmedBySource);
 
   const totalDailyCases = dailyCasesTotal(Object.entries(confirmedByDate));
+
   const recoveredData = dailyCasesTotal(
     Object.entries(getConfirmedByDate(recovered))
   );
@@ -87,7 +91,7 @@ const Index = ({ data }) => {
     sortedConfirmedByDistrict.reverse()
   );
 
-  const mapConfirmedDailys = mapDataForCharts(Object.entries(totalDailyCases));
+  // const mapConfirmedDailys = mapDataForCharts(Object.entries(totalDailyCases));
 
   const mappedIncremental = getChangesInTotalCases(
     totalDailyCases,
@@ -154,10 +158,9 @@ const Index = ({ data }) => {
             <div className='hero-desktop'>
               <HeroBanner />
             </div>
-            {/* <PieRecharted data={mapSortedConfirmedByDistrict} /> */}
 
             <div>
-              <h2>Confirmed cases by district</h2>
+              <h2>Confirmed cases by health care district</h2>
 
               <CommonBarChart
                 data={mapSortedConfirmedByDistrict}
@@ -167,44 +170,34 @@ const Index = ({ data }) => {
               />
 
               <ConfirmedByRegionTable
-                headers={['Health district', 'Cases']}
-                data={sortedConfirmedByDistrict}
+                headers={['Health care district', 'Cases']}
+                data={sortedConfirmedByDistrict.reverse()}
                 districts={Object.entries(recoveredByDistrict)}
               />
             </div>
-            <div>
-              <h2>Infection origin by country</h2>
 
-              <CommonBarChart
-                data={mapSortedConfirmed}
-                marginBottom={75}
-                fillColor={themeColors.lightGreen}
-              />
-              <CommonBottomTable
-                headers={['Origin', 'Cases']}
-                data={sortedConfirmedBySource.reverse()}
-              />
-            </div>
             <HeroBottomWrapper>
               <div>
                 <h2>Recovered</h2>
 
                 <CommonTable
-                  headers={['Health district', 'Cases', 'Latest report time']}
+                  headers={['Health care district', 'Cases']}
                   data={recovered}
                   districts={Object.entries(recoveredByDistrict)}
-                  parseDate={displayDate}
                 />
               </div>
 
               <div>
                 <h2>Deaths :(</h2>
 
+                <PieRecharted
+                  data={mapDataForCharts(Object.entries(deathsByHospitalArea))}
+                />
+
                 <CommonTable
-                  headers={['Health district', 'Cases', 'Latest report time']}
+                  headers={['Health care area', 'Cases']}
                   data={deaths}
-                  districts={Object.entries(deathsByDistrict)}
-                  parseDate={displayDate}
+                  districts={Object.entries(deathsByHospitalArea)}
                 />
               </div>
             </HeroBottomWrapper>
@@ -213,13 +206,6 @@ const Index = ({ data }) => {
               <CommonBottomTable
                 headers={['Date', 'Cases']}
                 data={Object.entries(totalDailyCases)}
-              />
-            </div>
-            <div>
-              <h2>Confirmed cases by date and announcement time</h2>
-              <CommonBottomTable
-                headers={['Date and time', 'Cases']}
-                data={sortedConfirmed}
               />
             </div>
             <Footer

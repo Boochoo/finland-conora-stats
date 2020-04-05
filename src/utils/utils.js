@@ -8,20 +8,47 @@ export const getConfirmedByDate = data =>
     {}
   );
 
-export const getConfirmedByDistrict = data =>
+export const mapHospitalArea = () => {
+  return {
+    HYKS: [
+      'Helsinki and Uusimaa',
+      'Etelä-Karjala',
+      'Kymenlaakso',
+      'Päijät-Häme'
+    ],
+    KYS: [
+      'Pohjoinen-Savo',
+      'Etelä-Savo',
+      'Itä-Savo',
+      'Keski-Suomi',
+      'Pohjois-Karjala'
+    ],
+    OYS: [
+      'Pohjois-Pohjanmaa',
+      'Kainuu',
+      'Keski-Pohjanmaa',
+      'Lapin',
+      'Länsi-Pohja'
+    ],
+    TAYS: ['Pirkanmaa', 'Etelä-Pohjanmaa', 'Kanta-Häme'],
+    TYKS: ['Varsinais-Suomi', 'Satakunta', 'Vaasa']
+  };
+};
+
+const getCombinedSum = (data, prop) =>
   data.reduce((prev, curr) => {
-    let district = curr.healthCareDistrict;
-    let location =
-      district === 'HUS' ? 'Uusimaa' : district ? district : 'No details';
+    let district = curr[prop];
+    let location = district ? district : 'No details';
     return (prev[location] = ++prev[location] || 1), prev;
   }, {});
 
+export const getConfirmedByDistrict = data =>
+  getCombinedSum(data, 'healthCareDistrict');
+
 export const getConfirmedBySource = data =>
-  data.reduce((prev, curr) => {
-    let sources = curr.infectionSourceCountry;
-    let source = sources ? sources : 'No details';
-    return (prev[source] = ++prev[source] || 1), prev;
-  }, {});
+  getCombinedSum(data, 'infectionSourceCountry');
+
+export const getHospitalArea = data => getCombinedSum(data, 'area');
 
 export const sortData = data =>
   Object.entries(data)
@@ -46,7 +73,7 @@ export const dailyCasesTotal = data => {
   });
 
   return sortedData.reduce((acc, obj) => {
-    let key = obj.date.slice(5, -18);
+    let key = obj.date.slice(5, -13);
     acc[key] = (acc[key] || 0) + obj.cases;
     return acc;
   }, {});
