@@ -22,16 +22,16 @@ import { mapHospitalArea } from '../../../utils/utils';
 
 const getColors = index => {
   const colors = [
-    '#29c7ac',
-    '#c02739',
-    '#84142d',
-    '#54123b',
-    '#ffa41b',
     '#000839',
     '#005082',
     '#00a8cc',
     '#00bdaa',
-    '#400082'
+    '#400082',
+    '#29c7ac',
+    '#c02739',
+    '#84142d',
+    '#54123b',
+    '#ffa41b'
   ];
 
   return colors[index % 20];
