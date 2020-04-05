@@ -34,7 +34,7 @@ const getColors = index => {
     '#ffa41b'
   ];
 
-  return colors[index % 20];
+  return colors[index];
 };
 
 export const CommonBarChart = props => (
@@ -109,7 +109,7 @@ export const CommonLineChart = props => (
   </ResponsiveContainer>
 );
 
-const renderColorfulLegendText = (value, entry) => {
+const renderLegendWithText = (value, entry) => {
   const { color } = entry;
 
   return (
@@ -120,7 +120,10 @@ const renderColorfulLegendText = (value, entry) => {
 };
 
 export const PieRecharted = props => (
-  <ResponsiveContainer height={450} width={props.width}>
+  <ResponsiveContainer
+    height={props.isDeathCasesChart ? 450 : 400}
+    width={props.width}
+  >
     <PieChart margin={{ bottom: 40 }}>
       <Pie
         data={props.data}
@@ -137,9 +140,9 @@ export const PieRecharted = props => (
       </Pie>
       <Tooltip />
       <Legend
-        formatter={renderColorfulLegendText}
+        formatter={props.isDeathCasesChart ? renderLegendWithText : null}
         verticalAlign='bottom'
-        align='left'
+        align={`${props.isDeathCasesChart ? 'left' : 'center'}`}
       />
     </PieChart>
   </ResponsiveContainer>

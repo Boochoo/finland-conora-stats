@@ -180,6 +180,11 @@ const Index = ({ data }) => {
               <div>
                 <h2>Recovered</h2>
 
+                <PieRecharted
+                  data={mapDataForCharts(Object.entries(recoveredByDistrict))}
+                  width='100%'
+                />
+
                 <CommonTable
                   headers={['Health care district', 'Cases']}
                   data={recovered}
@@ -192,6 +197,8 @@ const Index = ({ data }) => {
 
                 <PieRecharted
                   data={mapDataForCharts(Object.entries(deathsByHospitalArea))}
+                  width='100%'
+                  isDeathCasesChart
                 />
 
                 <CommonTable
