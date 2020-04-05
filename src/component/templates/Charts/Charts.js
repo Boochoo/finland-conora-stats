@@ -120,12 +120,12 @@ const renderColorfulLegendText = (value, entry) => {
 };
 
 export const PieRecharted = props => (
-  <ResponsiveContainer height={500} width='100%'>
+  <ResponsiveContainer height={450} width={props.width}>
     <PieChart margin={{ bottom: 40 }}>
       <Pie
         data={props.data}
         dataKey='cases'
-        cx={250}
+        cx={props.width / 2}
         cy={150}
         outerRadius={150}
         fill='#8884d8'
