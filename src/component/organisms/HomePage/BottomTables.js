@@ -31,10 +31,8 @@ export const CommonBottomTable = props => {
       <ul>
         {props.data
           .map((item, index) => {
-            const time =
-              new Date(item[0]).getFullYear() === 2020
-                ? new Date(item[0]).toGMTString().slice(0, -13)
-                : item[0];
+            const time = new Date(item[0]).toLocaleString().slice(0, -10);
+
             return (
               <TableLayoutContainer key={index} tableRows={[time, item[1]]} />
             );

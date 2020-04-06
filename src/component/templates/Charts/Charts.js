@@ -121,16 +121,16 @@ const renderLegendWithText = (value, entry) => {
 
 export const PieRecharted = props => (
   <ResponsiveContainer
-    height={props.isDeathCasesChart ? 450 : 400}
+    height={props.isDeathCasesChart ? 500 : 400}
     width={props.width}
   >
-    <PieChart margin={{ bottom: 40 }}>
+    <PieChart margin={{ bottom: 30 }}>
       <Pie
         data={props.data}
         dataKey='cases'
         cx={props.width / 2}
-        cy={150}
-        outerRadius={150}
+        cy={135}
+        outerRadius={130}
         fill='#8884d8'
         paddingAngle={2}
       >
