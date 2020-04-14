@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import fetch from 'isomorphic-fetch';
 
 import {
@@ -183,6 +184,15 @@ const Index = ({ data }) => {
               <h2>
                 Coronavirus symptoms survey collected by Symptomradar(Oiretutka){' '}
               </h2>
+
+              <div>
+                <p>
+                  You can fill the form by heading to{' '}
+                  <Link href='//www.oiretutka.fi/embed/v1/index.en.html'>
+                    <a target='_blank'>Oiretutka.fi</a>
+                  </Link>
+                </p>
+              </div>
               <CityLevelData />
             </Fragment>
 
@@ -238,6 +248,11 @@ const Index = ({ data }) => {
                   author: 'Futurice and Helsinki Sanomat',
                   source: `//github.com/futurice/symptomradar`,
                   lastUpdate: ''
+                },
+                {
+                  description: `The website is done by`,
+                  author: 'Ermias Hailemicheal',
+                  descSource: '//www.linkedin.com/in/ermi/'
                 }
               ]}
             />
