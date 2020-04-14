@@ -16,7 +16,7 @@ import {
   Area
 } from 'recharts';
 
-import { themeColors } from '../../organisms/Layout/Layout.style';
+import { themeColors, rgbaColors } from '../../organisms/Layout/Layout.style';
 import styles from './Charts.style';
 import { mapHospitalArea } from '../../../utils/utils';
 
@@ -36,6 +36,19 @@ const getColors = index => {
 
   return colors[index];
 };
+
+const CustomisedToolPit = () => (
+  <Tooltip
+    contentStyle={{ backgroundColor: themeColors.black }}
+    labelStyle={{
+      color: themeColors.creamWhite,
+      fontSize: '1.24rem',
+      marginBottom: '0.5rem',
+      fontWeight: '800'
+    }}
+    itemStyle={{ color: themeColors.creamWhite }}
+  />
+);
 
 export const CommonBarChart = props => (
   <ResponsiveContainer width='100%' height={500} className='chart-area'>
@@ -57,16 +70,7 @@ export const CommonBarChart = props => (
         tick={{ fontSize: props.smallerFont ? 12 : 16 }}
       />
       <YAxis />
-      <Tooltip
-        contentStyle={{ backgroundColor: themeColors.black }}
-        labelStyle={{
-          color: themeColors.creamWhite,
-          fontSize: '1.24rem',
-          marginBottom: '0.5rem',
-          fontWeight: '800'
-        }}
-        itemStyle={{ color: themeColors.creamWhite }}
-      />
+      {CustomisedToolPit()}
       <Bar type='monotone' dataKey='cases' fill={props.fillColor} />
     </BarChart>
   </ResponsiveContainer>
@@ -85,16 +89,7 @@ export const CommonLineChart = props => (
       ) : (
         <YAxis />
       )}
-      <Tooltip
-        contentStyle={{ backgroundColor: themeColors.black }}
-        labelStyle={{
-          color: themeColors.creamWhite,
-          fontSize: '1.24rem',
-          marginBottom: '0.5rem',
-          fontWeight: '800'
-        }}
-        itemStyle={{ color: themeColors.creamWhite }}
-      />
+      {CustomisedToolPit()}
 
       <CartesianGrid stroke='#eee' strokeDasharray='5 5' />
       <Line
@@ -121,19 +116,11 @@ const renderLegendWithText = (value, entry) => {
 
 export const PieRecharted = props => (
   <ResponsiveContainer
-    height={props.isDeathCasesChart ? 500 : 400}
+    height={props.isDeathCasesChart ? 350 : 200}
     width={props.width}
   >
     <PieChart margin={{ bottom: 30 }}>
-      <Pie
-        data={props.data}
-        dataKey='cases'
-        cx={props.width / 2}
-        cy={135}
-        outerRadius={130}
-        fill='#8884d8'
-        paddingAngle={2}
-      >
+      <Pie data={props.data} dataKey='cases' paddingAngle={2}>
         {props.data.map((entry, index) => (
           <Cell key={entry} fill={getColors(index)} />
         ))}
@@ -156,16 +143,7 @@ export const BarWithLine = props => (
     >
       <XAxis dataKey='name' />
       <YAxis />
-      <Tooltip
-        contentStyle={{ backgroundColor: themeColors.black }}
-        labelStyle={{
-          color: themeColors.creamWhite,
-          fontSize: '1.24rem',
-          marginBottom: '0.5rem',
-          fontWeight: '800'
-        }}
-        itemStyle={{ color: themeColors.creamWhite }}
-      />
+      {CustomisedToolPit()}
       <Legend />
       <CartesianGrid stroke='#f5f5f5' strokeDasharray='3' />
 
@@ -203,5 +181,122 @@ export const BarWithLine = props => (
         stackId='a'
       />
     </ComposedChart>
+  </ResponsiveContainer>
+);
+
+const getCustomColors = index => {
+  const colors = [rgbaColors.orange2, rgbaColors.orange3, rgbaColors.orange4];
+
+  return colors[index];
+};
+
+const CustomBars = data =>
+  data.map((entry, i) => {
+    return Object.keys(entry).map((key, index) => {
+      if (key !== 'group') {
+        const keyArr = key.split('_');
+        const name = keyArr[keyArr.length - 1];
+
+        return (
+          <Bar
+            type='linear'
+            dataKey={key}
+            name={name}
+            stackId={entry.group}
+            fill={getCustomColors(index)}
+            alignmentBaseline='middle'
+          >
+            {data.map((item, i) => {
+              return <Cell width={27} cursor='pointer' key={`cell-${i}`} />;
+            })}
+          </Bar>
+        );
+      }
+    });
+  });
+
+export const CityLevelBarChartBU = props => (
+  <ResponsiveContainer width='100%' height={500}>
+    <BarChart
+      data={props.data}
+      margin={{ top: 15, right: 0, left: 0, bottom: 100 }}
+      barCategoryGap={0}
+    >
+      <XAxis
+        dataKey='group'
+        interval={0}
+        angle={-45}
+        textAnchor='end'
+        tickSize={0}
+      />
+      <YAxis />
+
+      {CustomisedToolPit()}
+
+      {CustomBars(props.data)}
+    </BarChart>
+  </ResponsiveContainer>
+);
+
+const renderLegend = (value, entry) => {
+  const keyArr = value.split('_');
+  const name = keyArr[keyArr.length - 1];
+
+  return <span>{name}</span>;
+};
+
+const payloadFormatter = data => {
+  if (data.payload.length === 0) return;
+
+  return data.payload.map((el, index) => {
+    const key = el.name.split('_');
+    const name = key[key.length - 1];
+
+    return (
+      <div
+        style={{
+          backgroundColor: themeColors.black,
+          color: themeColors.creamWhite,
+          marginBottom: '0.5rem',
+          padding: '1rem'
+        }}
+        key={`city-level-toolpit-${index}`}
+      >
+        <p
+          style={{
+            textTransform: 'capitalize',
+            margin: 0
+          }}
+        >
+          {name} : <strong>{el.value}</strong>{' '}
+        </p>
+      </div>
+    );
+  });
+};
+
+export const CityLevelBarChart = props => (
+  <ResponsiveContainer width={props.width} height={150}>
+    <PieChart>
+      <Pie data={props.data} dataKey='cases' paddingAngle={2} cursor='pointer'>
+        {props.data.map((entry, index) => {
+          return <Cell key={entry} fill={getCustomColors(index)} />;
+        })}
+      </Pie>
+
+      <Tooltip
+        content={payloadFormatter}
+        contentStyle={{ backgroundColor: themeColors.black }}
+        labelStyle={{
+          color: themeColors.creamWhite,
+          fontSize: '1.24rem',
+          marginBottom: '0.5rem',
+          fontWeight: '800'
+        }}
+        itemStyle={{ color: themeColors.creamWhite }}
+      />
+
+      <Legend formatter={renderLegend} verticalAlign='bottom' align='center' />
+    </PieChart>
   </ResponsiveContainer>
 );

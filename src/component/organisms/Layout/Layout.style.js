@@ -10,7 +10,15 @@ const themeColors = {
   lightGray: '#E0E0E0',
   lightRed: '#c02739',
   lightGreen: '#29c7ac',
-  black: '#333'
+  black: '#12181b',
+  orange: '234, 98, 39'
+};
+
+const rgbaColors = {
+  orange1: `rgba(${themeColors.orange}, 0.25)`,
+  orange2: `rgba(${themeColors.orange}, 0.5)`,
+  orange3: `rgba(${themeColors.orange}, 0.75)`,
+  orange4: `rgba(${themeColors.orange}, 1)`
 };
 
 export const GlobalStyle = createGlobalStyle`
@@ -76,5 +84,6 @@ module.exports = {
   Container,
   MainContainer,
   GlobalStyle,
-  themeColors
+  themeColors,
+  rgbaColors
 };

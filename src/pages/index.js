@@ -1,12 +1,14 @@
 import { Fragment, useState } from 'react';
 import dynamic from 'next/dynamic';
 import fetch from 'isomorphic-fetch';
+
 import {
   CommonBarChart,
   CommonLineChart,
   BarWithLine,
   PieRecharted
 } from '../component/templates/Charts/Charts';
+import CityLevelData from '../component/templates/CityLevelData';
 import { Section } from '../component/organisms/Layout/Layout.style';
 import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
 import {
@@ -51,6 +53,7 @@ const HeroTopWrapper = styled.div``;
 const HeroBottomWrapper = styled.div``;
 
 const Index = ({ data }) => {
+  if (!data) return null;
   const { confirmed, deaths, recovered } = data;
 
   const confirmedByDistrict = getConfirmedByDistrict(confirmed);
@@ -91,8 +94,6 @@ const Index = ({ data }) => {
     sortedConfirmedByDistrict.reverse()
   );
 
-  // const mapConfirmedDailys = mapDataForCharts(Object.entries(totalDailyCases));
-
   const mappedIncremental = getChangesInTotalCases(
     totalDailyCases,
     recoveredData,
@@ -103,33 +104,41 @@ const Index = ({ data }) => {
 
   const HeroBanner = () => (
     <Fragment>
-      <HeroContainer
-        title='Finland'
-        recovered={recovered.length}
-        confirmed={confirmed.length}
-        deaths={deaths.length}
-      />
-      <h2>Total confirmed and daily cases</h2>
-      <ButtonsWrapper>
-        <Button
-          onClick={() => {
-            setLinear(true);
-          }}
-          className={isLinear ? 'is-active' : ''}
-        >
-          Linear
-        </Button>
-        <Button
-          onClick={() => {
-            setLinear(false);
-          }}
-          className={!isLinear ? 'is-active' : ''}
-        >
-          Logarithmic
-        </Button>
-      </ButtonsWrapper>
-      <CommonLineChart data={mappedIncremental} isLinear={isLinear} />
-      <BarWithLine data={mappedIncremental} />
+      <Fragment>
+        <HeroContainer
+          title='Finland'
+          recovered={recovered.length}
+          confirmed={confirmed.length}
+          deaths={deaths.length}
+        />
+      </Fragment>
+      <Fragment>
+        <h2>Total confirmed and daily cases</h2>
+        <div>
+          <ButtonsWrapper>
+            <Button
+              onClick={() => {
+                setLinear(true);
+              }}
+              className={isLinear ? 'is-active' : ''}
+            >
+              Linear
+            </Button>
+            <Button
+              onClick={() => {
+                setLinear(false);
+              }}
+              className={!isLinear ? 'is-active' : ''}
+            >
+              Logarithmic
+            </Button>
+          </ButtonsWrapper>
+          <CommonLineChart data={mappedIncremental} isLinear={isLinear} />
+        </div>
+      </Fragment>
+      <Fragment>
+        <BarWithLine data={mappedIncremental} />
+      </Fragment>
     </Fragment>
   );
 
@@ -168,13 +177,14 @@ const Index = ({ data }) => {
                 smallerFont
                 fillColor={themeColors.lightRed}
               />
-
-              <ConfirmedByRegionTable
-                headers={['Health care district', 'Cases']}
-                data={sortedConfirmedByDistrict.reverse()}
-                districts={Object.entries(recoveredByDistrict)}
-              />
             </div>
+
+            <Fragment>
+              <h2>
+                Coronavirus symptoms survey collected by Symptomradar(Oiretutka){' '}
+              </h2>
+              <CityLevelData />
+            </Fragment>
 
             <HeroBottomWrapper>
               <div>
@@ -216,10 +226,20 @@ const Index = ({ data }) => {
               />
             </div>
             <Footer
-              description={`The data in this page is obtained from Helsinki Sanomat's API, which collects it from THL's published reports.`}
-              author='HS-Datadesk'
-              source={localDataSource}
-              lastUpdate={lastUpdatedAt}
+              footerElements={[
+                {
+                  description: `The Coronanavirus updates in this page are obtained from Helsinki Sanomat's API, which collects it from THL's published reports.`,
+                  author: 'HS-Datadesk',
+                  source: localDataSource,
+                  lastUpdate: lastUpdatedAt
+                },
+                {
+                  description: `Symptomradar (Oiretutka) crowdsources coronavirus symptoms from news media audience`,
+                  author: 'Futurice and Helsinki Sanomat',
+                  source: `//github.com/futurice/symptomradar`,
+                  lastUpdate: ''
+                }
+              ]}
             />
           </ContentContainer>
         </ContentWrapper>
