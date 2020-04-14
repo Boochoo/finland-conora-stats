@@ -24,13 +24,11 @@ app
       );
     });
 
-    /*    
     server.get('/country', (req, res) => {
       if (req.params.id) return res.redirect(`/country?id=${req.query.id}`);
 
       res.redirect(301, '/world');
-    }); 
-    */
+    });
 
     server.get('*', (req, res) => handle(req, res));
 
