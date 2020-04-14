@@ -91,6 +91,15 @@ export const ContentContainer = styled.div`
       display: none;
     }
   }
+
+  a {
+    color: ${themeColors.green};
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const MenuBar = styled.div`
