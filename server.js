@@ -14,9 +14,23 @@ app
     server.get('/world', (req, res) =>
       app.render(req, res, '/world', req.query)
     );
-    server.get('/country', (req, res) =>
-      app.render(req, res, '/country', req.query)
-    );
+
+    server.get('/country/:id', (req, res) => {
+      return app.render(
+        req,
+        res,
+        '/country',
+        Object.assign({ id: req.params.id }, req.query)
+      );
+    });
+
+    /*    
+    server.get('/country', (req, res) => {
+      if (req.params.id) return res.redirect(`/country?id=${req.query.id}`);
+
+      res.redirect(301, '/world');
+    }); 
+    */
 
     server.get('*', (req, res) => handle(req, res));
 

@@ -8,7 +8,7 @@ export const Container = styled.div`
   margin-bottom: 2rem;
 
   h1 {
-    color: #333;
+    color: ${themeColors.black};
     text-align: left;
   }
 
@@ -96,7 +96,7 @@ export const ContentContainer = styled.div`
 export const MenuBar = styled.div`
   padding: 1.5rem;
   margin-bottom: 2.5rem;
-  background: #333;
+  background: ${themeColors.black};
   @media screen and (min-width: 880px) {
     position: fixed;
     top: 0.15rem;

@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { useRouter, withRouter } from 'next/router';
 import fetch from 'isomorphic-fetch';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
@@ -85,13 +85,17 @@ const Country = props => {
               />
             </div>
             <Footer
-              description={`The number of reported cases for some countries might be
-              different from the local reports. The API used in this page
-              obtains data from the Center for Systems Science and Engineering
-              (CSSE) at Johns Hopkins University (JHU).`}
-              source={source}
-              author='Mathdroid'
-              lastUpdate={lastUpdatedAt}
+              footerElements={[
+                {
+                  description: `The number of reported cases for some countries might be
+                  different from the local reports. The API used in this page
+                  obtains data from the Center for Systems Science and Engineering
+                  (CSSE) at Johns Hopkins University (JHU).`,
+                  author: 'Mathdroid',
+                  source: source,
+                  lastUpdate: lastUpdatedAt
+                }
+              ]}
             />
           </ContentContainer>
         </ContentWrapper>
@@ -102,11 +106,11 @@ const Country = props => {
 
 Country.getInitialProps = async ({ query }) => {
   const response = await fetch(
-    `https://covid19.mathdro.id/api/countries/${query.country}/confirmed`
+    `https://covid19.mathdro.id/api/countries/${query.id}/confirmed`
   );
   const data = await response.json();
 
   return { data };
 };
 
-export default Country;
+export default withRouter(Country);

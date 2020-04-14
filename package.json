@@ -25,6 +25,7 @@
     "next": "^9.3.0",
     "nextjs-fonts": "^0.22.0",
     "nextjs-sitemap-generator": "^0.5.0",
+    "papaparse": "^5.2.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-leaflet": "^2.6.3",

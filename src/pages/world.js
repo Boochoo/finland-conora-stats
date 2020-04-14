@@ -1,10 +1,12 @@
+import fetch from 'isomorphic-fetch';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { Component, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import fetch from 'isomorphic-fetch';
+
 import { getConfirmedByCountry } from '../utils/utils';
 import Layout from '../component/organisms/Layout/Layout';
+import { themeColors } from '../component/organisms/Layout/Layout.style';
 import paths from '../utils/path';
 import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
 import {
@@ -26,9 +28,6 @@ const WorldMap = dynamic(
   }
 );
 
-const $creamWhite = '#f4f7f6';
-const $gray = '#E0E0E0';
-const $blue = '#0b1560';
 const Section = styled.section`
   margin-top: 2.5rem;
 
@@ -67,7 +66,7 @@ const Section = styled.section`
 const InputWrapper = styled.div`
   position: sticky;
   top: 0;
-  background-color: ${$creamWhite};
+  background-color: ${themeColors.creamWhite};
   padding: 1rem 0;
   label {
     display: block;
@@ -83,10 +82,10 @@ const InputWrapper = styled.div`
   input {
     padding: 0.5rem;
     width: 100%;
-    border: solid 0.1rem ${$gray};
-    background-color: ${$creamWhite};
+    border: solid 0.1rem ${themeColors.gray};
+    background-color: ${themeColors.creamWhite};
     &:focus {
-      border: solid 0.125rem ${$blue};
+      border: solid 0.125rem ${themeColors.blue};
       border-top: none;
       outline: none;
     }
@@ -141,12 +140,14 @@ const World = props => {
 
   const screenRender = width => {};
   const HeroBanner = () => (
-    <HeroContainer
-      title='World'
-      confirmed={confirmed.value.toLocaleString()}
-      recovered={recovered.value.toLocaleString()}
-      deaths={deaths.value.toLocaleString()}
-    />
+    <>
+      <HeroContainer
+        title='World'
+        confirmed={confirmed.value.toLocaleString()}
+        recovered={recovered.value.toLocaleString()}
+        deaths={deaths.value.toLocaleString()}
+      />
+    </>
   );
 
   return (
@@ -194,6 +195,7 @@ const World = props => {
                     : 'death'
                 } cases`}</strong>
               </p>
+
               <TableWrapper tableSize={4}>
                 <li className='header'>
                   <div>
@@ -234,8 +236,8 @@ const World = props => {
                   {searchResults.length > 0 &&
                     searchResults.map((d, i) => (
                       <Link
-                        href={`/[country]`}
-                        as={`/${d.countryRegion.toLowerCase()}`}
+                        href={`/country?id=${d.countryRegion.toLowerCase()}`}
+                        key={`country-${i}`}
                       >
                         <a>
                           <TableLayoutContainer
@@ -254,13 +256,17 @@ const World = props => {
               </TableWrapper>
             </Section>
             <Footer
-              description={`The number of reported cases for some countries might be
-            different from the local reports. The API used in this page
-            obtains data from the Center for Systems Science and Engineering
-            (CSSE) at Johns Hopkins University (JHU).`}
-              source={source}
-              author='Mathdroid'
-              lastUpdate={lastUpdatedAt}
+              footerElements={[
+                {
+                  description: `The number of reported cases for some countries might be
+                  different from the local reports. The API used in this page
+                  obtains data from the Center for Systems Science and Engineering
+                  (CSSE) at Johns Hopkins University (JHU).`,
+                  author: 'Mathdroid',
+                  source: source,
+                  lastUpdate: lastUpdatedAt
+                }
+              ]}
             />
           </ContentContainer>
         </ContentWrapper>
