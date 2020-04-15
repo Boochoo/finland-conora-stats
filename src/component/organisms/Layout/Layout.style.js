@@ -30,7 +30,8 @@ export const GlobalStyle = createGlobalStyle`
     color: #333;
     padding: 0;
     margin: 0;
-    background: ${themeColors.creamWhite}
+    background: ${themeColors.creamWhite};
+    line-height: 1.25;
   }
 
   *,

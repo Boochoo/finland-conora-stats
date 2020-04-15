@@ -1,13 +1,12 @@
 import { Fragment, useState } from 'react';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import fetch from 'isomorphic-fetch';
 
 import {
   CommonBarChart,
   CommonLineChart,
   BarWithLine,
-  PieRecharted
+  PieRecharted,
 } from '../component/templates/Charts/Charts';
 import CityLevelData from '../component/templates/CityLevelData';
 import { Section } from '../component/organisms/Layout/Layout.style';
@@ -17,7 +16,7 @@ import {
   ContentWrapper,
   MenuBar,
   ButtonsWrapper,
-  Button
+  Button,
 } from '../component/organisms/HeroContainer/HeroContainer.style';
 import {
   getConfirmedByDistrict,
@@ -28,14 +27,14 @@ import {
   dailyCasesTotal,
   getChangesInTotalCases,
   getHospitalArea,
-  mapHospitalArea
+  mapHospitalArea,
 } from '../utils/utils';
 import Layout from '../component/organisms/Layout/Layout';
 import paths from '../utils/path';
 import { CommonTable } from '../component/organisms/HomePage/CommonTable';
 import {
   ConfirmedByRegionTable,
-  CommonBottomTable
+  CommonBottomTable,
 } from '../component/organisms/HomePage/BottomTables';
 import styled from 'styled-components';
 import Header from '../component/organisms/Header/Header';
@@ -45,7 +44,7 @@ import { themeColors } from '../component/organisms/Layout/Layout.style';
 const MapChartWithNoSSR = dynamic(
   () => import('../component/templates/MapChart/MapChart'),
   {
-    ssr: false
+    ssr: false,
   }
 );
 
@@ -82,8 +81,8 @@ const Index = ({ data }) => {
 
   const localDataSource = `//github.com/HS-Datadesk/koronavirus-avoindata`;
   const lastUpdatedAt = sortedConfirmed[sortedConfirmed.length - 1][0];
-  const mapDataForCharts = data =>
-    data.map(item => {
+  const mapDataForCharts = (data) =>
+    data.map((item) => {
       return { name: item[0], cases: item[1] };
     });
 
@@ -181,18 +180,6 @@ const Index = ({ data }) => {
             </div>
 
             <Fragment>
-              <h2>
-                Coronavirus symptoms survey collected by Symptomradar(Oiretutka){' '}
-              </h2>
-
-              <div>
-                <p>
-                  You can fill the form by heading to{' '}
-                  <Link href='//www.oiretutka.fi/embed/v1/index.en.html'>
-                    <a target='_blank'>Oiretutka.fi</a>
-                  </Link>
-                </p>
-              </div>
               <CityLevelData />
             </Fragment>
 
@@ -241,19 +228,19 @@ const Index = ({ data }) => {
                   description: `The Coronanavirus updates in this page are obtained from Helsinki Sanomat's API, which collects it from THL's published reports.`,
                   author: 'HS-Datadesk',
                   source: localDataSource,
-                  lastUpdate: lastUpdatedAt
+                  lastUpdate: lastUpdatedAt,
                 },
                 {
                   description: `Symptomradar (Oiretutka) crowdsources coronavirus symptoms from news media audience`,
                   author: 'Futurice and Helsinki Sanomat',
                   source: `//github.com/futurice/symptomradar`,
-                  lastUpdate: ''
+                  lastUpdate: '',
                 },
                 {
                   description: `The website is done by`,
                   author: 'Ermias Hailemicheal',
-                  descSource: '//www.linkedin.com/in/ermi/'
-                }
+                  descSource: '//www.linkedin.com/in/ermi/',
+                },
               ]}
             />
           </ContentContainer>

@@ -6,6 +6,7 @@ import { CityLevelBarChart } from '../Charts/Charts';
 import {
   DropDownContainer,
   DropDownHero,
+  DropDownHeader,
 } from '../../organisms/DropDownContainer/';
 
 const ChartWrapper = styled.div`
@@ -26,6 +27,7 @@ const ChartContainer = styled.div`
 const CityLevelData = () => {
   const [rows, setRows] = useState(null);
   const [city, setCity] = useState('Helsinki');
+  const [description, setDescription] = useState('');
 
   const initialRowData = (items) =>
     items
@@ -40,9 +42,10 @@ const CityLevelData = () => {
     const getData = async () => {
       const url = `https://data.oiretutka.fi/city_level_general_results.json`;
       const response = await fetch(url);
-      const { data } = await response.json();
+      const { data, meta } = await response.json();
 
       setRows(data);
+      setDescription(meta.description);
     };
 
     getData();
@@ -142,6 +145,7 @@ const CityLevelData = () => {
   return (
     rows && (
       <div>
+        <DropDownHeader description={description} />
         <DropDownContainer
           city={city}
           handleCityChange={(event) => handleCityChange(event.target.value)}
@@ -150,7 +154,7 @@ const CityLevelData = () => {
 
         <DropDownHero rowData={initialRowData(rows)} />
 
-        <ChartWrapper className='blah'>
+        <ChartWrapper>
           {mapDataForCharts(dataReducer(rows))
             .map((item, index) => (
               <ChartContainer key={`city-level-chart-${index}`}>
