@@ -6,34 +6,37 @@ import {
   Popup,
   GeoJSON,
   Tooltip,
-  CircleMarker
+  CircleMarker,
 } from 'react-leaflet';
 import L from 'leaflet';
+
 import { MapContainer } from './MapChart.style';
 import MapJson from '../../../utils/finland-provinces.json';
 import {
   parseMapDetails,
   getConfirmedCases,
-  getColors
+  getColors,
 } from '../MapChart/mapUtils';
+import Legend from './Legend';
 
 export default class MyMap extends Component {
   render() {
     const dataMarkers = Object.entries(MapJson.features);
     const confirmedCases = getConfirmedCases(this.props.data);
 
-    const filterByName = districtName =>
-      confirmedCases.filter(cases => {
+    const filterByName = (districtName) =>
+      confirmedCases.filter((cases) => {
         const district =
           cases.district === 'Vaasa' ? 'Pohjanmaa' : cases.district;
         return district && districtName.includes(district);
       });
 
-    const getPositionsData = data => parseMapDetails(data, filterByName);
+    const getPositionsData = (data) => parseMapDetails(data, filterByName);
 
-    const colors = feature => getColors(feature, getPositionsData(dataMarkers));
+    const colors = (feature) =>
+      getColors(feature, getPositionsData(dataMarkers));
 
-    const featureWithStyle = feature => {
+    const featureWithStyle = (feature) => {
       const district = feature.properties.Maakunta;
 
       return {
@@ -41,7 +44,7 @@ export default class MyMap extends Component {
         weight: 2,
         opacity: 1,
         dashArray: '3',
-        fillOpacity: 0.7
+        fillOpacity: 0.7,
       };
     };
 
@@ -71,8 +74,8 @@ export default class MyMap extends Component {
                 color='#d6bd8d'
                 weight={5}
                 radius={15}
-                onMouseOver={e => e.target.openPopup()}
-                onMouseOut={e => e.target.closePopup()}
+                onMouseOver={(e) => e.target.openPopup()}
+                onMouseOut={(e) => e.target.closePopup()}
               >
                 {
                   <Popup
@@ -91,6 +94,7 @@ export default class MyMap extends Component {
               </CircleMarker>
             </Marker>
           ))}
+          <Legend />
         </Map>
       </MapContainer>
     );

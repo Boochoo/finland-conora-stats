@@ -1,13 +1,13 @@
-const getConfirmedCases = data =>
-  data.map(d => {
+const getConfirmedCases = (data) =>
+  data.map((d) => {
     return {
       district: d[0],
-      cases: d[1]
+      cases: d[1],
     };
   });
 
 const parseMapDetails = (jsonData, callback) => {
-  return jsonData.map(data => {
+  return jsonData.map((data) => {
     const lan = data[1].properties.latitude;
     const lng = data[1].properties.longitude;
     const gn_name =
@@ -20,43 +20,43 @@ const parseMapDetails = (jsonData, callback) => {
       lan,
       lng,
       gn_name,
-      cases: distName.length > 0 ? distName[0].cases : 0
+      cases: distName.length > 0 ? distName[0].cases : 0,
     };
   });
 };
 
 const getColors = (feature, data) => {
-  const allConfirmed = data.map(d => {
+  const allConfirmed = data.map((d) => {
     return {
       cases: d.cases,
-      gn_name: d.gn_name
+      gn_name: d.gn_name,
     };
   });
 
-  const districtCases = value =>
-    allConfirmed.filter(district => {
+  const districtCases = (value) =>
+    allConfirmed.filter((district) => {
       const name = district.gn_name === 'HUS' ? 'Uusimaa' : district.gn_name;
       return name === feature && district.cases > value;
     })[0];
 
-  return districtCases(150)
+  return districtCases(1000)
     ? '#800026'
+    : districtCases(500)
+    ? '#BD0026'
+    : districtCases(200)
+    ? '#E31A1C'
     : districtCases(100)
-    ? '#A16928'
+    ? '#FC4E2A'
     : districtCases(50)
-    ? '#bd925a'
-    : districtCases(25)
-    ? '#d6bd8d'
+    ? '#FD8D3C'
+    : districtCases(20)
+    ? '#FEB24C'
     : districtCases(10)
-    ? '#edeac2'
-    : districtCases(5)
-    ? '#b5c8b8'
-    : districtCases(1)
-    ? '#79a7ac'
-    : '#fff';
+    ? '#FED976'
+    : '#FFEDA0';
 };
 
-const mapRadius = rad => {
+const mapRadius = (rad) => {
   if (rad > 80000) return 60;
   else if (rad > 70000) return 55;
   else if (rad > 60000) return 50;
@@ -80,5 +80,5 @@ module.exports = {
   parseMapDetails,
   getConfirmedCases,
   getColors,
-  mapRadius
+  mapRadius,
 };
