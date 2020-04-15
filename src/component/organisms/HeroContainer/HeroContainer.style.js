@@ -93,7 +93,7 @@ export const ContentContainer = styled.div`
   }
 
   a {
-    color: ${themeColors.green};
+    color: ${themeColors.blue};
     text-decoration: none;
   }
 

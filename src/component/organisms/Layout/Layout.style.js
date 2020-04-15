@@ -11,14 +11,14 @@ const themeColors = {
   lightRed: '#c02739',
   lightGreen: '#29c7ac',
   black: '#12181b',
-  orange: '234, 98, 39'
+  orange: '234, 98, 39',
 };
 
 const rgbaColors = {
   orange1: `rgba(${themeColors.orange}, 0.25)`,
   orange2: `rgba(${themeColors.orange}, 0.5)`,
   orange3: `rgba(${themeColors.orange}, 0.75)`,
-  orange4: `rgba(${themeColors.orange}, 1)`
+  orange4: `rgba(${themeColors.orange}, 1)`,
 };
 
 export const GlobalStyle = createGlobalStyle`
@@ -30,7 +30,8 @@ export const GlobalStyle = createGlobalStyle`
     color: #333;
     padding: 0;
     margin: 0;
-    background: ${themeColors.creamWhite}
+    background: ${themeColors.creamWhite};
+    line-height: 1.25;
   }
 
   *,
@@ -40,7 +41,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   footer {
-    margin-top: 2rem
+    margin-top: 3rem;
+    text-align: center;
   }
 `;
 
@@ -85,5 +87,5 @@ module.exports = {
   MainContainer,
   GlobalStyle,
   themeColors,
-  rgbaColors
+  rgbaColors,
 };

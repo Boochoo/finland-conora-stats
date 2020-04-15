@@ -21,6 +21,10 @@ export const MapContainer = styled.div`
     font-weight: 800;
   }
 
+  .leaflet-top.leaflet-left {
+    left: 94%;
+  }
+
   .custom-popup .leaflet-popup-tip,
   .leaflet-tooltip {
     border-radius: 0;
@@ -36,7 +40,19 @@ export const MapContainer = styled.div`
     border-radius: 0;
   }
 
-  .leaflet-tile {
-    /* filter: contrast(25%); */
+  .map-legend {
+    padding: 0.2rem 0.3rem;
+    color: ${themeColors.gray};
+    background: ${themeColors.creamWhite};
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+    border-radius: 0.2rem;
+
+    i {
+      width: 1.1rem;
+      height: 1.1rem;
+      margin-right: 0.5rem;
+      float: left;
+      opacity: 0.7;
+    }
   }
 `;

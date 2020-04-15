@@ -6,8 +6,8 @@ import { themeColors } from '../Layout/Layout.style';
 const Wrapper = styled.div`
   position: relative;
   display: flex;
-  width: 15rem;
-  height: 3rem;
+  width: 13.5rem;
+  height: 2.75rem;
   line-height: 3;
   background: ${themeColors.gray};
   overflow: hidden;
@@ -44,7 +44,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const DropDownContainer = props => {
+const DropDownContainer = (props) => {
   return (
     <Wrapper>
       <select
