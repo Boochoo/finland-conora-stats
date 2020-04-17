@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import L from 'leaflet';
 import {
   Map,
   TileLayer,
@@ -8,10 +9,10 @@ import {
   Tooltip,
   CircleMarker,
 } from 'react-leaflet';
-import L from 'leaflet';
 
 import { MapContainer } from './MapChart.style';
-import MapJson from '../../../utils/finland-provinces.json';
+
+import MapJson from '../../../../utils/finland-provinces.json';
 import {
   parseMapDetails,
   getConfirmedCases,

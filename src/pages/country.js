@@ -2,19 +2,21 @@ import { useRouter, withRouter } from 'next/router';
 import fetch from 'isomorphic-fetch';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
+import getConfig from 'next/config';
+
 import Layout from '../component/organisms/Layout/Layout';
 import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
 import {
   ContentContainer,
   ContentWrapper,
-  MenuBar
+  MenuBar,
 } from '../component/organisms/HeroContainer/HeroContainer.style';
 import Header from '../component/organisms/Header/Header';
 import Footer from '../component/organisms/Footer/Footer';
 import paths from '../utils/path';
 import {
   getConfirmedByProvinceState,
-  getConfirmedByCountry
+  getConfirmedByCountry,
 } from '../utils/utils';
 
 const MainWrapper = styled.div``;
@@ -22,11 +24,11 @@ const MainWrapper = styled.div``;
 const WorldMap = dynamic(
   () => import('../component/templates/WorldMap/WorldMap'),
   {
-    ssr: false
+    ssr: false,
   }
 );
 
-const Country = props => {
+const Country = (props) => {
   const router = useRouter();
 
   const {
@@ -37,7 +39,7 @@ const Country = props => {
     countryRegion,
     lat,
     long,
-    lastUpdate
+    lastUpdate,
   } = getConfirmedByCountry(props.data)[0];
 
   const combinedConfirmed = getConfirmedByProvinceState(props.data);
@@ -93,8 +95,8 @@ const Country = props => {
                   (CSSE) at Johns Hopkins University (JHU).`,
                   author: 'Mathdroid',
                   source: source,
-                  lastUpdate: lastUpdatedAt
-                }
+                  lastUpdate: lastUpdatedAt,
+                },
               ]}
             />
           </ContentContainer>
@@ -105,9 +107,8 @@ const Country = props => {
 };
 
 Country.getInitialProps = async ({ query }) => {
-  const response = await fetch(
-    `https://covid19.mathdro.id/api/countries/${query.id}/confirmed`
-  );
+  const { COVID19_COUNTRIES_API } = getConfig().publicRuntimeConfig;
+  const response = await fetch(`${COVID19_COUNTRIES_API}${query.id}/confirmed`);
   const data = await response.json();
 
   return { data };

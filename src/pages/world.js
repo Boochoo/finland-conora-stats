@@ -1,101 +1,44 @@
 import fetch from 'isomorphic-fetch';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { Component, useState, useEffect } from 'react';
-import styled from 'styled-components';
+import getConfig from 'next/config';
+import { Component, useState, Fragment } from 'react';
 
 import { getConfirmedByCountry } from '../utils/utils';
 import Layout from '../component/organisms/Layout/Layout';
-import { themeColors } from '../component/organisms/Layout/Layout.style';
+
 import paths from '../utils/path';
 import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
 import {
   ContentContainer,
   ContentWrapper,
-  MenuBar
+  MenuBar,
 } from '../component/organisms/HeroContainer/HeroContainer.style';
 import {
   TableWrapper,
-  TableLayoutContainer
+  TableLayoutContainer,
 } from '../component/organisms/TableLayout/TableLayout';
 import Header from '../component/organisms/Header/Header';
 import Footer from '../component/organisms/Footer/Footer';
+import {
+  Section,
+  InputWrapper,
+} from '../component/templates/WorldMap/WorldMap.style';
+
+import ComposedBarLineChart from '../component/templates/Charts/ComposedBarLineChart';
+import CommonLineChart from '../component/templates/Charts/CommonLineChart';
+
+import LogarithmicLinearConmponent from '../component/organisms/UI/LogarithmicLinearComponent/';
 
 const WorldMap = dynamic(
   () => import('../component/templates/WorldMap/WorldMap'),
   {
-    ssr: false
+    ssr: false,
   }
 );
 
-const Section = styled.section`
-  margin-top: 2.5rem;
-
-  .header {
-    top: 14% !important;
-  }
-
-  ol li div:nth-of-type(1),
-  ul li div:nth-of-type(1) {
-    font-size: 1.2rem;
-    font-weight: 800;
-  }
-
-  @media (max-width: 860px) {
-    width: 100%;
-
-    ol li {
-      grid-template-columns: 34% 33% 33%;
-      grid-template-rows: auto auto;
-    }
-
-    ol li div:nth-of-type(1),
-    ul li div:nth-of-type(1) {
-      text-align: center;
-    }
-
-    ol li div:nth-child(1) {
-      grid-column-start: 1;
-      grid-column-end: 4;
-      grid-row-start: 1;
-      grid-row-end: 2;
-    }
-  }
-`;
-
-const InputWrapper = styled.div`
-  position: sticky;
-  top: 0;
-  background-color: ${themeColors.creamWhite};
-  padding: 1rem 0;
-  label {
-    display: block;
-    margin-bottom: 1rem;
-  }
-
-  input,
-  label {
-    font-size: 1.35rem;
-    cursor: pointer;
-  }
-
-  input {
-    padding: 0.5rem;
-    width: 100%;
-    border: solid 0.1rem ${themeColors.gray};
-    background-color: ${themeColors.creamWhite};
-    &:focus {
-      border: solid 0.125rem ${themeColors.blue};
-      border-top: none;
-      outline: none;
-    }
-  }
-`;
-
-const MainWrapper = styled.div``;
-
-const World = props => {
-  const { data, confirmedData } = props;
+const World = (props) => {
+  const { data, confirmedData, dailyData } = props;
   const { confirmed, deaths, recovered, lastUpdate } = data;
   const confirmedResponses = getConfirmedByCountry(confirmedData);
   const uniqueConfirmed = [...new Set(confirmedResponses)];
@@ -104,8 +47,33 @@ const World = props => {
   );
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortedList, setSorted] = useState(sortedConfrimed);
   const [active, setActive] = useState({ isByConfirmed: true });
+  const [sortedList, setSorted] = useState(sortedConfrimed);
+  const [isLinear, setLinear] = useState(false);
+  const [activeButton, setActiveButton] = useState('logarithmic');
+
+  const mapDataForCharts = (data) =>
+    data
+      .map((item, index) => {
+        const {
+          confirmed,
+          deaths,
+          reportDate,
+          deltaConfirmed,
+          incidentRate,
+        } = item;
+
+        return Object.assign(
+          { totalConfirmed: confirmed.total },
+          { totalDeaths: deaths.total },
+          { reportDate: reportDate },
+          { deltaConfirmed: deltaConfirmed },
+          { incidentRate: incidentRate.toFixed(2) }
+        );
+      })
+      .reduce((a, b) => a.concat(b), []);
+
+  const worldDailyData = mapDataForCharts(dailyData);
 
   const source = `//github.com/mathdroid/covid-19-api`;
   const lastUpdatedAt = new Date(lastUpdate).toGMTString();
@@ -116,7 +84,7 @@ const World = props => {
     setActive({ isByConfirmed: true });
   };
 
-  const sortByRecovered = e => {
+  const sortByRecovered = (e) => {
     const sorted = [...sortedList].sort((a, b) => b.recovered - a.recovered);
     setSorted(sorted);
     setActive({ isByRecovered: true });
@@ -128,17 +96,17 @@ const World = props => {
     setActive({ isByDeaths: true });
   };
 
-  const handlesearch = event => {
+  const handlesearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
   const searchResults = !searchTerm
     ? sortedList
-    : sortedList.filter(cases =>
+    : sortedList.filter((cases) =>
         cases.countryRegion.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
-  const screenRender = width => {};
+  const screenRender = (width) => {};
   const HeroBanner = () => (
     <>
       <HeroContainer
@@ -156,7 +124,7 @@ const World = props => {
       desc='Coronavirus stats confirmed updates by country, recovered, deaths'
       keywords='world coronavirus, coronavirus update, coronavirus, coronavirus stats, coronavirus numbers, maailma koronavirus, koronavirus'
     >
-      <MainWrapper>
+      <Fragment>
         <MenuBar>
           <Header path={paths.home} page='Finland' />
         </MenuBar>
@@ -173,6 +141,31 @@ const World = props => {
             <div className='hero-desktop'>
               <HeroBanner />
             </div>
+            <LogarithmicLinearConmponent
+              isActive={activeButton}
+              linearLogHandler={(event) => {
+                setActiveButton(event.target.id);
+                setLinear(isLinear);
+              }}
+              buttons={['Linear', 'Logarithmic']}
+            />
+            <CommonLineChart
+              data={worldDailyData}
+              isLinear={activeButton.toLowerCase() === 'linear' ? true : false}
+              xAxisName='reportDate'
+              dataKey='totalConfirmed'
+              dataKey1='incidentRate'
+            />
+
+            <ComposedBarLineChart
+              data={worldDailyData}
+              dataKey='reportDate'
+              totalCases='totalConfirmed'
+              casesData={[
+                { title: 'Daily confirmed', amount: 'deltaConfirmed' },
+                { title: 'Deaths', amount: 'totalDeaths' },
+              ]}
+            />
             <Section>
               <InputWrapper>
                 <label htmlFor='search-input'>Search by country name</label>
@@ -246,7 +239,7 @@ const World = props => {
                               d.countryRegion,
                               d.confirmed,
                               d.recovered,
-                              d.deaths
+                              d.deaths,
                             ]}
                           />
                         </a>
@@ -264,24 +257,28 @@ const World = props => {
                   (CSSE) at Johns Hopkins University (JHU).`,
                   author: 'Mathdroid',
                   source: source,
-                  lastUpdate: lastUpdatedAt
-                }
+                  lastUpdate: lastUpdatedAt,
+                },
               ]}
             />
           </ContentContainer>
         </ContentWrapper>
-      </MainWrapper>
+      </Fragment>
     </Layout>
   );
 };
 
 World.getInitialProps = async () => {
-  const response = await fetch('https://covid19.mathdro.id/api');
+  const { COVID19_API, COVID19_DAILY_API } = getConfig().publicRuntimeConfig;
+  const response = await fetch(COVID19_API);
   const data = await response.json();
   const fetchDets = await fetch(data.confirmed.detail);
   const confirmedData = await fetchDets.json();
 
-  return { data, confirmedData };
+  const dailyResponse = await fetch(COVID19_DAILY_API);
+  const dailyData = await dailyResponse.json();
+
+  return { data, confirmedData, dailyData };
 };
 
 export default World;

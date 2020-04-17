@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { themeColors } from '../../organisms/Layout/Layout.style';
+
+import { themeColors } from '../../../organisms/Layout/Layout.style';
 
 export const MapContainer = styled.div`
   .leaflet-container {

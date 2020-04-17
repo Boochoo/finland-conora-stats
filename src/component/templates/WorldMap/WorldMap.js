@@ -4,28 +4,18 @@ import {
   Map,
   TileLayer,
   Marker,
-  Popup,
   MapControl,
   GeoJSON,
   Tooltip,
-  CircleMarker
+  CircleMarker,
 } from 'react-leaflet';
 import L from 'leaflet';
-import { MapContainer } from '../MapChart/MapChart.style';
-import { mapRadius } from '../MapChart/mapUtils';
-import { themeColors } from '../../organisms/Layout/Layout.style';
 
-const PTag = props => (
-  <p
-    style={{
-      margin: 0,
-      color: props.isTitle ? 'gray' : props.color,
-      fontSize: props.isTitle ? '1.5rem' : ''
-    }}
-  >
-    <strong>{props.popUpText}</strong>
-  </p>
-);
+import PopUpComponent from './PopUp/PopUpComponent';
+
+import { MapContainer } from '../../templates/Charts/MapChart/MapChart.style';
+import { mapRadius } from '../../templates/Charts/MapChart/mapUtils';
+import { themeColors } from '../../organisms/Layout/Layout.style';
 
 class WorldMap extends Component {
   render() {
@@ -66,34 +56,17 @@ class WorldMap extends Component {
                 weight={2}
                 radius={mapRadius(parseInt(pos.confirmed))}
                 animate={true}
-                onMouseOver={e => e.target.openPopup()}
-                onMouseOut={e => e.target.closePopup()}
+                onMouseOver={(e) => e.target.openPopup()}
+                onMouseOut={(e) => e.target.closePopup()}
               >
-                <Popup minWidth={50} offset={[-1, -3]} className='custom-popup'>
-                  <div
-                    style={{
-                      marginBottom: '0.25em'
-                    }}
-                  >
-                    <PTag
-                      popUpText={
-                        pos.provinceState
-                          ? pos.provinceState
-                          : pos.countryRegion
-                      }
-                      isTitle
-                    />
-                    <PTag popUpText={`${pos.confirmed} confirmed`} />
-                    <PTag
-                      popUpText={`${pos.recovered} recovered`}
-                      color={themeColors.green}
-                    />
-                    <PTag
-                      popUpText={`${pos.deaths} deaths`}
-                      color={themeColors.red}
-                    />
-                  </div>
-                </Popup>
+                <PopUpComponent
+                  region={
+                    pos.provinceState ? pos.provinceState : pos.countryRegion
+                  }
+                  confirmed={pos.confirmed}
+                  recovered={pos.recovered}
+                  deaths={pos.deaths}
+                />
               </CircleMarker>
             </Marker>
           ))}
