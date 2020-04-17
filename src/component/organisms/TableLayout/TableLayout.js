@@ -5,9 +5,9 @@ const theme = {
   oneCol: '100%',
   twoCols: '50% 50%',
   threeCols: '33% 33% 33%',
-  fourCols: '25% 25% 25% 25%'
+  fourCols: '25% 25% 25% 25%',
 };
-const mapTableSize = size => {
+const mapTableSize = (size) => {
   if (!size) return;
 
   if (size === 1) return theme.oneCol;
@@ -22,8 +22,6 @@ export const TableWrapper = styled.ol`
   margin-bottom: 2rem;
 
   text-align: center;
-  @media screen and (min-width: 880px) {
-  }
 
   li {
     display: grid;
@@ -85,7 +83,7 @@ export const TableWrapper = styled.ol`
   }
 `;
 
-export const TableHeader = props => (
+export const TableHeader = (props) => (
   <li className='header'>
     {props.headTitle.map((elem, index) => (
       <div key={index}>
@@ -95,7 +93,7 @@ export const TableHeader = props => (
   </li>
 );
 
-export const TableLayoutContainer = props => {
+export const TableLayoutContainer = (props) => {
   return (
     <li>
       {props.tableRows.map((row, index) => (

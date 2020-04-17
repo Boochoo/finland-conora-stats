@@ -2,30 +2,42 @@ import styled from 'styled-components';
 import { themeColors } from '../Layout/Layout.style';
 
 export const Container = styled.div`
-  grid-column-gap: 10px;
-  background: ${themeColors.creamWhite};
-  text-align: center;
-  margin-bottom: 2rem;
+  .hero-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background: ${themeColors.creamWhite};
+    margin-bottom: 2rem;
+    text-align: center;
+
+    @media screen and (min-width: 540px) {
+      flex-direction: row;
+    }
+
+    div {
+      margin: 0.25rem;
+      color: ${themeColors.creamWhite};
+      flex: 1 0 30%;
+
+      font-size: 1.2rem;
+      strong {
+        font-size: 2rem;
+      }
+
+      p {
+        padding: 1rem;
+        margin: 0;
+        display: flex;
+        flex-direction: column-reverse;
+      }
+    }
+  }
 
   h1 {
     color: ${themeColors.black};
     text-align: left;
-  }
-
-  div {
-    margin: 0.25rem 0;
-    color: ${themeColors.creamWhite};
-    strong {
-      font-size: 3.5rem;
-    }
-
-    p {
-      display: flex;
-      justify-content: center;
-      flex-direction: column-reverse;
-      padding: 1rem;
-      margin: 0;
-    }
   }
 
   .hero-wrapper div {

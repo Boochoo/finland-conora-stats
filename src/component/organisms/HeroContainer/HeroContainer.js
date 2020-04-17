@@ -1,10 +1,10 @@
 import { Container } from './HeroContainer.style';
-const HeroContainer = props => {
+const HeroContainer = (props) => {
   return (
     <>
       <Container>
+        <h1>{props.title}'s Coronavirus (CoVID-19) updates</h1>
         <div className='hero-wrapper'>
-          <h1>{props.title}'s Coronavirus (CoVID-19) updates</h1>
           <div>
             <p>
               Confirmed <strong> {props.confirmed}</strong>
