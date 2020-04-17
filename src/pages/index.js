@@ -1,16 +1,17 @@
 import { Fragment, useState } from 'react';
+import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import fetch from 'isomorphic-fetch';
+import getConfig from 'next/config';
 
-import {
-  CommonBarChart,
-  CommonLineChart,
-  BarWithLine,
-  PieRecharted,
-} from '../component/templates/Charts/Charts';
-import CityLevelData from '../component/templates/CityLevelData';
-import { Section } from '../component/organisms/Layout/Layout.style';
-import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
+import CommonLineChart from '../component/templates/Charts/CommonLineChart';
+import CommonBarChart from '../component/templates/Charts/CommonBarChart';
+import CommonPieChart from '../component/templates/Charts/CommonPieChart';
+import ComposedBarLineChart from '../component/templates/Charts/ComposedBarLineChart';
+
+import SymptomsSurveyComponent from '../component/templates/SymptomsSurveyComponent';
+import LogarithmicLinearConmponent from '../component/organisms/UI/LogarithmicLinearComponent/';
+
 import {
   ContentContainer,
   ContentWrapper,
@@ -18,6 +19,10 @@ import {
   ButtonsWrapper,
   Button,
 } from '../component/organisms/HeroContainer/HeroContainer.style';
+import { Section } from '../component/organisms/Layout/Layout.style';
+import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
+import { themeColors } from '../component/organisms/Layout/Layout.style';
+
 import {
   getConfirmedByDistrict,
   getConfirmedBySource,
@@ -27,22 +32,17 @@ import {
   dailyCasesTotal,
   getChangesInTotalCases,
   getHospitalArea,
-  mapHospitalArea,
 } from '../utils/utils';
-import Layout from '../component/organisms/Layout/Layout';
 import paths from '../utils/path';
-import { CommonTable } from '../component/organisms/HomePage/CommonTable';
-import {
-  ConfirmedByRegionTable,
-  CommonBottomTable,
-} from '../component/organisms/HomePage/BottomTables';
-import styled from 'styled-components';
+
+import Layout from '../component/organisms/Layout/Layout';
 import Header from '../component/organisms/Header/Header';
 import Footer from '../component/organisms/Footer/Footer';
-import { themeColors } from '../component/organisms/Layout/Layout.style';
+import { CommonTable } from '../component/organisms/HomePage/CommonTable';
+import { CommonBottomTable } from '../component/organisms/HomePage/BottomTables';
 
 const MapChartWithNoSSR = dynamic(
-  () => import('../component/templates/MapChart/MapChart'),
+  () => import('../component/templates/Charts/MapChart/MapChart'),
   {
     ssr: false,
   }
@@ -53,7 +53,6 @@ const HeroTopWrapper = styled.div``;
 const HeroBottomWrapper = styled.div``;
 
 const Index = ({ data }) => {
-  if (!data) return null;
   const { confirmed, deaths, recovered } = data;
 
   const confirmedByDistrict = getConfirmedByDistrict(confirmed);
@@ -101,6 +100,7 @@ const Index = ({ data }) => {
   );
 
   const [isLinear, setLinear] = useState(false);
+  const [activeButton, setActiveButton] = useState('logarithmic');
 
   const HeroBanner = () => (
     <Fragment>
@@ -114,30 +114,16 @@ const Index = ({ data }) => {
       </Fragment>
       <Fragment>
         <h2>Total confirmed and daily cases</h2>
-        <div>
-          <ButtonsWrapper>
-            <Button
-              onClick={() => {
-                setLinear(true);
-              }}
-              className={isLinear ? 'is-active' : ''}
-            >
-              Linear
-            </Button>
-            <Button
-              onClick={() => {
-                setLinear(false);
-              }}
-              className={!isLinear ? 'is-active' : ''}
-            >
-              Logarithmic
-            </Button>
-          </ButtonsWrapper>
-          <CommonLineChart data={mappedIncremental} isLinear={isLinear} />
-        </div>
-      </Fragment>
-      <Fragment>
-        <BarWithLine data={mappedIncremental} />
+        <ComposedBarLineChart
+          data={mappedIncremental}
+          dataKey='name'
+          totalCases='cases'
+          casesData={[
+            { title: 'Daily cases', amount: 'daily' },
+            { title: 'Recoveries', amount: 'recoveries' },
+            { title: 'Deaths', amount: 'deaths' },
+          ]}
+        />
       </Fragment>
     </Fragment>
   );
@@ -168,6 +154,27 @@ const Index = ({ data }) => {
               <HeroBanner />
             </div>
 
+            <Fragment>
+              <div>
+                <LogarithmicLinearConmponent
+                  isActive={activeButton}
+                  linearLogHandler={(event) => {
+                    setActiveButton(event.target.id);
+                    setLinear(isLinear);
+                  }}
+                  buttons={['Linear', 'Logarithmic']}
+                />
+                <CommonLineChart
+                  data={mappedIncremental}
+                  isLinear={
+                    activeButton.toLowerCase() === 'linear' ? true : false
+                  }
+                  xAxisName='name'
+                  dataKey='cases'
+                />
+              </div>
+            </Fragment>
+
             <div>
               <h2>Confirmed cases by health care district</h2>
 
@@ -180,14 +187,14 @@ const Index = ({ data }) => {
             </div>
 
             <Fragment>
-              <CityLevelData />
+              <SymptomsSurveyComponent />
             </Fragment>
 
             <HeroBottomWrapper>
               <div>
                 <h2>Recovered</h2>
 
-                <PieRecharted
+                <CommonPieChart
                   data={mapDataForCharts(Object.entries(recoveredByDistrict))}
                   width='100%'
                 />
@@ -202,7 +209,7 @@ const Index = ({ data }) => {
               <div>
                 <h2>Deaths :(</h2>
 
-                <PieRecharted
+                <CommonPieChart
                   data={mapDataForCharts(Object.entries(deathsByHospitalArea))}
                   width='100%'
                   isDeathCasesChart
@@ -252,8 +259,8 @@ const Index = ({ data }) => {
 
 export async function getServerSideProps() {
   try {
-    const url = `https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData/v2`;
-    const response = await fetch(url);
+    const { FINNISH_CORONA_DATA } = getConfig().publicRuntimeConfig;
+    const response = await fetch(FINNISH_CORONA_DATA);
     const data = await response.json();
     const hasError = response.status !== 200;
 

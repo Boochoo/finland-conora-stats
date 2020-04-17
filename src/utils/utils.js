@@ -1,39 +1,12 @@
-export const displayDate = date => new Date(date).toGMTString();
+export const displayDate = (date) => new Date(date).toGMTString();
 
-export const getConfirmedByDate = data =>
+export const getConfirmedByDate = (data) =>
   data.reduce(
     (prev, curr) => (
       (prev[displayDate(curr.date)] = ++prev[displayDate(curr.date)] || 1), prev
     ),
     {}
   );
-
-export const mapHospitalArea = () => {
-  return {
-    HYKS: [
-      'Helsinki and Uusimaa',
-      'Etelä-Karjala',
-      'Kymenlaakso',
-      'Päijät-Häme'
-    ],
-    KYS: [
-      'Pohjoinen-Savo',
-      'Etelä-Savo',
-      'Itä-Savo',
-      'Keski-Suomi',
-      'Pohjois-Karjala'
-    ],
-    OYS: [
-      'Pohjois-Pohjanmaa',
-      'Kainuu',
-      'Keski-Pohjanmaa',
-      'Lapin',
-      'Länsi-Pohja'
-    ],
-    TAYS: ['Pirkanmaa', 'Etelä-Pohjanmaa', 'Kanta-Häme'],
-    TYKS: ['Varsinais-Suomi', 'Satakunta', 'Vaasa']
-  };
-};
 
 const getCombinedSum = (data, prop) =>
   data.reduce((prev, curr) => {
@@ -42,32 +15,32 @@ const getCombinedSum = (data, prop) =>
     return (prev[location] = ++prev[location] || 1), prev;
   }, {});
 
-export const getConfirmedByDistrict = data =>
+export const getConfirmedByDistrict = (data) =>
   getCombinedSum(data, 'healthCareDistrict');
 
-export const getConfirmedBySource = data =>
+export const getConfirmedBySource = (data) =>
   getCombinedSum(data, 'infectionSourceCountry');
 
-export const getHospitalArea = data => getCombinedSum(data, 'area');
+export const getHospitalArea = (data) => getCombinedSum(data, 'area');
 
-export const sortData = data =>
+export const sortData = (data) =>
   Object.entries(data)
     .slice()
     .sort((a, b) => b[1] - a[1]);
 
-const getDailyData = d => {
+const getDailyData = (d) => {
   return d.map((currData, index) => {
     let key = currData[0];
     let value = currData[1];
 
     return {
       date: key,
-      cases: value
+      cases: value,
     };
   });
 };
 
-export const dailyCasesTotal = data => {
+export const dailyCasesTotal = (data) => {
   const sortedData = getDailyData(data).sort(function(a, b) {
     return new Date(a.date) - new Date(b.date);
   });
@@ -82,7 +55,7 @@ export const dailyCasesTotal = data => {
 const getConfirmedObject = (data, prop) =>
   data.reduce((acc, currVal) => {
     let filteredObj = acc
-      .filter(obj => {
+      .filter((obj) => {
         return obj[prop] === currVal[prop];
       })
       .pop() || {
@@ -93,7 +66,7 @@ const getConfirmedObject = (data, prop) =>
       deaths: 0,
       lat: currVal.lat,
       long: currVal.long,
-      lastUpdate: currVal.lastUpdate
+      lastUpdate: currVal.lastUpdate,
     };
 
     filteredObj.confirmed += currVal.confirmed;
@@ -105,10 +78,10 @@ const getConfirmedObject = (data, prop) =>
     return acc;
   }, []);
 
-export const getConfirmedByProvinceState = data =>
+export const getConfirmedByProvinceState = (data) =>
   getConfirmedObject(data, 'provinceState');
 
-export const getConfirmedByCountry = data =>
+export const getConfirmedByCountry = (data) =>
   getConfirmedObject(data, 'countryRegion');
 
 export const getChangesInTotalCases = (
@@ -128,10 +101,10 @@ export const getChangesInTotalCases = (
 
   return keys.map((item, i) => {
     const deaths = getDeathsKey.includes(item)
-      ? getDeathsValue.filter(el => el[0] === item).map(el => el[1])[0]
+      ? getDeathsValue.filter((el) => el[0] === item).map((el) => el[1])[0]
       : 0;
     const recoveries = getRecoveredKey.includes(item)
-      ? getRecoveredValue.filter(el => el[0] === item).map(el => el[1])[0]
+      ? getRecoveredValue.filter((el) => el[0] === item).map((el) => el[1])[0]
       : 0;
 
     return {
@@ -139,7 +112,7 @@ export const getChangesInTotalCases = (
       cases: getValues[i],
       daily: Object.values(confirmedData)[i],
       deaths,
-      recoveries
+      recoveries,
     };
   });
 };
