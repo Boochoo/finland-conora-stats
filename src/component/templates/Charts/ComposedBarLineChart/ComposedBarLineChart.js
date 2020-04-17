@@ -16,8 +16,8 @@ import CustomisedToolPit from '../Customized/CustomisedToolpit';
 const getColors = (index) => {
   const colors = [
     '#400082',
-    '#29c7ac',
     '#c02739',
+    '#29c7ac',
     '#84142d',
     '#54123b',
     '#ffa41b',
@@ -42,7 +42,7 @@ const ComposedBarLineChart = (props) => (
   <ResponsiveContainer width='100%' height={500}>
     <ComposedChart
       data={props.data}
-      margin={{ top: 15, right: 5, left: -15, bottom: 20 }}
+      margin={{ top: 25, right: 0, left: 20, bottom: 20 }}
     >
       <XAxis dataKey={props.dataKey} />
       <YAxis />

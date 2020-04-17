@@ -8,9 +8,9 @@ const CommonBarChart = (props) => (
     <BarChart
       data={props.data}
       margin={{
-        top: 15,
-        right: 15,
-        left: -15,
+        top: 25,
+        right: 0,
+        left: 20,
         bottom: props.marginBottom ? props.marginBottom : 40,
       }}
     >
