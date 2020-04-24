@@ -20,7 +20,7 @@ import {
   Button,
 } from '../component/organisms/HeroContainer/HeroContainer.style';
 import { Section } from '../component/organisms/Layout/Layout.style';
-import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
+import HeroContainer from '../component/organisms/HeroContainer/';
 import { themeColors } from '../component/organisms/Layout/Layout.style';
 
 import {
@@ -32,6 +32,7 @@ import {
   dailyCasesTotal,
   getChangesInTotalCases,
   getHospitalArea,
+  digitSeparator,
 } from '../utils/utils';
 import paths from '../utils/path';
 
@@ -107,8 +108,8 @@ const Index = ({ data }) => {
       <Fragment>
         <HeroContainer
           title='Finland'
-          recovered={recovered.length}
           confirmed={confirmed.length}
+          recovered={recovered.length}
           deaths={deaths.length}
         />
       </Fragment>

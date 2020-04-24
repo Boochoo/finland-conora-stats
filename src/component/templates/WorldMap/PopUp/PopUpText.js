@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const PopUpText = (props) => {
   return (
@@ -12,6 +13,10 @@ const PopUpText = (props) => {
       <strong>{props.text}</strong>
     </p>
   );
+};
+
+PopUpText.propTypes = {
+  text: PropTypes.string.isRequired,
 };
 
 export default PopUpText;

@@ -1,15 +1,23 @@
+import PropTypes from 'prop-types';
 import Link from 'next/link';
+
 import { MainContainer, GlobalStyle } from './Layout.style';
 import Meta from '../../../partials/head';
 
-const Layout = props => {
+const Layout = ({ title, desc, keywords, children }) => {
   return (
     <MainContainer>
-      <Meta title={props.title} desc={props.desc} keywords={props.keywords} />
+      <Meta title={title} desc={desc} keywords={keywords} />
       <GlobalStyle />
-      {props.children}
+      {children}
     </MainContainer>
   );
+};
+
+Layout.propTypes = {
+  title: PropTypes.string.isRequired,
+  desc: PropTypes.string.isRequired,
+  keywords: PropTypes.string.isRequired,
 };
 
 export default Layout;

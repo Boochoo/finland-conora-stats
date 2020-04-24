@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+
 import { themeColors } from '../Layout/Layout.style';
 
 const theme = {
@@ -44,10 +47,12 @@ export const TableWrapper = styled.ol`
     padding: 0;
   }
 
-  ul li:nth-child(even) {
+  ul li:nth-child(even),
+  ul a:nth-child(even) li {
     background: ${themeColors.lightGray};
   }
-  ul li:nth-child(odd) {
+  ul li:nth-child(odd),
+  ul a:nth-child(odd) li {
     background: ${themeColors.creamWhite};
   }
 
@@ -68,7 +73,8 @@ export const TableWrapper = styled.ol`
     cursor: pointer;
 
     &.active {
-      background: ${themeColors.lightgreen};
+      background-color: ${themeColors.green};
+      color: ${themeColors.creamWhite};
     }
   }
 
@@ -83,9 +89,9 @@ export const TableWrapper = styled.ol`
   }
 `;
 
-export const TableHeader = (props) => (
+export const TableHeader = ({ headTitle }) => (
   <li className='header'>
-    {props.headTitle.map((elem, index) => (
+    {headTitle.map((elem, index) => (
       <div key={index}>
         <strong>{elem}</strong>
       </div>
@@ -93,12 +99,20 @@ export const TableHeader = (props) => (
   </li>
 );
 
-export const TableLayoutContainer = (props) => {
+export const TableLayoutContainer = ({ tableRows }) => {
   return (
     <li>
-      {props.tableRows.map((row, index) => (
+      {tableRows.map((row, index) => (
         <div key={index}>{row}</div>
       ))}
     </li>
   );
+};
+
+TableHeader.propTypes = {
+  headTitle: PropTypes.array.isRequired,
+};
+
+TableLayoutContainer.propTypes = {
+  tableRows: PropTypes.array.isRequired,
 };

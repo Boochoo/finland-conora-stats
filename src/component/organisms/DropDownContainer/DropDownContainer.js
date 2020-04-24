@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { themeColors } from '../Layout/Layout.style';
@@ -44,23 +45,29 @@ const Wrapper = styled.div`
   }
 `;
 
-const DropDownContainer = (props) => {
+const DropDownContainer = ({ city, handleCityChange, citiesList }) => {
   return (
     <Wrapper>
       <select
         name='survey'
-        value={props.city}
+        value={city}
         id='survey'
-        onChange={props.handleCityChange}
+        onChange={handleCityChange}
       >
-        {props.citiesList.map((city, index) => (
-          <option value={city} key={`city-${index}`}>
-            {city}
+        {citiesList.map((cityName, index) => (
+          <option value={cityName} key={`city-${index}`}>
+            {cityName}
           </option>
         ))}
       </select>
     </Wrapper>
   );
+};
+
+DropDownContainer.propTypes = {
+  city: PropTypes.string.isRequired,
+  handleCityChange: PropTypes.func.isRequired,
+  citiesList: PropTypes.array.isRequired,
 };
 
 export default DropDownContainer;

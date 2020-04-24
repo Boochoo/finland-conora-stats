@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
 import { getColors, mapHospitalArea } from '../utils';
@@ -33,5 +34,10 @@ const CommonPieChart = (props) => (
     </PieChart>
   </ResponsiveContainer>
 );
+
+CommonPieChart.propTypes = {
+  width: PropTypes.string.isRequired,
+  data: PropTypes.array.isRequired,
+};
 
 export default CommonPieChart;

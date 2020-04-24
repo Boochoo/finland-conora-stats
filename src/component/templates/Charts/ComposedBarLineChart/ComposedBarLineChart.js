@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -66,5 +68,12 @@ const ComposedBarLineChart = (props) => (
     </ComposedChart>
   </ResponsiveContainer>
 );
+
+ComposedBarLineChart.propTypes = {
+  data: PropTypes.array.isRequired,
+  casesData: PropTypes.array.isRequired,
+  totalCases: PropTypes.string.isRequired,
+  dataKey: PropTypes.string.isRequired,
+};
 
 export default ComposedBarLineChart;

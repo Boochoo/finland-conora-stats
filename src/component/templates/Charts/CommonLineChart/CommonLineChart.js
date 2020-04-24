@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   CartesianGrid,
   XAxis,
@@ -50,5 +51,13 @@ const CommonLineChart = (props) => (
     </ComposedChart>
   </ResponsiveContainer>
 );
+
+CommonLineChart.propTypes = {
+  data: PropTypes.array.isRequired,
+  dataKey: PropTypes.string.isRequired,
+  xAxisName: PropTypes.string.isRequired,
+  isLinear: PropTypes.bool.isRequired,
+  dataKey1: PropTypes.string,
+};
 
 export default CommonLineChart;

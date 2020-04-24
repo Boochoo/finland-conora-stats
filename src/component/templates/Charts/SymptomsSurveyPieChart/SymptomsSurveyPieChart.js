@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   ResponsiveContainer,
   PieChart,
@@ -64,5 +65,10 @@ const SymptomsSurveyPieChart = (props) => (
     </PieChart>
   </ResponsiveContainer>
 );
+
+SymptomsSurveyPieChart.propTypes = {
+  width: PropTypes.string.isRequired,
+  data: PropTypes.array.isRequired,
+};
 
 export default SymptomsSurveyPieChart;

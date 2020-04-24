@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import getConfig from 'next/config';
 
 import Layout from '../component/organisms/Layout/Layout';
-import HeroContainer from '../component/organisms/HeroContainer/HeroContainer';
+import HeroContainer from '../component/organisms/HeroContainer/';
 import {
   ContentContainer,
   ContentWrapper,
