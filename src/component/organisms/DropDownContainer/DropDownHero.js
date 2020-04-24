@@ -6,8 +6,8 @@ const getPercentage = (totalResponse, response) =>
 
 const readableNumber = (value) => Number(value).toLocaleString();
 
-const DropDownHero = (props) => {
-  const { population, responses } = props.rowData;
+const DropDownHero = ({ rowData }) => {
+  const { population, responses } = rowData;
   return (
     <div>
       <p>

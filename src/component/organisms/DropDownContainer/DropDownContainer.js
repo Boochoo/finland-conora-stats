@@ -45,18 +45,18 @@ const Wrapper = styled.div`
   }
 `;
 
-const DropDownContainer = (props) => {
+const DropDownContainer = ({ city, handleCityChange, citiesList }) => {
   return (
     <Wrapper>
       <select
         name='survey'
-        value={props.city}
+        value={city}
         id='survey'
-        onChange={props.handleCityChange}
+        onChange={handleCityChange}
       >
-        {props.citiesList.map((city, index) => (
-          <option value={city} key={`city-${index}`}>
-            {city}
+        {citiesList.map((cityName, index) => (
+          <option value={cityName} key={`city-${index}`}>
+            {cityName}
           </option>
         ))}
       </select>
