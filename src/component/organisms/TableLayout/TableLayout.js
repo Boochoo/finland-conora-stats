@@ -1,4 +1,6 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
 import { themeColors } from '../Layout/Layout.style';
 
 const theme = {
@@ -45,7 +47,7 @@ export const TableWrapper = styled.ol`
   }
 
   ul li:nth-child(even) {
-    background: ${themeColors.lightGray};
+    background: ${themeColors.green};
   }
   ul li:nth-child(odd) {
     background: ${themeColors.creamWhite};
@@ -68,7 +70,8 @@ export const TableWrapper = styled.ol`
     cursor: pointer;
 
     &.active {
-      background: ${themeColors.lightgreen};
+      background-color: ${themeColors.green};
+      color: ${themeColors.creamWhite};
     }
   }
 
@@ -101,4 +104,12 @@ export const TableLayoutContainer = (props) => {
       ))}
     </li>
   );
+};
+
+TableHeader.propTypes = {
+  headTitle: PropTypes.array.isRequired,
+};
+
+TableLayoutContainer.propTypes = {
+  tableRows: PropTypes.array.isRequired,
 };

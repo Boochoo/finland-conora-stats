@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { themeColors } from '../Layout/Layout.style';
@@ -61,6 +62,12 @@ const DropDownContainer = (props) => {
       </select>
     </Wrapper>
   );
+};
+
+DropDownContainer.propTypes = {
+  city: PropTypes.string.isRequired,
+  handleCityChange: PropTypes.func.isRequired,
+  citiesList: PropTypes.array.isRequired,
 };
 
 export default DropDownContainer;

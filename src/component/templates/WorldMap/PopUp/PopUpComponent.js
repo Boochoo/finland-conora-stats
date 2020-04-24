@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet';
 
 import { themeColors } from '../../../organisms/Layout/Layout.style';
@@ -22,6 +23,13 @@ const PopUpComponent = (props) => {
       </div>
     </Popup>
   );
+};
+
+PopUpComponent.propTypes = {
+  region: PropTypes.string.isRequired,
+  confirmed: PropTypes.number.isRequired,
+  recovered: PropTypes.number.isRequired,
+  deaths: PropTypes.number.isRequired,
 };
 
 export default PopUpComponent;

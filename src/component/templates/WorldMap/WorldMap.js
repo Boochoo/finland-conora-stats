@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
 import {
   Map,
@@ -18,6 +19,12 @@ import { mapRadius } from '../../templates/Charts/MapChart/mapUtils';
 import { themeColors } from '../../organisms/Layout/Layout.style';
 
 class WorldMap extends Component {
+  static propTypes = {
+    data: PropTypes.array.isRequired,
+    countryCenter: PropTypes.array,
+    initialZoomLevel: PropTypes.number.isRequired,
+  };
+
   render() {
     const { data } = this.props;
     const isSmallerScreen = window && window.innerWidth < 880;

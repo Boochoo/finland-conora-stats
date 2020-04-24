@@ -1,4 +1,5 @@
 export const displayDate = (date) => new Date(date).toGMTString();
+export const digitSeparator = (num) => num.toLocaleString();
 
 export const getConfirmedByDate = (data) =>
   data.reduce(
@@ -116,3 +117,24 @@ export const getChangesInTotalCases = (
     };
   });
 };
+
+export const mapDataForCharts = (data) =>
+  data
+    .map((item, index) => {
+      const {
+        confirmed,
+        deaths,
+        reportDate,
+        deltaConfirmed,
+        incidentRate,
+      } = item;
+
+      return Object.assign(
+        { totalConfirmed: confirmed.total },
+        { totalDeaths: deaths.total },
+        { reportDate: reportDate },
+        { deltaConfirmed: deltaConfirmed },
+        { incidentRate: incidentRate.toFixed(2) }
+      );
+    })
+    .reduce((a, b) => a.concat(b), []);

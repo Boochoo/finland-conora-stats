@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import L from 'leaflet';
 import {
   Map,
@@ -21,6 +22,9 @@ import {
 import Legend from './Legend';
 
 export default class MyMap extends Component {
+  static propTypes = {
+    data: PropTypes.array.isRequired,
+  };
   render() {
     const dataMarkers = Object.entries(MapJson.features);
     const confirmedCases = getConfirmedCases(this.props.data);

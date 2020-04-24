@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { themeColors } from '../../organisms/Layout/Layout.style';
+import { themeColors } from '../../Layout/Layout.style';
 
 const Section = styled.section`
   margin-top: 2.5rem;

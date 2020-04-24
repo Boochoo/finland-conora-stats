@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 
 import { themeColors } from '../../../organisms/Layout/Layout.style';
@@ -28,5 +29,11 @@ const CommonBarChart = (props) => (
     </BarChart>
   </ResponsiveContainer>
 );
+
+CommonBarChart.propTypes = {
+  data: PropTypes.array.isRequired,
+  marginBottom: PropTypes.number,
+  fillColor: PropTypes.string.isRequired,
+};
 
 export default CommonBarChart;
