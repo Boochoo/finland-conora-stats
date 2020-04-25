@@ -1,3 +1,3 @@
-import LogarithmicLinearConmponent from './LogarithmicLinearConmponent';
+import LogarithmicLinearComponent from './LogarithmicLinearComponent';
 
-export default LogarithmicLinearConmponent;
+export default LogarithmicLinearComponent;

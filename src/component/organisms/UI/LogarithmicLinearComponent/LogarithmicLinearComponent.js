@@ -32,7 +32,7 @@ export const Button = styled.button`
   }
 `;
 
-const LogarithmicLinearConmponent = (props) => {
+const LogarithmicLinearComponent = (props) => {
   return (
     <ButtonsWrapper>
       {props.buttons.map((name, index) => (
@@ -49,10 +49,10 @@ const LogarithmicLinearConmponent = (props) => {
   );
 };
 
-LogarithmicLinearConmponent.propTypes = {
+LogarithmicLinearComponent.propTypes = {
   buttons: PropTypes.array.isRequired,
   linearLogHandler: PropTypes.func.isRequired,
   isActive: PropTypes.string,
 };
 
-export default LogarithmicLinearConmponent;
+export default LogarithmicLinearComponent;

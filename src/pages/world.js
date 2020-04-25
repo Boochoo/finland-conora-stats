@@ -2,14 +2,11 @@ import fetch from 'isomorphic-fetch';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import getConfig from 'next/config';
-import { Component, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 import paths from '../utils/path';
-import {
-  getConfirmedByCountry,
-  digitSeparator,
-  mapDataForCharts,
-} from '../utils/utils';
+import { getConfirmedByCountry, mapDataForCharts } from '../utils/utils';
 
 import Header from '../component/organisms/Header/Header';
 import HeroContainer from '../component/organisms/HeroContainer/';
@@ -21,16 +18,14 @@ import {
 import Footer from '../component/organisms/Footer/Footer';
 import Layout from '../component/organisms/Layout/Layout';
 import { TableWrapper } from '../component/organisms/TableLayout/TableLayout';
-import LogarithmicLinearConmponent from '../component/organisms/UI/LogarithmicLinearComponent/';
-import {
-  Section,
-  InputWrapper,
-} from '../component/organisms/UI/SectionWrapper/Section.style';
+import LogarithmicLinearComponent from '../component/organisms/UI/LogarithmicLinearComponent/';
+import { Section } from '../component/organisms/UI/SectionWrapper/Section.style';
 
 import ComposedBarLineChart from '../component/templates/Charts/ComposedBarLineChart';
 import CommonLineChart from '../component/templates/Charts/CommonLineChart';
 import CountriesListComponent from '../component/templates/WorldPage/CountriesListComponent';
 import CountriesTableComponent from '../component/templates/WorldPage/CountriesTableComponent';
+import SearchInputContainer from '../component/templates/WorldPage/SearchInputContainer';
 
 const WorldMap = dynamic(
   () => import('../component/templates/WorldMap/WorldMap'),
@@ -39,23 +34,23 @@ const WorldMap = dynamic(
   }
 );
 
-const World = (props) => {
-  const { data, confirmedData, dailyData } = props;
+const World = ({ data, confirmedData, dailyData }) => {
   const { confirmed, deaths, recovered, lastUpdate } = data;
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [active, setActive] = useState({ isByConfirmed: true });
+  const [isLinear, setLinear] = useState(false);
+  const [activeButton, setActiveButton] = useState('logarithmic');
+
   const confirmedResponses = getConfirmedByCountry(confirmedData);
   const uniqueConfirmed = [...new Set(confirmedResponses)];
   const sortedConfrimed = uniqueConfirmed.sort(
     (a, b) => b.confirmed - a.confirmed
   );
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [active, setActive] = useState({ isByConfirmed: true });
   const [sortedList, setSorted] = useState(sortedConfrimed);
-  const [isLinear, setLinear] = useState(false);
-  const [activeButton, setActiveButton] = useState('logarithmic');
 
   const worldDailyData = mapDataForCharts(dailyData);
-
   const source = `//github.com/mathdroid/covid-19-api`;
   const lastUpdatedAt = new Date(lastUpdate).toGMTString();
 
@@ -66,20 +61,14 @@ const World = (props) => {
     setSorted(sorted);
   };
 
-  const sortByConfirmed = () => {
-    setSelectedFilter('confirmed');
-    setActive({ isByConfirmed: true });
+  const sortBy = (filterBy, key) => {
+    setSelectedFilter(filterBy);
+    setActive({ [key]: true });
   };
 
-  const sortByRecovered = () => {
-    setSelectedFilter('recovered');
-    setActive({ isByRecovered: true });
-  };
-
-  const sortByDeaths = () => {
-    setSelectedFilter('deaths');
-    setActive({ isByDeaths: true });
-  };
+  const sortByConfirmed = () => sortBy('confirmed', 'isByConfirmed');
+  const sortByRecovered = () => sortBy('recovered', 'isByRecovered');
+  const sortByDeaths = () => sortBy('deaths', 'isByDeaths');
 
   const handlesearch = (event) => {
     setSearchTerm(event.target.value);
@@ -116,13 +105,16 @@ const World = (props) => {
           </div>
         </ContentContainer>
       </ContentWrapper>
+
       <WorldMap data={uniqueConfirmed} initialZoomLevel={2.5} />
+
       <ContentWrapper>
         <ContentContainer>
           <div className='hero-desktop'>
             <HeroBanner />
           </div>
-          <LogarithmicLinearConmponent
+
+          <LogarithmicLinearComponent
             isActive={activeButton}
             linearLogHandler={(event) => {
               setActiveButton(event.target.id);
@@ -130,6 +122,7 @@ const World = (props) => {
             }}
             buttons={['Linear', 'Logarithmic']}
           />
+
           <CommonLineChart
             data={worldDailyData}
             isLinear={activeButton.toLowerCase() === 'linear' ? true : false}
@@ -147,28 +140,15 @@ const World = (props) => {
               { title: 'Deaths', amount: 'totalDeaths' },
             ]}
           />
+
           <Section>
-            <InputWrapper>
-              <label htmlFor='search-input'>Search by country name</label>
+            <SearchInputContainer
+              handlesearch={handlesearch}
+              searchTerm={searchTerm}
+              isByConfirmed={active.isByConfirmed}
+              isByRecovered={active.isByRecovered}
+            />
 
-              <input
-                id='search-input'
-                type='text'
-                onChange={handlesearch}
-                value={searchTerm}
-              />
-            </InputWrapper>
-
-            <p>
-              Currently sorted by:{' '}
-              <strong>{`${
-                active.isByConfirmed
-                  ? 'confirmed'
-                  : active.isByRecovered
-                  ? 'recovered'
-                  : 'death'
-              } cases`}</strong>
-            </p>
             <TableWrapper tableSize={4}>
               <CountriesTableComponent
                 tableList={[
@@ -193,6 +173,7 @@ const World = (props) => {
               <CountriesListComponent searchResults={searchResults} />
             </TableWrapper>
           </Section>
+
           <Footer
             footerElements={[
               {
@@ -225,6 +206,13 @@ World.getInitialProps = async () => {
   const dailyData = await dailyResponse.json();
 
   return { data, confirmedData, dailyData };
+};
+
+World.propTypes = {
+  confirmed: PropTypes.array,
+  deaths: PropTypes.array,
+  recovered: PropTypes.array,
+  lastUpdate: PropTypes.string,
 };
 
 export default World;

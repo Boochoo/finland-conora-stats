@@ -10,7 +10,7 @@ import CommonPieChart from '../component/templates/Charts/CommonPieChart';
 import ComposedBarLineChart from '../component/templates/Charts/ComposedBarLineChart';
 
 import SymptomsSurveyComponent from '../component/templates/SymptomsSurveyComponent';
-import LogarithmicLinearConmponent from '../component/organisms/UI/LogarithmicLinearComponent/';
+import LogarithmicLinearComponent from '../component/organisms/UI/LogarithmicLinearComponent/';
 
 import {
   ContentContainer,
@@ -22,6 +22,9 @@ import {
 import { Section } from '../component/organisms/Layout/Layout.style';
 import HeroContainer from '../component/organisms/HeroContainer/';
 import { themeColors } from '../component/organisms/Layout/Layout.style';
+
+import PageLayoutTop from '../component/organisms/UI/PageLayoutTop';
+import PageLayoutBottom from '../component/organisms/UI/PageLayoutBottom';
 
 import {
   getConfirmedByDistrict,
@@ -135,125 +138,103 @@ const Index = ({ data }) => {
       desc='Coronavirus stats confirmed updates by city, recovered, deaths'
       keywords='finland coronavirus, coronavirus update, coronavirus, coronavirus stats, coronavirus numbers, suomi koronavirus, koronavirus'
     >
-      <MainWrapper>
-        <HeroTopWrapper>
-          <MenuBar>
-            <Header path={paths.world} page='world' />
-          </MenuBar>
-          <ContentWrapper>
-            <ContentContainer>
-              <div className='hero-mobile'>
-                <HeroBanner />
-              </div>
-            </ContentContainer>
-          </ContentWrapper>
-        </HeroTopWrapper>
-        <MapChartWithNoSSR data={sortedConfirmedByDistrict} />
-        <ContentWrapper>
-          <ContentContainer>
-            <div className='hero-desktop'>
-              <HeroBanner />
-            </div>
+      <PageLayoutTop path={paths.world} page='world'>
+        <HeroBanner />
+      </PageLayoutTop>
 
-            <Fragment>
-              <div>
-                <LogarithmicLinearConmponent
-                  isActive={activeButton}
-                  linearLogHandler={(event) => {
-                    setActiveButton(event.target.id);
-                    setLinear(isLinear);
-                  }}
-                  buttons={['Linear', 'Logarithmic']}
-                />
-                <CommonLineChart
-                  data={mappedIncremental}
-                  isLinear={
-                    activeButton.toLowerCase() === 'linear' ? true : false
-                  }
-                  xAxisName='name'
-                  dataKey='cases'
-                />
-              </div>
-            </Fragment>
+      <MapChartWithNoSSR data={sortedConfirmedByDistrict} />
 
-            <div>
-              <h2>Confirmed cases by health care district</h2>
+      <ContentWrapper>
+        <ContentContainer>
+          <PageLayoutBottom
+            isActive={activeButton}
+            linearLogHandler={(event) => {
+              setActiveButton(event.target.id);
+              setLinear(isLinear);
+            }}
+            data={mappedIncremental}
+            isLinear={activeButton.toLowerCase() === 'linear' ? true : false}
+          >
+            <HeroBanner />
+          </PageLayoutBottom>
 
-              <CommonBarChart
-                data={mapSortedConfirmedByDistrict}
-                marginBottom={100}
-                smallerFont
-                fillColor={themeColors.lightRed}
-              />
-            </div>
+          <div>
+            <h2>Confirmed cases by health care district</h2>
 
-            <Fragment>
-              <SymptomsSurveyComponent />
-            </Fragment>
-
-            <HeroBottomWrapper>
-              <div>
-                <h2>Recovered</h2>
-
-                <CommonPieChart
-                  data={mapDataForCharts(Object.entries(recoveredByDistrict))}
-                  width='100%'
-                />
-
-                <CommonTable
-                  headers={['Health care district', 'Cases']}
-                  data={recovered}
-                  districts={Object.entries(recoveredByDistrict)}
-                />
-              </div>
-
-              <div>
-                <h2>Deaths :(</h2>
-
-                <CommonPieChart
-                  data={mapDataForCharts(Object.entries(deathsByHospitalArea))}
-                  width='100%'
-                  isDeathCasesChart
-                />
-
-                <CommonTable
-                  headers={['Health care area', 'Cases']}
-                  data={deaths}
-                  districts={Object.entries(deathsByHospitalArea)}
-                />
-              </div>
-            </HeroBottomWrapper>
-            <div>
-              <h2>Confirmed daily total</h2>
-              <CommonBottomTable
-                headers={['Date', 'Cases']}
-                data={Object.entries(totalDailyCases)}
-              />
-            </div>
-            <Footer
-              footerElements={[
-                {
-                  description: `The Coronanavirus updates in this page are obtained from Helsinki Sanomat's API, which collects it from THL's published reports.`,
-                  author: 'HS-Datadesk',
-                  source: localDataSource,
-                  lastUpdate: lastUpdatedAt,
-                },
-                {
-                  description: `Symptomradar (Oiretutka) crowdsources coronavirus symptoms from news media audience`,
-                  author: 'Futurice and Helsinki Sanomat',
-                  source: `//github.com/futurice/symptomradar`,
-                  lastUpdate: '',
-                },
-                {
-                  description: `The website is done by`,
-                  author: 'Ermias Hailemicheal',
-                  descSource: '//www.linkedin.com/in/ermi/',
-                },
-              ]}
+            <CommonBarChart
+              data={mapSortedConfirmedByDistrict}
+              marginBottom={100}
+              smallerFont
+              fillColor={themeColors.lightRed}
             />
-          </ContentContainer>
-        </ContentWrapper>
-      </MainWrapper>
+          </div>
+
+          <Fragment>
+            <SymptomsSurveyComponent />
+          </Fragment>
+
+          <HeroBottomWrapper>
+            <div>
+              <h2>Recovered</h2>
+
+              <CommonPieChart
+                data={mapDataForCharts(Object.entries(recoveredByDistrict))}
+                width='100%'
+              />
+
+              <CommonTable
+                headers={['Health care district', 'Cases']}
+                data={recovered}
+                districts={Object.entries(recoveredByDistrict)}
+              />
+            </div>
+
+            <div>
+              <h2>Deaths :(</h2>
+
+              <CommonPieChart
+                data={mapDataForCharts(Object.entries(deathsByHospitalArea))}
+                width='100%'
+                isDeathCasesChart
+              />
+
+              <CommonTable
+                headers={['Health care area', 'Cases']}
+                data={deaths}
+                districts={Object.entries(deathsByHospitalArea)}
+              />
+            </div>
+          </HeroBottomWrapper>
+          <div>
+            <h2>Confirmed daily total</h2>
+            <CommonBottomTable
+              headers={['Date', 'Cases']}
+              data={Object.entries(totalDailyCases)}
+            />
+          </div>
+          <Footer
+            footerElements={[
+              {
+                description: `The Coronanavirus updates in this page are obtained from Helsinki Sanomat's API, which collects it from THL's published reports.`,
+                author: 'HS-Datadesk',
+                source: localDataSource,
+                lastUpdate: lastUpdatedAt,
+              },
+              {
+                description: `Symptomradar (Oiretutka) crowdsources coronavirus symptoms from news media audience`,
+                author: 'Futurice and Helsinki Sanomat',
+                source: `//github.com/futurice/symptomradar`,
+                lastUpdate: '',
+              },
+              {
+                description: `The website is done by`,
+                author: 'Ermias Hailemicheal',
+                descSource: '//www.linkedin.com/in/ermi/',
+              },
+            ]}
+          />
+        </ContentContainer>
+      </ContentWrapper>
     </Layout>
   );
 };
