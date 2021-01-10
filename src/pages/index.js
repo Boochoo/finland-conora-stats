@@ -258,7 +258,7 @@ const Index = ({ data }) => {
   );
 };
 
-export async function getServerSideProps() {
+export async function getInitialProps() {
   try {
     const { FINNISH_CORONA_DATA } = getConfig().publicRuntimeConfig;
     const response = await fetch(FINNISH_CORONA_DATA);
