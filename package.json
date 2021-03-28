@@ -18,29 +18,29 @@
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
-    "cross-env": "^7.0.2",
-    "express": "^4.17.1",
-    "isomorphic-fetch": "^2.2.1",
-    "leaflet": "^1.6.0",
-    "next": "^9.3.0",
-    "nextjs-fonts": "^0.22.0",
-    "nextjs-sitemap-generator": "^0.5.0",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
-    "react-leaflet": "^2.6.3",
-    "recharts": "^1.8.5",
-    "styled-components": "^5.0.1"
+    "cross-env": "7.0.2",
+    "express": "4.17.1",
+    "isomorphic-fetch": "2.2.1",
+    "leaflet": "1.6.0",
+    "next": "9.3.0",
+    "nextjs-fonts": "0.22.0",
+    "nextjs-sitemap-generator": "0.5.0",
+    "react": "16.13.0",
+    "react-dom": "16.13.0",
+    "react-leaflet": "2.6.3",
+    "recharts": "1.8.5",
+    "styled-components": "5.0.1"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^9.3.0",
-    "babel-eslint": "^10.1.0",
-    "enzyme": "^3.11.0",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb": "^18.1.0",
-    "eslint-config-prettier": "^6.10.0",
-    "jest": "^25.1.0",
-    "nodemon": "^2.0.2",
-    "plop": "^2.6.0",
-    "prettier": "^1.19.1"
+    "@next/bundle-analyzer": "9.3.0",
+    "babel-eslint": "10.1.0",
+    "enzyme": "3.11.0",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb": "18.1.0",
+    "eslint-config-prettier": "6.10.0",
+    "jest": "25.1.0",
+    "nodemon": "2.0.2",
+    "plop": "2.6.0",
+    "prettier": "1.19.1"
   }
 }
